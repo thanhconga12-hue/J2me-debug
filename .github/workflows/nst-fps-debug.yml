@@ -46,6 +46,17 @@ jobs:
           git init -q
           git apply "$GITHUB_WORKSPACE/NST_TREO_KEEPALIVE.patch"
           grep -q 'class TreoOnlineService' app/src/main/java/ru/playsoftware/j2meloader/keepalive/TreoOnlineService.java
+          grep -q 'TreoOnlineService.isActive(activity)' app/src/main/java/javax/microedition/shell/MidletThread.java
+          grep -q 'pauseIfBackground' app/src/main/java/javax/microedition/shell/MidletThread.java
+          grep -q 'FOREGROUND_SERVICE_SPECIAL_USE' app/src/main/AndroidManifest.xml
+          grep -q 'action_treo_online' app/src/main/res/menu/midlet_displayable.xml
+          python3 - <<'PY'
+          import xml.etree.ElementTree as ET
+          ET.parse('app/src/main/AndroidManifest.xml')
+          ET.parse('app/src/main/res/menu/midlet_displayable.xml')
+          ET.parse('app/src/main/res/values/strings.xml')
+          print('Treo manifest/menu/resources XML validated')
+          PY
 
       - name: Fetch TinySoundFont dependency
         working-directory: extracted/J2ME_NST_FPS_Rebuild
