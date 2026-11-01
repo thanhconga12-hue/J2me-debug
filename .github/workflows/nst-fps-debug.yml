@@ -56,7 +56,8 @@ jobs:
           set -euo pipefail
           cd extracted/J2ME_NST_FPS_Rebuild
           python3 "$GITHUB_WORKSPACE/scripts/apply_treo.py" "$PWD"
-          python3 - <<'PY'
+          python3 "$GITHUB_WORKSPACE/scripts/apply_treo_lifecycle.py" "$PWD"
+          python3 - <<'PY
           import pathlib, xml.etree.ElementTree as ET
           root = pathlib.Path("app/src/main")
           ET.parse(root / "AndroidManifest.xml")
@@ -65,10 +66,15 @@ jobs:
           service = pathlib.Path("app/src/main/java/javax/microedition/shell/TreoOnlineService.java").read_text()
           lifecycle = pathlib.Path("app/src/main/java/javax/microedition/shell/MidletThread.java").read_text()
           activity = pathlib.Path("app/src/main/java/javax/microedition/shell/MicroActivity.java").read_text()
+          canvas = pathlib.Path("app/src/main/java/javax/microedition/lcdui/Canvas.java").read_text()
           assert 'android:process=":midlet"' in (root / "AndroidManifest.xml").read_text()
           assert "FOREGROUND_SERVICE_SPECIAL_USE" in (root / "AndroidManifest.xml").read_text()
           assert "active = true" in service and "WakeLock" in service
           assert "if (!TreoOnlineService.isEnabled())" in lifecycle
+          assert "if (!TreoOnlineService.isEnabled()) target.obtainMessage(DESTROY)" in lifecycle
+          assert "isTreoBackgroundTransition()" in activity
+          assert "treoBackgroundSurfaceLoss" in canvas
+          assert "suppressing background HIDE_NOTIFY" in canvas
           assert "moveTaskToBack(true)" in activity
           assert "WeakReference" not in service
           print("Manifest/resource XML and Treo lifecycle checks passed")
