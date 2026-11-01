@@ -1,0 +1,400 @@
+/*
+ * Copyright 2018-2021 Nikita Shakarun
+ * Copyright 2019-2026 Yury Kharchenko
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package javax.microedition.shell;
+
+import static android.os.Build.VERSION.SDK_INT;
+import static android.os.Build.VERSION_CODES.UPSIDE_DOWN_CAKE;
+
+import android.graphics.Bitmap;
+import android.os.Environment;
+import android.os.StrictMode;
+import android.util.Log;
+import android.util.SparseIntArray;
+import android.view.KeyEvent;
+
+import androidx.core.content.ContextCompat;
+
+import com.android.dx.command.dexer.Main;
+
+import org.acra.ACRA;
+import org.acra.ErrorReporter;
+
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
+import java.math.BigInteger;
+import java.nio.charset.Charset;
+import java.security.MessageDigest;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.LinkedHashMap;
+import java.util.Locale;
+import java.util.Map;
+
+import javax.microedition.lcdui.Canvas;
+import javax.microedition.lcdui.Display;
+import javax.microedition.lcdui.Displayable;
+import javax.microedition.lcdui.Font;
+import javax.microedition.lcdui.event.EventQueue;
+import javax.microedition.lcdui.keyboard.KeyMapper;
+import javax.microedition.lcdui.keyboard.VirtualKeyboard;
+import javax.microedition.lcdui.skin.SkinLayer;
+import javax.microedition.m3g.Graphics3D;
+import javax.microedition.midlet.MIDlet;
+import javax.microedition.util.ContextHolder;
+
+import io.reactivex.SingleObserver;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
+import kotlin.io.ConstantsKt;
+import kotlin.io.FilesKt;
+import ru.playsoftware.j2meloader.BuildConfig;
+import ru.playsoftware.j2meloader.config.Config;
+import ru.playsoftware.j2meloader.config.ProfileModel;
+import ru.playsoftware.j2meloader.config.ProfilesManager;
+import ru.playsoftware.j2meloader.config.ShaderInfo;
+import ru.playsoftware.j2meloader.util.AppUtils;
+import ru.playsoftware.j2meloader.util.Constants;
+import ru.playsoftware.j2meloader.util.FileUtils;
+import ru.playsoftware.j2meloader.util.IOUtils;
+import ru.playsoftware.j2meloader.util.NstFpsBytecodeCache;
+import ru.woesss.j2me.jar.Descriptor;
+
+public class MicroLoader {
+	private static final String TAG = MicroLoader.class.getName();
+	private static String soundBank;
+	private final Map<String, String> midlets = new LinkedHashMap<>();
+
+	ProfileModel params;
+	private final File appDir;
+	private final String workDir;
+	private final String appDirName;
+
+	MicroLoader(String appPath) {
+		this.appDir = new File(appPath);
+		File converted = appDir.getParentFile();
+		if (converted == null)
+			throw new NullPointerException("Can't access to parent of " + appPath);
+		workDir = converted.getParent();
+		appDirName = appDir.getName();
+	}
+
+	public boolean init() {
+		File config = new File(workDir + Config.MIDLET_CONFIGS_DIR + appDirName);
+		this.params = ProfilesManager.loadConfig(config);
+		if (params == null) {
+			return false;
+		}
+		Display.initDisplay();
+		Graphics3D.initGraphics3D();
+		File cacheDir = ContextHolder.getCacheDir();
+		// Some phones return null here
+		if (cacheDir != null && cacheDir.exists()) {
+			FileUtils.clearDirectory(cacheDir);
+		}
+		StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder()
+				.permitNetwork()
+				.penaltyLog()
+				.build();
+		StrictMode.setThreadPolicy(policy);
+		return true;
+	}
+
+	Map<String, String> loadMIDletList() throws IOException {
+		if (!midlets.isEmpty()) {
+			return midlets;
+		}
+		String jarHash = null;
+		String jarSize = null;
+		Descriptor descriptor;
+		if (BuildConfig.FULL_EMULATOR) {
+			descriptor = new Descriptor(new File(appDir, Config.MIDLET_MANIFEST_FILE), false);
+			try {
+				File jar = new File(appDir, Config.MIDLET_RES_FILE);
+				jarSize = Long.toString(jar.length());
+				byte[] bytes = FileUtils.getBytes(jar);
+				byte[] sum = MessageDigest.getInstance("md5").digest(bytes);
+				BigInteger bi = new BigInteger(1, sum);
+				jarHash = bi.toString(16);
+			} catch (Throwable ignored) {
+			}
+		} else {
+			try (InputStream stream = getClass().getResourceAsStream("/MIDLET-META-INF/MANIFEST.MF")) {
+				if (stream == null) {
+					throw new RuntimeException("App manifest not found! It MUST be on project path:" +
+							" 'app/midlet/resources/MIDLET-META-INF/MANIFEST.MF'");
+				}
+				String text = new String(IOUtils.toByteArray(stream));
+				descriptor = new Descriptor(text, false);
+			}
+		}
+		Map<String, String> attr = descriptor.getAttrs();
+		ErrorReporter errorReporter = ACRA.getErrorReporter();
+		String report = errorReporter.getCustomData(Constants.KEY_APPCENTER_ATTACHMENT);
+		StringBuilder sb = new StringBuilder();
+		if (report != null) {
+			sb.append(report).append("\n");
+		}
+		sb.append(Descriptor.MIDLET_NAME).append(": ").append(descriptor.getName()).append("\n");
+		sb.append(Descriptor.MIDLET_VENDOR).append(": ").append(descriptor.getVendor()).append("\n");
+		sb.append(Descriptor.MIDLET_VERSION).append(": ").append(descriptor.getVersion()).append("\n");
+		if (jarHash != null) {
+			sb.append(Descriptor.MIDLET_JAR_SIZE).append(": ").append(jarSize).append("\n");
+			sb.append("JAR_HASH_MD5").append(": ").append(jarHash);
+		}
+		errorReporter.putCustomData(Constants.KEY_APPCENTER_ATTACHMENT, sb.toString());
+		MIDlet.initProps(attr);
+		for (int i = 1; ; i++) {
+			String v = attr.get(Descriptor.MIDLET_N + i);
+			if (v == null) {
+				break;
+			}
+			String clazz = v.substring(v.lastIndexOf(',') + 1).trim();
+			String title = v.substring(0, v.indexOf(',')).trim();
+			midlets.put(clazz, title);
+		}
+		return midlets;
+	}
+
+	/**
+	 * Re-convert an existing NST/JL-Mod JAR when its content or our hook version
+	 * changes. The old app's converted.zip/converted.dex files remain untouched.
+	 */
+
+	private void ensureNstFpsBytecode() throws IOException {
+		File dexArchive = new File(appDir, Config.MIDLET_DEX_ARCH);
+		File sourceJar = new File(appDir, Config.MIDLET_RES_FILE);
+		if (!sourceJar.isFile()) {
+			throw new IOException("Game JAR is missing; cannot prepare FPS Booster bytecode: " + sourceJar);
+		}
+		String sourceFingerprint = NstFpsBytecodeCache.fingerprint(sourceJar);
+		if (dexArchive.isFile() && NstFpsBytecodeCache.isCurrent(appDir, sourceFingerprint)) {
+			return;
+		}
+
+		File temporaryDex = new File(appDir, ".converted_nstfps.tmp.zip");
+		File backupDex = new File(appDir, ".converted_nstfps.previous.zip");
+		if (temporaryDex.exists() && !temporaryDex.delete()) {
+			throw new IOException("Cannot remove stale temporary DEX: " + temporaryDex);
+		}
+
+		try {
+			Main.main(new String[]{"--no-optimize", "--output=" + temporaryDex.getAbsolutePath(),
+					sourceJar.getAbsolutePath()});
+		} catch (Throwable error) {
+			// Do not damage the old NST converted.zip when bytecode conversion fails.
+			//noinspection ResultOfMethodCallIgnored
+			temporaryDex.delete();
+			throw new IOException("Cannot convert game JAR for FPS Booster", error);
+		}
+
+		if (!temporaryDex.isFile() || temporaryDex.length() == 0) {
+			//noinspection ResultOfMethodCallIgnored
+			temporaryDex.delete();
+			throw new IOException("Bytecode converter produced no DEX archive");
+		}
+
+		if (backupDex.exists() && !backupDex.delete()) {
+			throw new IOException("Cannot remove previous FPS Booster DEX backup");
+		}
+		if (dexArchive.exists() && !dexArchive.renameTo(backupDex)) {
+			throw new IOException("Cannot back up previous FPS Booster DEX archive");
+		}
+		if (!temporaryDex.renameTo(dexArchive)) {
+			if (backupDex.exists()) {
+				//noinspection ResultOfMethodCallIgnored
+				backupDex.renameTo(dexArchive);
+			}
+			throw new IOException("Cannot publish converted FPS Booster DEX archive");
+		}
+		//noinspection ResultOfMethodCallIgnored
+		backupDex.delete();
+		try {
+			NstFpsBytecodeCache.writeFingerprint(appDir, sourceFingerprint);
+		} catch (IOException stampError) {
+			// A missing/stale stamp only causes a safe reconversion on the next launch.
+			Log.w(TAG, "Cannot publish FPS Booster bytecode fingerprint", stampError);
+		}
+	}
+
+	MIDlet loadMIDlet(String mainClass) throws ClassNotFoundException, InstantiationException,
+			IllegalAccessException, NoSuchMethodException, InvocationTargetException, IOException {
+		if (BuildConfig.FULL_EMULATOR) {
+			ensureNstFpsBytecode();
+			File dexSource = new File(appDir, Config.MIDLET_DEX_ARCH);
+			if (!dexSource.exists()) {
+				dexSource = new File(appDir, Config.MIDLET_DEX_FILE);
+			}
+			File codeCacheDir = ContextCompat.getCodeCacheDir(ContextHolder.getActivity());
+			File dexOptDir = new File(codeCacheDir, Config.DEX_OPT_CACHE_DIR);
+			if (dexOptDir.exists()) {
+				FileUtils.clearDirectory(dexOptDir);
+			} else if (!dexOptDir.mkdir()) {
+				throw new IOException("Can't create directory: [" + dexOptDir + ']');
+			}
+			if (SDK_INT >= UPSIDE_DOWN_CAKE) {
+				File dexCache = new File(dexOptDir, appDirName);
+				FilesKt.copyTo(dexSource, dexCache, true, ConstantsKt.DEFAULT_BUFFER_SIZE);
+				if (!dexCache.setReadOnly()) {
+					throw new IOException("Can't set readOnly flag for dex cache file");
+				}
+				dexSource = dexCache;
+			}
+			ClassLoader loader = new AppClassLoader(dexSource.getAbsolutePath(),
+					dexOptDir.getAbsolutePath(), ContextHolder.getActivity().getClassLoader(), appDir);
+			Log.i(TAG, "loadMIDletList main: " + mainClass + " from dex:" + dexSource.getPath());
+			//noinspection unchecked
+			Class<MIDlet> clazz = (Class<MIDlet>) loader.loadClass(mainClass);
+			Constructor<MIDlet> init = clazz.getDeclaredConstructor();
+			init.setAccessible(true);
+			return init.newInstance();
+		} else {
+			AppClassLoader.setDataDir(appDir);
+			//noinspection unchecked
+			Class<MIDlet> clazz = (Class<MIDlet>) Class.forName(mainClass);
+			Constructor<MIDlet> init = clazz.getDeclaredConstructor();
+			init.setAccessible(true);
+			return init.newInstance();
+		}
+	}
+
+	private void setProperties() {
+		final Locale defaultLocale = Locale.getDefault();
+		final String country = defaultLocale.getCountry();
+		System.setProperty("microedition.locale", defaultLocale.getLanguage()
+				+ (country.length() == 2 ? "-" + country : ""));
+		// FIXME: 21.10.2020 Config.getDataDir() may be in different storage
+		final String primaryStoragePath = Environment.getExternalStorageDirectory().getPath();
+		String dataUri = "file:///c:" + Config.getDataDir().substring(primaryStoragePath.length()) + appDirName;
+		String musicUri = "file:///c:" + Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MUSIC)
+				.getPath().substring(primaryStoragePath.length());
+		System.setProperty("fileconn.dir.cache", dataUri + "/cache");
+		System.setProperty("fileconn.dir.private", dataUri + "/private");
+		System.setProperty("fileconn.dir.music", musicUri);
+		System.setProperty("user.home", primaryStoragePath);
+	}
+
+	public int getOrientation() {
+		return params.orientation;
+	}
+
+	void applyConfiguration() {
+		try {
+			// Apply configuration to the launching MIDlet
+			if (params.showKeyboard) {
+				ContextHolder.setVk(new VirtualKeyboard(params));
+			} else {
+				ContextHolder.setVk(null);
+			}
+			setProperties();
+
+			final String[] propLines = params.systemProperties.split("\n");
+			for (String line : propLines) {
+				String[] prop = line.split(": *", 2);
+				if (prop.length == 2) {
+					System.setProperty(prop[0], prop[1]);
+					MidletSystem.setProperty(prop[0], prop[1]);
+				}
+			}
+			try {
+				Charset.forName(System.getProperty("microedition.encoding"));
+			} catch (Exception e) {
+				System.setProperty("microedition.encoding", "ISO-8859-1");
+				MidletSystem.setProperty("microedition.encoding", "ISO-8859-1");
+			}
+
+			Displayable.setVirtualSize(params.screenWidth, params.screenHeight);
+			EventQueue.setImmediate(params.immediateMode);
+			ShaderInfo shader = params.shader;
+			if (shader != null) {
+				shader.dir = workDir + Config.SHADERS_DIR;
+			}
+			Canvas.setSettings(params);
+
+			Font.applySettings(params);
+
+			KeyMapper.setKeyMapping(params);
+			File sb = new File(workDir + Config.SOUNDBANKS_DIR + params.soundBank);
+			if (sb.exists()) {
+				soundBank = sb.getPath();
+			}
+			if (params.screenBackgroundImage != null) {
+				SkinLayer.init(params);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	void takeScreenshot(Object target, SingleObserver<String> observer) {
+		if (!(target instanceof Canvas canvas)) {
+			return;
+		}
+		canvas.getScreenshot()
+				.subscribeOn(Schedulers.computation())
+				.observeOn(Schedulers.io())
+				.map(bitmap -> {
+					Calendar calendar = Calendar.getInstance();
+					Date now = calendar.getTime();
+					//noinspection SpellCheckingInspection
+					SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMdd-HHmmss", Locale.US);
+					String fileName = "Screenshot_" + simpleDateFormat.format(now) + ".png";
+					File screenshotDir = new File(Config.SCREENSHOTS_DIR);
+					File screenshotFile = new File(screenshotDir, fileName);
+					if (!screenshotDir.exists() && !screenshotDir.mkdirs()) {
+						throw new IOException("Can't create directory: " + screenshotDir);
+					}
+					try (BufferedOutputStream out = new BufferedOutputStream(new FileOutputStream(screenshotFile))) {
+						bitmap.compress(Bitmap.CompressFormat.PNG, 100, out);
+					}
+					return screenshotFile.getAbsolutePath();
+				})
+				.observeOn(AndroidSchedulers.mainThread())
+				.subscribe(observer);
+	}
+
+	public int getMenuKeyCode() {
+		SparseIntArray mappings = params.keyMappings;
+		if (mappings == null) {
+			return KeyEvent.KEYCODE_BACK;
+		}
+		int i = mappings.indexOfValue(KeyMapper.KEY_OPTIONS_MENU);
+		if (i < 0) {
+			return KeyEvent.KEYCODE_BACK;
+		}
+		return mappings.keyAt(i);
+	}
+
+	public static String getSoundBank() {
+		return soundBank;
+	}
+
+	void loadMidlet(String clazz, String appName) {
+		MidletThread midletThread = new MidletThread(this, clazz);
+		midletThread.start();
+		if (!BuildConfig.FULL_EMULATOR) {
+			return;
+		}
+		AppUtils.pushToRecentShortcuts(ContextHolder.getActivity(), appDir.getPath(), appName);
+	}
+}
