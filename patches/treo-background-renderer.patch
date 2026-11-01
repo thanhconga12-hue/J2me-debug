@@ -1,0 +1,61 @@
+--- a/app/src/main/java/javax/microedition/lcdui/Canvas.java
++++ b/app/src/main/java/javax/microedition/lcdui/Canvas.java
+@@ -152,6 +152,8 @@
+ 	private FpsCounter fpsCounter;
+ 	private boolean skipLeftSoft;
+ 	private boolean skipRightSoft;
++	// True when the GLSurfaceView was deliberately kept alive during Treo backgrounding.
++	private boolean treoBackgroundRendererKept;
+ 
+ 	protected Canvas() {
+ 		this(settings.forceFullscreen);
+@@ -970,6 +972,7 @@
+ 
+ 	private class ViewCallbacks implements View.OnTouchListener, SurfaceHolder.Callback, View.OnKeyListener {
+ 		private final View mView;
++		private boolean treoBackgroundSurfaceLoss;
+ 		OverlayView overlayView;
+ 
+ 		public ViewCallbacks(View view) {
+@@ -1144,11 +1147,15 @@
+ 
+ 		@Override
+ 		public void surfaceCreated(@NonNull SurfaceHolder holder) {
+-			if (renderer != null) {
++			boolean resumedFromTreoBackground = treoBackgroundSurfaceLoss;
++			if (renderer != null && !treoBackgroundRendererKept) {
+ 				renderer.start();
+ 			}
++			treoBackgroundRendererKept = false;
+ 			surface = holder.getSurface();
+-			Display.postEvent(CanvasEvent.getInstance(Canvas.this, CanvasEvent.SHOW_NOTIFY));
++			treoBackgroundSurfaceLoss = false;
++			if (!resumedFromTreoBackground)
++				Display.postEvent(CanvasEvent.getInstance(Canvas.this, CanvasEvent.SHOW_NOTIFY));
+ 			repaintInternal();
+ 			if (settings.showFps) {
+ 				fpsCounter = new FpsCounter(overlayView);
+@@ -1164,13 +1171,21 @@
+ 
+ 		@Override
+ 		public void surfaceDestroyed(@NonNull SurfaceHolder holder) {
+-			if (renderer != null) {
++			boolean treoBackground = javax.microedition.shell.TreoOnlineService.isEnabled()
++					&& javax.microedition.shell.MicroActivity.isTreoBackgroundTransition();
++			if (renderer != null && !treoBackground) {
+ 				renderer.stop();
+ 			}
++			treoBackgroundRendererKept = renderer != null && treoBackground;
+ 			synchronized (surfaceLock) {
+ 				surface = null;
+ 			}
+-			Display.postEvent(CanvasEvent.getInstance(Canvas.this, CanvasEvent.HIDE_NOTIFY));
++			if (treoBackground) {
++				treoBackgroundSurfaceLoss = true;
++				Log.i(TAG, "Treo mode: keeping renderer active; suppressing background HIDE_NOTIFY");
++			} else {
++				Display.postEvent(CanvasEvent.getInstance(Canvas.this, CanvasEvent.HIDE_NOTIFY));
++			}
+ 			if (fpsCounter != null) {
+ 				fpsCounter.stop();
+ 				overlayView.removeLayer(fpsCounter);
