@@ -7,7 +7,6 @@ on:
       - main
     paths:
       - scripts/apply_treo.py
-      - patches/treo-background-renderer.patch
       - .github/workflows/nst-fps-debug.yml
 
 permissions:
@@ -148,7 +147,6 @@ jobs:
           python3 "$GITHUB_WORKSPACE/scripts/apply_treo_original_compat.py" "$PWD"
           python3 "$GITHUB_WORKSPACE/scripts/apply_treo_lifecycle.py" "$PWD"
           python3 "$GITHUB_WORKSPACE/scripts/validate_treo_lifecycle.py" "$PWD"
-          patch --batch --forward -p1 < "$GITHUB_WORKSPACE/patches/treo-background-renderer.patch"
       - name: Fetch TinySoundFont dependency
         working-directory: extracted/J2ME_NST_FPS_Rebuild
         run: bash ./scripts/fetch-tinysoundfont.sh
