@@ -1,228 +1,67 @@
-name: Build J2ME NST FPS (debug)
+name: Replace repository with extracted Treo source
 
 on:
-  workflow_dispatch:
   push:
-    branches:
-      - main
+    branches: [main]
     paths:
-      - scripts/apply_treo.py
-      - scripts/apply_treo_original_compat.py
-      - scripts/apply_treo_lifecycle.py
-      - scripts/validate_treo_lifecycle.py
-      - scripts/inspect_treo_dependencies.py
-      - J2ME_NST_FPS_Rebuild_v3_Source.zip
-      - J2ME_NST.apk
       - .github/workflows/nst-fps-debug.yml
 
 permissions:
-  contents: read
+  actions: read
+  contents: write
 
 jobs:
-  export-original-nst:
+  replace-repository:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-      - name: Export original NST APK unchanged
+        with:
+          fetch-depth: 0
+
+      - name: Download and extract edited source artifact
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
           set -euo pipefail
-          test -s J2ME_NST.apk
-          mkdir -p original-nst
-          cp J2ME_NST.apk original-nst/J2ME_NST.apk
-          sha256sum original-nst/J2ME_NST.apk > original-nst/SHA256SUMS
-      - name: Upload original NST APK for inspection
-        uses: actions/upload-artifact@v4
-        with:
-          name: NST-original-APK-reference
-          path: original-nst/
-          if-no-files-found: error
-          retention-days: 14
+          gh run download 41307038487 \
+            --repo thanhconga12-hue/J2me-debug \
+            --name J2ME-NST-FPS-TREO-v3-source \
+            --dir /tmp/nst-artifact
+          INNER="$(find /tmp/nst-artifact -maxdepth 1 -type f -name '*.zip' -print -quit)"
+          test -n "$INNER"
+          unzip -tq "$INNER"
+          mkdir -p /tmp/nst-source
+          unzip -q "$INNER" -d /tmp/nst-source
+          PROJECT=/tmp/nst-source/J2ME_NST_FPS_Rebuild
+          test -d "$PROJECT/app/src/main"
+          test -f "$PROJECT/gradlew"
+          echo "Source project located: $PROJECT"
+          echo "Source files before excluding generated build output:"
+          find "$PROJECT" -type f | wc -l
 
-
-  decompile-original-nst:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-      - name: Set up JDK 17
-        uses: actions/setup-java@v4
-        with:
-          distribution: temurin
-          java-version: '17'
-      - name: Download JADX
+      - name: Replace all repository files with source project
         run: |
           set -euo pipefail
-          curl -fL --retry 3 https://github.com/skylot/jadx/releases/download/v1.5.6/jadx-1.5.6.zip -o /tmp/jadx.zip
-          mkdir -p /tmp/jadx
-          unzip -q /tmp/jadx.zip -d /tmp/jadx
-          test -x /tmp/jadx/bin/jadx
-      - name: Decompile original NST APK
-        run: |
-          set -euo pipefail
-          test -s J2ME_NST.apk
-          mkdir -p /tmp/nst-decompiled
-          set +e
-          /tmp/jadx/bin/jadx --threads-count 2 --show-bad-code --deobf --output-dir /tmp/nst-decompiled J2ME_NST.apk
-          JADX_STATUS=$?
-          set -e
-          echo "JADX exit code: $JADX_STATUS (partial decompilation is retained)"
-          test -d /tmp/nst-decompiled/sources
-          mkdir -p original-nst-decompiled
-          cp /tmp/nst-decompiled/resources/AndroidManifest.xml original-nst-decompiled/ 2>/dev/null || true
-          python3 - <<'PY'
-          from pathlib import Path
-          import re, shutil
-          src = Path('/tmp/nst-decompiled/sources')
-          out = Path('original-nst-decompiled/sources')
-          keys = re.compile(r'Treo|keepalive|WakeLock|WifiLock|MulticastLock|SCREEN_OFF|SCREEN_ON|BOOT_COMPLETED|startForeground|moveTaskToBack|pauseApp|autoStartStickyTreo|hideAndTreo|backgroundFps|effectiveFpsLimit', re.I)
-          chosen = []
-          for p in src.rglob('*.java'):
-              rel = p.relative_to(src)
-              s = p.read_text(encoding='utf-8', errors='replace')
-              if keys.search(str(rel)) or keys.search(s):
-                  q = out / rel
-                  q.parent.mkdir(parents=True, exist_ok=True)
-                  shutil.copy2(p, q)
-                  chosen.append((str(rel), len(s.splitlines())))
-          Path('original-nst-decompiled/INDEX.txt').write_text('\n'.join(f'{p} ({n} lines)' for p,n in chosen), encoding='utf-8')
-          print('Extracted', len(chosen), 'relevant source files')
-          if not chosen:
-              print('WARNING: no Java source matched; retaining complete decompilation metadata')
-          manifest = Path('/tmp/nst-decompiled/resources/AndroidManifest.xml')
-          if manifest.exists():
-              shutil.copy2(manifest, Path('original-nst-decompiled/AndroidManifest.xml'))
-          # Include text resources and decompiler diagnostics useful for class-name mapping.
-          for name in ('resources', 'summary.txt'):
-              p = Path('/tmp/nst-decompiled') / name
-              if p.is_file() and name == 'summary.txt':
-                  shutil.copy2(p, Path('original-nst-decompiled') / name)
-          PY
-          zip -qr NST-original-decompiled-source.zip original-nst-decompiled
-      - name: Upload original NST decompiled source
-        uses: actions/upload-artifact@v4
-        with:
-          name: NST-original-decompiled-source
-          path: NST-original-decompiled-source.zip
-          if-no-files-found: error
-          retention-days: 14
-
-  build:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Set up JDK 17
-        uses: actions/setup-java@v4
-        with:
-          distribution: temurin
-          java-version: '17'
-
-      - name: Set up Android SDK
-        uses: android-actions/setup-android@v3
-        with:
-          packages: 'platform-tools'
-
-      - name: Install Android SDK components
-        run: |
-          sdkmanager --install \
-            "platforms;android-34" \
-            "build-tools;34.0.0" \
-            "ndk;22.1.7171670"
-
-      - name: Extract v3 source archive
-        run: |
-          set -euo pipefail
-          test -s J2ME_NST_FPS_Rebuild_v3_Source.zip
-          zip -T J2ME_NST_FPS_Rebuild_v3_Source.zip
-          mkdir -p build-verification
-          sha256sum J2ME_NST_FPS_Rebuild_v3_Source.zip > build-verification/INPUT_SOURCE_ARCHIVE_SHA256SUMS
-          sha256sum scripts/apply_treo.py scripts/apply_treo_original_compat.py scripts/apply_treo_lifecycle.py scripts/validate_treo_lifecycle.py scripts/inspect_treo_dependencies.py > build-verification/PATCH_SCRIPT_SHA256SUMS
-          mkdir -p extracted
-          unzip -q J2ME_NST_FPS_Rebuild_v3_Source.zip -d extracted
-          test -f extracted/J2ME_NST_FPS_Rebuild/gradlew
-          test -d extracted/J2ME_NST_FPS_Rebuild/app
-
-      - name: Locate legacy Treo service in source and packaged dependencies
-        run: |
-          set -euo pipefail
-          python3 scripts/inspect_treo_dependencies.py
-
-      - name: Apply and validate NST Treo lifecycle integration
-        run: |
-          set -euo pipefail
-          cd extracted/J2ME_NST_FPS_Rebuild
-          python3 "$GITHUB_WORKSPACE/scripts/apply_treo.py" "$PWD"
-          python3 "$GITHUB_WORKSPACE/scripts/apply_treo_original_compat.py" "$PWD"
-          python3 "$GITHUB_WORKSPACE/scripts/apply_treo_lifecycle.py" "$PWD"
-          python3 "$GITHUB_WORKSPACE/scripts/validate_treo_lifecycle.py" "$PWD"
-      - name: Fetch TinySoundFont dependency
-        working-directory: extracted/J2ME_NST_FPS_Rebuild
-        run: bash ./scripts/fetch-tinysoundfont.sh
-
-      - name: Build emulator debug APK
-        working-directory: extracted/J2ME_NST_FPS_Rebuild
-        run: |
-          chmod +x ./gradlew
-          # Remove stale outputs and disable Gradle's build cache for this verification build.
-          ./gradlew --stop || true
-          rm -rf app/build
-          ./gradlew clean :app:assembleEmulatorDebug --no-daemon --stacktrace --no-build-cache --rerun-tasks
-
-      - name: Verify APK output and record source/build fingerprints
-        working-directory: extracted/J2ME_NST_FPS_Rebuild
-        run: |
-          set -euo pipefail
-          APK="$(find app/build/outputs/apk/emulator/debug -maxdepth 1 -type f -name '*.apk' -print -quit)"
-          test -n "$APK" && test -s "$APK"
-          echo "APK=$APK"
-          sha256sum "$APK" | tee "$GITHUB_WORKSPACE/apk-sha256.txt"
-          find app/build/outputs/apk/emulator/debug -maxdepth 1 -type f -name '*.apk' -exec unzip -l {} \;
-          unzip -l "$APK" | grep -E 'classes([0-9]+)?\.dex'
-          python3 - "$APK" <<'PY'
-          import sys, zipfile
-          with zipfile.ZipFile(sys.argv[1]) as apk:
-              dex_files = [name for name in apk.namelist() if name.startswith("classes") and name.endswith(".dex")]
-              if not dex_files:
-                  raise SystemExit("APK contains no DEX files")
-              dex_data = b"".join(apk.read(name) for name in dex_files)
-              required = (b"TreoOnlineService", b"MidletThread", b"MicroActivity")
-              missing = [item.decode() for item in required if item not in dex_data]
-              if missing:
-                  raise SystemExit("Treo lifecycle code missing from DEX: " + ", ".join(missing))
-              print("DEX verification passed:", ", ".join(item.decode() for item in required))
-          PY
-          sha256sum "$APK" > "$GITHUB_WORKSPACE/build-verification/APK_SHA256SUMS"
-          find app/src -type f \( -name '*.java' -o -name '*.kt' \) -print0 | sort -z | xargs -0 sha256sum > "$GITHUB_WORKSPACE/build-verification/PATCHED_SOURCE_SHA256SUMS"
-      - name: Upload build fingerprints
-        uses: actions/upload-artifact@v4
-        with:
-          name: NST-FPS-build-verification
-          path: build-verification/
-          if-no-files-found: error
-          retention-days: 14
-
-      - name: Package patched source archive
-        run: |
-          set -euo pipefail
-          cd extracted
-          zip -qr ../J2ME_NST_FPS_Rebuild_v3_TREO_Source_GitHub.zip J2ME_NST_FPS_Rebuild
-          cd ..
-          test -s J2ME_NST_FPS_Rebuild_v3_TREO_Source_GitHub.zip
-
-      - name: Upload patched source archive
-        uses: actions/upload-artifact@v4
-        with:
-          name: J2ME-NST-FPS-TREO-v3-source
-          path: J2ME_NST_FPS_Rebuild_v3_TREO_Source_GitHub.zip
-          if-no-files-found: error
-          retention-days: 14
-
-      - name: Upload debug APK
-        uses: actions/upload-artifact@v4
-        with:
-          name: J2ME-NST-FPS-TREO-v3-debug
-          path: extracted/J2ME_NST_FPS_Rebuild/app/build/outputs/apk/emulator/debug/*.apk
-          if-no-files-found: error
-          retention-days: 14
+          PROJECT=/tmp/nst-source/J2ME_NST_FPS_Rebuild
+          # Keep source, resources, Gradle configuration and project metadata.
+          # Exclude only generated Gradle/build outputs from the extracted artifact.
+          rsync -a --delete \
+            --exclude='.git/' \
+            --exclude='.gradle/' \
+            --exclude='build/' \
+            --exclude='*/build/' \
+            "$PROJECT/" "$GITHUB_WORKSPACE/"
+          test -d app/src/main
+          test -f gradlew
+          echo "Final tracked candidate files:"
+          find . -type f -not -path './.git/*' | wc -l
+          git add -A
+          if git diff --cached --quiet; then
+            echo "Repository already matches extracted source; no commit needed."
+          else
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git commit -m "Replace repository with extracted edited NST source"
+            git push origin HEAD:main
+          fi
