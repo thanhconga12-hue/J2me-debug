@@ -2,6 +2,11 @@ name: Build J2ME NST FPS (debug)
 
 on:
   workflow_dispatch:
+  push:
+    branches:
+      - main
+    paths:
+      - NST_TREO_KEEPALIVE.patch.gz.b64
 
 permissions:
   contents: read
@@ -33,30 +38,23 @@ jobs:
 
       - name: Extract v3 source archive
         run: |
+          set -euo pipefail
           test -f J2ME_NST_FPS_Rebuild_v3_Source.zip
           mkdir -p extracted
           unzip -q J2ME_NST_FPS_Rebuild_v3_Source.zip -d extracted
           test -f extracted/J2ME_NST_FPS_Rebuild/gradlew
           test -d extracted/J2ME_NST_FPS_Rebuild/app
 
-      - name: Apply NST keep-alive patch
+      - name: Apply and validate NST keep-alive patch
         run: |
-          base64 -d NST_TREO_KEEPALIVE.patch.gz.b64 | gzip -d > NST_TREO_KEEPALIVE.patch
+          set -euo pipefail
+          base64 -d NST_TREO_KEEPALIVE.patch.gz.b64 | gzip -t
+          base64 -d NST_TREO_KEEPALIVE.patch.gz.b64 | gzip -dc > NST_TREO_KEEPALIVE.patch
           cd extracted/J2ME_NST_FPS_Rebuild
           git init -q
+          git apply --check "$GITHUB_WORKSPACE/NST_TREO_KEEPALIVE.patch"
           git apply "$GITHUB_WORKSPACE/NST_TREO_KEEPALIVE.patch"
-          grep -q 'class TreoOnlineService' app/src/main/java/ru/playsoftware/j2meloader/keepalive/TreoOnlineService.java
-          grep -q 'TreoOnlineService.isActive(activity)' app/src/main/java/javax/microedition/shell/MidletThread.java
-          grep -q 'pauseIfBackground' app/src/main/java/javax/microedition/shell/MidletThread.java
-          grep -q 'FOREGROUND_SERVICE_SPECIAL_USE' app/src/main/AndroidManifest.xml
-          grep -q 'action_treo_online' app/src/main/res/menu/midlet_displayable.xml
-          python3 - <<'PY'
-          import xml.etree.ElementTree as ET
-          ET.parse('app/src/main/AndroidManifest.xml')
-          ET.parse('app/src/main/res/menu/midlet_displayable.xml')
-          ET.parse('app/src/main/res/values/strings.xml')
-          print('Treo manifest/menu/resources XML validated')
-          PY
+          python3 scripts/validate-treo-keepalive.py
 
       - name: Fetch TinySoundFont dependency
         working-directory: extracted/J2ME_NST_FPS_Rebuild
@@ -66,12 +64,12 @@ jobs:
         working-directory: extracted/J2ME_NST_FPS_Rebuild
         run: |
           chmod +x ./gradlew
-          ./gradlew :app:assembleEmulatorDebug --no-daemon
+          ./gradlew :app:assembleEmulatorDebug --no-daemon --stacktrace
 
       - name: Upload debug APK
         uses: actions/upload-artifact@v4
         with:
-          name: J2ME-NST-FPS-TREO-debug
+          name: J2ME-NST-FPS-TREO-v3-debug
           path: extracted/J2ME_NST_FPS_Rebuild/app/build/outputs/apk/emulator/debug/*.apk
           if-no-files-found: error
           retention-days: 14
