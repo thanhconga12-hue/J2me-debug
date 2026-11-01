@@ -45,7 +45,7 @@ public final class TreoOnlineService extends Service {
     private static volatile boolean requested;
     private static volatile boolean active;
     private static volatile String failureReason = "";
-    private static volatile int selectedMode = MODE_LIGHT;
+    private static volatile int selectedMode = MODE_WIFI;
 
     private PowerManager.WakeLock cpu;
     private WifiManager.WifiLock wifi;
@@ -61,7 +61,7 @@ public final class TreoOnlineService extends Service {
     }
 
     private static int readMode(Context context) {
-        String value = prefs(context).getString(PREF_MODE, "LIGHT");
+        String value = prefs(context).getString(PREF_MODE, "WIFI");
         if ("WIFI".equals(value)) return MODE_WIFI;
         if ("STRONG".equals(value)) return MODE_STRONG;
         return MODE_LIGHT;
@@ -216,6 +216,7 @@ public final class TreoOnlineService extends Service {
         } catch (RuntimeException e) {
             active = false;
             requested = false;
+            prefs(this).edit().putBoolean(PREF_STICKY, false).apply();
             releaseLocks();
             failureReason = e.getClass().getSimpleName() + ": " + String.valueOf(e.getMessage());
             Log.e(TAG, "Treo foreground start failed: " + failureReason, e);
@@ -303,10 +304,16 @@ public final class TreoOnlineService extends Service {
 
     @Override public void onDestroy() {
         active = false;
-        requested = false;
+        // Android may recreate a START_STICKY foreground service after reclaiming
+        // it. Keep the requested state while the user's persisted Treo session
+        // is still enabled, otherwise ON_STOP can pause the MIDlet in that gap.
+        boolean keepRequested = prefs(this).getBoolean(PREF_STICKY, false);
+        requested = keepRequested;
         releaseLocks();
         super.onDestroy();
-        MidletThread.pauseIfActivityStopped();
+        if (!keepRequested) {
+            MidletThread.pauseIfActivityStopped();
+        }
     }
 
     @Nullable @Override public IBinder onBind(Intent intent) { return null; }
