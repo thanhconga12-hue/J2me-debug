@@ -467,7 +467,7 @@ if "private static volatile MidletThread instance;" not in ms or "current.state 
 # MidletThread.pauseIfBackground(). Keep this method public and delegate to the
 # lifecycle-only guard; it must never dereference ContextHolder.getActivity().
 if "public static void pauseIfBackground()" not in ms:
-    marker = "\\tstatic void pauseIfActivityStopped() {"
+    marker = "\tstatic void pauseIfActivityStopped() {"
     shim = """\\tpublic static void pauseIfBackground() {
 \\t\\tpauseIfActivityStopped();
 \\t}
