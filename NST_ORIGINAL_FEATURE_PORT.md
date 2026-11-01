@@ -18,6 +18,15 @@ The optional camera hardware feature is declared with `required=false`, matching
 
 Important: manifest declaration is not runtime authorization. Camera, notifications, location, Bluetooth and all-files access still need appropriate runtime/settings flows before use. Overlay and battery-optimization exemptions require explicit user action in Android Settings. Permissions are declared for compatibility, not silently granted.
 
+## Phase 2.1 — Headless render core (committed; bubble action pending)
+
+The original NST DEX shows that Headless is a render-flush gate, not a MIDlet pause/background scheduler:
+- `Canvas.requestFlushToScreen()` returns early only when Headless is enabled and the force-flush flag is false.
+- `Canvas.forceFlushToScreen()` temporarily sets the force flag, performs one flush, then restores the previous value even if rendering throws.
+- `MicroActivity.onCreate()` resets Headless to disabled.
+- `MicroActivity.onResume()` attempts a forced redraw when the current displayable is a Canvas; redraw failures are swallowed so they do not block Activity resume.
+- The original APK's game menu does not expose an active Headless item. The working toggle is among the floating-bubble actions. That action path and the bubble UI are not ported yet, so this is the render core only, not a user-complete Headless feature.
+
 ## Phase 2 — feature implementation still required
 
 The original APK's manifest/DEX contains these NST-specific features that are not present as source implementations in the FPS repository yet:
