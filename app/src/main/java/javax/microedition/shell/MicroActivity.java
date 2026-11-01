@@ -91,6 +91,7 @@ import ru.playsoftware.j2meloader.databinding.DialogInputBinding;
 import ru.playsoftware.j2meloader.util.Constants;
 import ru.playsoftware.j2meloader.util.LogUtils;
 import ru.playsoftware.j2meloader.keepalive.TreoController;
+import ru.playsoftware.j2meloader.keepalive.HideStrategy;
 import ru.playsoftware.j2meloader.keepalive.TreoPermissionGate;
 
 public class MicroActivity extends AppCompatActivity {
@@ -123,6 +124,9 @@ public class MicroActivity extends AppCompatActivity {
 				}
 			};
 	private boolean pendingToggleStartAfterNotification;
+	private HideStrategy pendingHideAfterOverlay;
+	private HideStrategy pendingHideAfterNotification;
+	private static final int REQUEST_OVERLAY_PERMISSION = 0xA744;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -484,6 +488,10 @@ public class MicroActivity extends AppCompatActivity {
 	@Override
 	public boolean onOptionsItemSelected(@NonNull MenuItem item) {
 		int id = item.getItemId();
+		if (id == R.id.action_hide_treo) {
+			hideAndTreo();
+			return true;
+		}
 		if (id == R.id.action_toggle_treo) {
 			toggleTreo();
 			return true;
@@ -548,11 +556,91 @@ public class MicroActivity extends AppCompatActivity {
 	public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
 			@NonNull int[] grantResults) {
 		super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-		if (requestCode == TreoPermissionGate.REQUEST_NOTIFICATIONS
-				&& pendingToggleStartAfterNotification) {
-			pendingToggleStartAfterNotification = false;
-			startToggleAfterRuntimePerms();
+		if (requestCode == TreoPermissionGate.REQUEST_NOTIFICATIONS) {
+			if (pendingHideAfterNotification != null) {
+				HideStrategy strategy = pendingHideAfterNotification;
+				pendingHideAfterNotification = null;
+				startTreoForHide(strategy);
+				return;
+			}
+			if (pendingToggleStartAfterNotification) {
+				pendingToggleStartAfterNotification = false;
+				startToggleAfterRuntimePerms();
+			}
 		}
+	}
+
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+		if (requestCode == REQUEST_OVERLAY_PERMISSION) {
+			HideStrategy pending = pendingHideAfterOverlay;
+			pendingHideAfterOverlay = null;
+			if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M || android.provider.Settings.canDrawOverlays(this)) {
+				if (pending != null) startTreoForHide(pending);
+			} else {
+				Toast.makeText(this, R.string.bubble_perm_overlay_toast, Toast.LENGTH_LONG).show();
+			}
+		}
+		ContextHolder.notifyOnActivityResult(requestCode, resultCode, data);
+	}
+
+	private void hideAndTreo() {
+		HideStrategy strategy = HideStrategy.from(this);
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M
+				&& !android.provider.Settings.canDrawOverlays(this)) {
+			pendingHideAfterOverlay = strategy;
+			Toast.makeText(this, R.string.bubble_perm_overlay_toast, Toast.LENGTH_LONG).show();
+			new AlertDialog.Builder(this)
+					.setTitle(R.string.bubble_perm_title)
+					.setMessage(R.string.bubble_perm_msg)
+					.setPositiveButton(R.string.bubble_perm_open, (dialog, which) -> openOverlaySettings())
+					.setNegativeButton(android.R.string.cancel, null)
+					.show();
+			return;
+		}
+		startTreoForHide(strategy);
+	}
+
+	private void openOverlaySettings() {
+		try {
+			Intent intent = new Intent(android.provider.Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
+					Uri.parse("package:" + getPackageName()));
+			startActivityForResult(intent, REQUEST_OVERLAY_PERMISSION);
+		} catch (Exception firstFailure) {
+			try {
+				startActivity(new Intent(android.provider.Settings.ACTION_MANAGE_OVERLAY_PERMISSION));
+			} catch (Exception ignored) {
+				Toast.makeText(this, R.string.bubble_perm_overlay_toast, Toast.LENGTH_LONG).show();
+			}
+		}
+	}
+
+	private void startTreoForHide(HideStrategy strategy) {
+		if (TreoPermissionGate.needsNotificationPermission(this)) {
+			pendingHideAfterNotification = strategy;
+			TreoPermissionGate.requestNotificationPermission(this, TreoPermissionGate.REQUEST_NOTIFICATIONS);
+			return;
+		}
+		TreoController.setStickyEnabled(this, true);
+		invalidateOptionsMenu();
+		TreoPermissionGate.runWithBatteryOptimizationPrompt(this, () ->
+				TreoController.start(this, success -> {
+					invalidateOptionsMenu();
+					if (!success) {
+						Toast.makeText(this, R.string.treo_start_failed, Toast.LENGTH_LONG).show();
+						return;
+					}
+					if (strategy == HideStrategy.NINJA) {
+						// Until the original bubble service is ported, preserve the
+						// original safety fallback instead of hiding the launcher icon.
+						Toast.makeText(this, R.string.treo_ninja_no_bubble, Toast.LENGTH_LONG).show();
+						HideStrategy.STEALTH.apply(this, false);
+					} else {
+						strategy.apply(this, false);
+					}
+				})
+		);
 	}
 
 	private void lockOrientation() {
