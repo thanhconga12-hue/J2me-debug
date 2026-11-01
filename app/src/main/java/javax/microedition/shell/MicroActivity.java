@@ -123,6 +123,7 @@ public class MicroActivity extends AppCompatActivity {
 		}
 		ContextHolder.setVibration(sp.getBoolean(PREF_VIBRATION, true));
 		Canvas.setScreenshotRawMode(sp.getBoolean(PREF_SCREENSHOT_SWITCH, false));
+		HeadlessMode.setEnabled(false);
 		Intent intent = getIntent();
 		if (BuildConfig.FULL_EMULATOR) {
 			appName = intent.getStringExtra(KEY_MIDLET_NAME);
@@ -190,6 +191,18 @@ public class MicroActivity extends AppCompatActivity {
 			AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
 		} else {
 			AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+		}
+	}
+
+	@Override
+	public void onResume() {
+		super.onResume();
+		try {
+			if (current instanceof Canvas) {
+				((Canvas) current).forceFlushToScreen();
+			}
+		} catch (Throwable ignored) {
+			// Match the original NST behavior: a failed forced redraw must not block resume.
 		}
 	}
 
