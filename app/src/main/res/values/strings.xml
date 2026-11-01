@@ -267,12 +267,4 @@
     <string name="virtual_key_up" translatable="false">↑</string>
     <string name="warn_install_from_net">File will be downloaded from Internet</string>
     <string name="warning">Warning!</string>
-    <string name="treo_online">Treo online (ẩn game và chạy nền)</string>
-    <string name="treo_starting">Đang khởi chạy chế độ treo...</string>
-    <string name="treo_enabled">Đang treo online trong nền</string>
-    <string name="treo_disabled">Đã tắt treo online</string>
-    <string name="treo_start_failed">Không thể khởi chạy chế độ treo</string>
-    <string name="treo_channel_name">J2ME Treo online</string>
-    <string name="treo_notification_title">J2ME đang chạy nền</string>
-    <string name="treo_notification_text">Phiên game được giữ hoạt động khi bạn chuyển ứng dụng hoặc tắt màn hình</string>
 </resources>
