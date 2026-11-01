@@ -57,7 +57,7 @@ public enum HideStrategy {
     public static void setLauncherAliasEnabled(Context context, boolean enabled) {
         try {
             ComponentName alias = new ComponentName(context.getPackageName(),
-                    context.getPackageName() + ".LauncherAlias");
+                    "ru.playsoftware.j2meloader.LauncherAlias");
             context.getPackageManager().setComponentEnabledSetting(alias,
                     enabled ? PackageManager.COMPONENT_ENABLED_STATE_ENABLED
                             : PackageManager.COMPONENT_ENABLED_STATE_DEFAULT,
