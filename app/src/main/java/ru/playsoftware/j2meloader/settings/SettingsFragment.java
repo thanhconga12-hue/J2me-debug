@@ -62,6 +62,8 @@ public class SettingsFragment extends PreferenceFragmentCompat {
 		Objects.<Preference>requireNonNull(findPreference("pref_default_settings"))
 				.setIntent(new Intent(requireActivity(), ProfilesActivity.class));
 		initLanguages();
+		Preference bubbleScreen = findPreference("pref_bubble_screen");
+		if (bubbleScreen != null) bubbleScreen.setIntent(new Intent(requireActivity(), BubbleSettingsActivity.class));
 		prefFolder = Objects.requireNonNull(findPreference(PREF_EMULATOR_DIR));
 		prefFolder.setSummary(Config.getEmulatorDir());
 		prefFolder.setOnPreferenceClickListener(preference -> {

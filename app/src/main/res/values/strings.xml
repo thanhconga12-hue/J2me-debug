@@ -283,4 +283,34 @@
     <string name="treo_tile_label">Treo</string>
     <string name="treo_battopt_title">Tắt tối ưu pin</string>
     <string name="treo_battopt_msg">Để treo game ổn định, bạn cần tắt tối ưu hóa pin trên máy, tránh bị out game nhé.</string>
+    <string name="bubble_action_headless">Bật/tắt Headless</string>
+    <string name="bubble_icon_set">Đã đặt icon bong bóng.</string>
+    <string name="bubble_drag_to_trash_summary">Kéo bóng xuống ô X giữa-dưới màn hình (như gỡ app) — thả vào sẽ dừng treo.</string>
+    <string name="bubble_drag_to_trash_title">Dừng treo: kéo bóng vào ô X dưới màn hình</string>
+    <string name="bubble_pref_autohide_mode_title">Cách ẩn</string>
+    <string name="bubble_pref_autohide_ms_title">Thời gian chờ</string>
+    <string name="bubble_pref_category">Bong bóng nổi</string>
+    <string name="bubble_pref_category_autohide">Tự ẩn</string>
+    <string name="bubble_pref_category_interaction">Tương tác</string>
+    <string name="bubble_pref_category_look">Giao diện</string>
+    <string name="bubble_pref_custom_icon_summary">Chỉ áp dụng khi nguồn icon = Custom PNG.</string>
+    <string name="bubble_pref_custom_icon_title">Chọn ảnh PNG…</string>
+    <string name="bubble_pref_double_tap_title">2 chạm</string>
+    <string name="bubble_pref_enable_summary">Hiển thị nút nổi khi đang treo. Bấm để mở lại game, giữ để dừng treo.</string>
+    <string name="bubble_pref_enable_title">Bật bong bóng nổi</string>
+    <string name="bubble_pref_glow_color_title">Màu glow (Neon)</string>
+    <string name="bubble_pref_icon_source_title">Nguồn icon</string>
+    <string name="bubble_pref_long_press_title">Giữ lâu</string>
+    <string name="bubble_pref_only_when_treo_summary">Tắt bubble ngay khi dừng treo, tránh che giao diện khác.</string>
+    <string name="bubble_pref_only_when_treo_title">Chỉ hiện khi đang treo</string>
+    <string name="bubble_pref_opacity_title">Độ trong (%%)</string>
+    <string name="bubble_pref_screen_summary">Nút nổi điều khiển treo từ Home/launcher</string>
+    <string name="bubble_pref_screen_title">Bong bóng nổi</string>
+    <string name="bubble_pref_single_tap_title">1 chạm</string>
+    <string name="bubble_pref_size_title">Kích thước (dp)</string>
+    <string name="bubble_pref_style_title">Kiểu</string>
+    <string name="treo_pref_category">Treo Online</string>
+    <string name="treo_pref_hide_summary">SOFT giữ icon · STEALTH xoá recents · NINJA ẩn cả icon (mở lại bằng bóng nổi, thông báo hoặc ô Cài đặt nhanh)</string>
+    <string name="treo_pref_hide_title">Cấp độ ẩn ứng dụng</string>
+    <string name="treo_pref_mode_title">Mode tiết kiệm pin</string>
 </resources>

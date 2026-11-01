@@ -144,6 +144,7 @@
             android:theme="@style/AppTheme.NoActionBar"
             android:configChanges="orientation|screenSize|keyboardHidden|screenLayout|smallestScreenSize|uiMode"
             android:process=":midlet" />
+        <activity android:name="ru.playsoftware.j2meloader.settings.BubbleSettingsActivity" android:exported="false" android:label="@string/bubble_pref_screen_title" />
         <activity android:name=".settings.SettingsActivity"
             android:exported="true">
             <intent-filter>

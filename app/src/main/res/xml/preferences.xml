@@ -53,6 +53,31 @@
         android:icon="@drawable/ic_setting_folder"
         android:title="@string/pref_emulator_dir"
         tools:summary="/sdcard/J2ME-Loader" />
+    <PreferenceCategory android:title="@string/treo_pref_category">
+        <ListPreference
+            android:icon="@drawable/ic_treo_dot"
+            android:entries="@array/treo_mode_entries"
+            android:title="@string/treo_pref_mode_title"
+            android:key="pref_treo_mode"
+            android:defaultValue="LIGHT"
+            android:entryValues="@array/treo_mode_values"
+            app:useSimpleSummaryProvider="true" />
+        <ListPreference
+            android:icon="@drawable/ic_treo_dot"
+            android:entries="@array/treo_hide_entries"
+            android:title="@string/treo_pref_hide_title"
+            android:key="pref_hide_strategy"
+            android:summary="@string/treo_pref_hide_summary"
+            android:defaultValue="SOFT"
+            android:entryValues="@array/treo_hide_values" />
+    </PreferenceCategory>
+    <PreferenceCategory android:title="@string/bubble_pref_category">
+        <Preference
+            android:icon="@drawable/ic_bubble"
+            android:title="@string/bubble_pref_screen_title"
+            android:key="pref_bubble_screen"
+            android:summary="@string/bubble_pref_screen_summary" />
+    </PreferenceCategory>
     <PreferenceCategory android:title="@string/pref_category_experimental">
         <SwitchPreferenceCompat
             android:key="micro3d_using_message"

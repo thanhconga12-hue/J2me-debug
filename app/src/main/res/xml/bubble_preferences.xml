@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.preference.PreferenceScreen
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <SwitchPreferenceCompat
+        android:icon="@drawable/ic_bubble"
+        android:title="@string/bubble_pref_enable_title"
+        android:key="pref_bubble_enable"
+        android:summary="@string/bubble_pref_enable_summary"
+        android:defaultValue="false" />
+    <SwitchPreferenceCompat
+        android:title="@string/bubble_pref_only_when_treo_title"
+        android:key="pref_bubble_only_when_treo"
+        android:summary="@string/bubble_pref_only_when_treo_summary"
+        android:defaultValue="true" />
+    <PreferenceCategory android:title="@string/bubble_pref_category_interaction">
+        <ListPreference android:entries="@array/bubble_action_entries" android:title="@string/bubble_pref_single_tap_title" android:key="pref_bubble_single_tap_action" android:defaultValue="OPEN_GAME" android:entryValues="@array/bubble_action_values" app:useSimpleSummaryProvider="true" />
+        <ListPreference android:entries="@array/bubble_action_entries" android:title="@string/bubble_pref_double_tap_title" android:key="pref_bubble_double_tap_action" android:defaultValue="CYCLE_MODE" android:entryValues="@array/bubble_action_values" app:useSimpleSummaryProvider="true" />
+        <ListPreference android:entries="@array/bubble_action_entries" android:title="@string/bubble_pref_long_press_title" android:key="pref_bubble_long_press_action" android:defaultValue="CYCLE_MODE" android:entryValues="@array/bubble_action_values" app:useSimpleSummaryProvider="true" />
+        <Preference android:title="@string/bubble_drag_to_trash_title" android:selectable="false" android:summary="@string/bubble_drag_to_trash_summary" />
+    </PreferenceCategory>
+    <PreferenceCategory android:title="@string/bubble_pref_category_look">
+        <ListPreference android:entries="@array/bubble_style_entries" android:title="@string/bubble_pref_style_title" android:key="pref_bubble_style" android:defaultValue="ROUND" android:entryValues="@array/bubble_style_values" app:useSimpleSummaryProvider="true" />
+        <ListPreference android:entries="@array/bubble_icon_source_entries" android:title="@string/bubble_pref_icon_source_title" android:key="pref_bubble_icon_source" android:defaultValue="BUBBLE_LOGO" android:entryValues="@array/bubble_icon_source_values" app:useSimpleSummaryProvider="true" />
+        <Preference android:title="@string/bubble_pref_custom_icon_title" android:key="pref_bubble_custom_icon" android:summary="@string/bubble_pref_custom_icon_summary" />
+        <ListPreference android:entries="@array/bubble_size_entries" android:title="@string/bubble_pref_size_title" android:key="pref_bubble_size_dp" android:defaultValue="52" android:entryValues="@array/bubble_size_values" app:useSimpleSummaryProvider="true" />
+        <ListPreference android:entries="@array/bubble_opacity_entries" android:title="@string/bubble_pref_opacity_title" android:key="pref_bubble_opacity" android:defaultValue="85" android:entryValues="@array/bubble_opacity_values" app:useSimpleSummaryProvider="true" />
+        <ListPreference android:entries="@array/bubble_glow_color_entries" android:title="@string/bubble_pref_glow_color_title" android:key="pref_bubble_glow_color" android:defaultValue="#00E5FF" android:entryValues="@array/bubble_glow_color_values" app:useSimpleSummaryProvider="true" />
+    </PreferenceCategory>
+    <PreferenceCategory android:title="@string/bubble_pref_category_autohide">
+        <ListPreference android:entries="@array/bubble_autohide_mode_entries" android:title="@string/bubble_pref_autohide_mode_title" android:key="pref_bubble_autohide_mode" android:defaultValue="FADE" android:entryValues="@array/bubble_autohide_mode_values" app:useSimpleSummaryProvider="true" />
+        <ListPreference android:entries="@array/bubble_autohide_ms_entries" android:title="@string/bubble_pref_autohide_ms_title" android:key="pref_bubble_autohide_ms" android:defaultValue="3000" android:entryValues="@array/bubble_autohide_ms_values" app:useSimpleSummaryProvider="true" />
+    </PreferenceCategory>
+</androidx.preference.PreferenceScreen>

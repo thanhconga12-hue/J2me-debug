@@ -82,4 +82,68 @@
         <item>@string/pref_screen_gravity_right</item>
         <item>@string/pref_screen_gravity_bottom</item>
     </string-array>
+
+    <string-array name="bubble_action_entries">
+        <item>Mở lại game cuối</item><item>Đổi mode treo</item><item>Dừng treo</item>
+        <item>Ẩn bubble</item><item>@string/bubble_action_headless</item><item>Không làm gì</item>
+    </string-array>
+    <string-array name="bubble_action_values">
+        <item>OPEN_GAME</item><item>CYCLE_MODE</item><item>STOP_TREO</item>
+        <item>HIDE</item><item>TOGGLE_HEADLESS</item><item>NONE</item>
+    </string-array>
+    <string-array name="bubble_autohide_mode_entries">
+        <item>Không tự ẩn</item><item>Mờ đi (vẫn thấy)</item><item>Ẩn hoàn toàn (alpha 0)</item>
+    </string-array>
+    <string-array name="bubble_autohide_mode_values">
+        <item>OFF</item><item>FADE</item><item>HIDE</item>
+    </string-array>
+    <string-array name="bubble_autohide_ms_entries">
+        <item>Tắt</item><item>2 giây</item><item>3 giây</item><item>5 giây</item><item>10 giây</item>
+    </string-array>
+    <string-array name="bubble_autohide_ms_values">
+        <item>0</item><item>2000</item><item>3000</item><item>5000</item><item>10000</item>
+    </string-array>
+    <string-array name="bubble_glow_color_entries">
+        <item>Cyan</item><item>Magenta</item><item>Vàng</item><item>Xanh lá</item><item>Đỏ</item>
+    </string-array>
+    <string-array name="bubble_glow_color_values">
+        <item>\#00E5FF</item><item>\#FF00E5</item><item>\#FFD600</item><item>\#00E676</item><item>\#FF1744</item>
+    </string-array>
+    <string-array name="bubble_icon_source_entries">
+        <item>Logo bóng (mặc định)</item><item>Chữ (theo mode)</item><item>Icon app</item><item>Custom PNG</item>
+    </string-array>
+    <string-array name="bubble_icon_source_values">
+        <item>BUBBLE_LOGO</item><item>TEXT</item><item>APP</item><item>CUSTOM_PNG</item>
+    </string-array>
+    <string-array name="bubble_opacity_entries">
+        <item>100%</item><item>85%</item><item>70%</item><item>55%</item>
+    </string-array>
+    <string-array name="bubble_opacity_values">
+        <item>100</item><item>85</item><item>70</item><item>55</item>
+    </string-array>
+    <string-array name="bubble_size_entries">
+        <item>42 dp</item><item>52 dp</item><item>64 dp</item><item>76 dp</item>
+    </string-array>
+    <string-array name="bubble_size_values">
+        <item>42</item><item>52</item><item>64</item><item>76</item>
+    </string-array>
+    <string-array name="bubble_style_entries">
+        <item>Classic (đặc)</item><item>Round (viền trắng)</item><item>Neon (phát sáng)</item>
+    </string-array>
+    <string-array name="bubble_style_values">
+        <item>CLASSIC</item><item>ROUND</item><item>NEON</item>
+    </string-array>
+    <string-array name="treo_mode_entries">
+        <item>@string/treo_mode_light</item><item>@string/treo_mode_wifi</item><item>@string/treo_mode_strong</item>
+    </string-array>
+    <string-array name="treo_mode_values">
+        <item>LIGHT</item><item>WIFI</item><item>STRONG</item>
+    </string-array>
+    <string-array name="treo_hide_entries">
+        <item>OFF — Không ẩn</item><item>SOFT — Ẩn về màn hình chính</item>
+        <item>STEALTH — Ẩn khỏi danh sách gần đây</item><item>NINJA — Ẩn cả biểu tượng ứng dụng</item>
+    </string-array>
+    <string-array name="treo_hide_values">
+        <item>OFF</item><item>SOFT</item><item>STEALTH</item><item>NINJA</item>
+    </string-array>
 </resources>
