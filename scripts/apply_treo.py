@@ -250,6 +250,22 @@ public final class TreoOnlineService extends Service {
 }
 ''', encoding="utf-8")
 
+# Patch every legacy TreoOnlineService too. The device crash log identifies
+# ru.playsoftware.j2meloader.keepalive.TreoOnlineService, not only the
+# replacement javax.microedition.shell.TreoOnlineService generated above.
+legacy_patched = []
+for legacy in r.rglob("TreoOnlineService.java"):
+    if legacy == svc:
+        continue
+    legacy_text = legacy.read_text(encoding="utf-8")
+    if "MidletThread.pauseIfBackground()" in legacy_text:
+        legacy_text = legacy_text.replace(
+            "MidletThread.pauseIfBackground()",
+            "MidletThread.pauseIfActivityStopped()")
+        legacy.write_text(legacy_text, encoding="utf-8")
+        legacy_patched.append(str(legacy.relative_to(r)))
+print("Legacy Treo services patched:", legacy_patched or "no direct legacy source match")
+
 # Track lifecycle locally; never dereference ContextHolder's nullable WeakReference.
 mt = r / "app/src/main/java/javax/microedition/shell/MidletThread.java"
 s = mt.read_text(encoding="utf-8")
