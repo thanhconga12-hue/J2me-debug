@@ -124,7 +124,6 @@ public abstract class Canvas extends Displayable {
 	private static boolean parallelRedraw;
 	private static int fpsLimit;
 	private static boolean screenshotRawMode;
-	private static volatile boolean headlessMode;
 
 	private final Object bufferLock = new Object();
 	private final Object surfaceLock = new Object();
@@ -262,7 +261,6 @@ public abstract class Canvas extends Displayable {
 	}
 
 	public void onDraw(android.graphics.Canvas canvas) {
-		if (headlessMode) return;
 		if (settings.graphicsMode != 2) return; // Fix for Android Pie
 		CanvasWrapper g = canvasWrapper;
 		g.bind(canvas);
@@ -620,18 +618,6 @@ public abstract class Canvas extends Displayable {
 			image.copyTo(offscreenCopy, x, y);
 		}
 		requestFlushToScreen();
-	}
-
-	/**
-	 * Enable NST-style headless rendering: MIDlet logic and event processing continue,
-	 * but frames are not submitted to the Android surface/GPU.
-	 */
-	public static void setHeadlessMode(boolean enabled) {
-		headlessMode = enabled;
-	}
-
-	public static boolean isHeadlessMode() {
-		return headlessMode;
 	}
 
 	private void limitFps() {
