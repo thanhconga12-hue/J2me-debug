@@ -20,7 +20,7 @@ import androidx.annotation.Nullable;
 import androidx.preference.PreferenceManager;
 
 import javax.microedition.lcdui.HeadlessMode;
-import javax.microedition.shell.LauncherRouterActivity;
+import ru.playsoftware.j2meloader.LauncherRouterActivity;
 
 import ru.playsoftware.j2meloader.R;
 import ru.playsoftware.j2meloader.keepalive.TreoController;
