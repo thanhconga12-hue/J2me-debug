@@ -33,6 +33,61 @@ jobs:
           if-no-files-found: error
           retention-days: 14
 
+
+  decompile-original-nst:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - name: Download JADX
+        run: |
+          set -euo pipefail
+          curl -fL --retry 3 https://github.com/skylot/jadx/releases/download/v1.5.6/jadx-1.5.6.zip -o /tmp/jadx.zip
+          mkdir -p /tmp/jadx
+          unzip -q /tmp/jadx.zip -d /tmp/jadx
+          test -x /tmp/jadx/bin/jadx
+      - name: Decompile original NST APK
+        run: |
+          set -euo pipefail
+          test -s J2ME_NST.apk
+          mkdir -p /tmp/nst-decompiled
+          /tmp/jadx/bin/jadx --threads-count 2 --show-bad-code --deobf --output-dir /tmp/nst-decompiled J2ME_NST.apk
+          mkdir -p original-nst-decompiled
+          cp /tmp/nst-decompiled/resources/AndroidManifest.xml original-nst-decompiled/ 2>/dev/null || true
+          python3 - <<'PY'
+          from pathlib import Path
+          import re, shutil
+          src = Path('/tmp/nst-decompiled/sources')
+          out = Path('original-nst-decompiled/sources')
+          keys = re.compile(r'Treo|keepalive|WakeLock|WifiLock|MulticastLock|SCREEN_OFF|SCREEN_ON|BOOT_COMPLETED|startForeground|moveTaskToBack|pauseApp|autoStartStickyTreo|hideAndTreo|backgroundFps|effectiveFpsLimit', re.I)
+          chosen = []
+          for p in src.rglob('*.java'):
+              rel = p.relative_to(src)
+              s = p.read_text(encoding='utf-8', errors='replace')
+              if keys.search(str(rel)) or keys.search(s):
+                  q = out / rel
+                  q.parent.mkdir(parents=True, exist_ok=True)
+                  shutil.copy2(p, q)
+                  chosen.append((str(rel), len(s.splitlines())))
+          Path('original-nst-decompiled/INDEX.txt').write_text('\n'.join(f'{p} ({n} lines)' for p,n in chosen), encoding='utf-8')
+          if not chosen:
+              raise SystemExit('No Treo/background sources were extracted')
+          print('Extracted', len(chosen), 'relevant source files')
+          PY
+          zip -qr NST-original-decompiled-source.zip original-nst-decompiled
+      - name: Upload original NST decompiled source
+        uses: actions/upload-artifact@v4
+        with:
+          name: NST-original-decompiled-source
+          path: NST-original-decompiled-source.zip
+          if-no-files-found: error
+          retention-days: 14
+
   build:
     runs-on: ubuntu-latest
     steps:
