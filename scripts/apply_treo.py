@@ -312,7 +312,9 @@ if "waitForTreoAndHide(" not in s:
 \t\t\t\tToast.makeText(this, R.string.treo_starting, Toast.LENGTH_SHORT).show();
 \t\t\t\twaitForTreoAndHide(0);
 \t\t\t} else {
-\t\t\t\tToast.makeText(this, R.string.treo_start_failed, Toast.LENGTH_SHORT).show();
+\t\t\t\tString reason = TreoOnlineService.getFailureReason();
+\t\t\t\tif (reason == null || reason.isEmpty()) reason = "startService() bị Android từ chối";
+\t\t\t\tToast.makeText(this, getString(R.string.treo_start_failed) + ": " + reason, Toast.LENGTH_LONG).show();
 \t\t\t}
 \t\t} else if (id == R.id.action_exit_midlet) {''', 1)
     s = s.replace('''\t@Override
@@ -322,7 +324,9 @@ if "waitForTreoAndHide(" not in s:
 \t\telse if (TreoOnlineService.isEnabled() && attempt < 20)
 \t\t\tbinding.getRoot().postDelayed(() -> waitForTreoAndHide(attempt + 1), 100);
 \t\telse {
-\t\t\tToast.makeText(this, R.string.treo_start_failed, Toast.LENGTH_LONG).show();
+\t\t\tString reason = TreoOnlineService.getFailureReason();
+\t\t\tif (reason == null || reason.isEmpty()) reason = "Service không xác nhận trạng thái chạy sau 2 giây";
+\t\t\tToast.makeText(this, getString(R.string.treo_start_failed) + ": " + reason, Toast.LENGTH_LONG).show();
 \t\t\tinvalidateOptionsMenu();
 \t\t}
 \t}
