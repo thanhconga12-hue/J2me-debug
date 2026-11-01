@@ -138,7 +138,7 @@ jobs:
           zip -T J2ME_NST_FPS_Rebuild_v3_Source.zip
           mkdir -p build-verification
           sha256sum J2ME_NST_FPS_Rebuild_v3_Source.zip > build-verification/INPUT_SOURCE_ARCHIVE_SHA256SUMS
-          cp "$GITHUB_WORKSPACE/build-verification/PATCH_SCRIPT_SHA256SUMS" "$GITHUB_WORKSPACE/build-verification/"
+          sha256sum scripts/apply_treo.py scripts/apply_treo_original_compat.py scripts/apply_treo_lifecycle.py scripts/validate_treo_lifecycle.py scripts/inspect_treo_dependencies.py > build-verification/PATCH_SCRIPT_SHA256SUMS
           mkdir -p extracted
           unzip -q J2ME_NST_FPS_Rebuild_v3_Source.zip -d extracted
           test -f extracted/J2ME_NST_FPS_Rebuild/gradlew
@@ -195,7 +195,8 @@ jobs:
           PY
           sha256sum "$APK" > "$GITHUB_WORKSPACE/build-verification/APK_SHA256SUMS"
           find app/src -type f \( -name '*.java' -o -name '*.kt' \) -print0 | sort -z | xargs -0 sha256sum > "$GITHUB_WORKSPACE/build-verification/PATCHED_SOURCE_SHA256SUMS"
-          sha256sum "$GITHUB_WORKSPACE/J2ME_NST_FPS_Rebuild_v3_Source.zip" > "$GITHUB_WORKSPACE/build-verification/INPUT_SOURCE_ARCHIVE_SHA256SUMS"\n          cp "$GITHUB_WORKSPACE/build-verification/PATCH_SCRIPT_SHA256SUMS" "$GITHUB_WORKSPACE/build-verification/"
+          cp "$GITHUB_WORKSPACE/build-verification/INPUT_SOURCE_ARCHIVE_SHA256SUMS" "$GITHUB_WORKSPACE/build-verification/"
+          cp "$GITHUB_WORKSPACE/build-verification/PATCH_SCRIPT_SHA256SUMS" "$GITHUB_WORKSPACE/build-verification/"
       - name: Upload build fingerprints
         uses: actions/upload-artifact@v4
         with:
