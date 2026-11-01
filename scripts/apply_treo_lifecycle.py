@@ -103,7 +103,7 @@ if "treoBackgroundSurfaceLoss" not in source:
     source = source.replace(old_show, new_show, 1)
 
     old_hide = "\t\t\tDisplay.postEvent(CanvasEvent.getInstance(Canvas.this, CanvasEvent.HIDE_NOTIFY));"
-    new_hide = """\t\t\tif (TreoOnlineService.isEnabled() && MicroActivity.isTreoBackgroundTransition()) {
+    new_hide = """\t\t\tif (javax.microedition.shell.TreoOnlineService.isEnabled() && javax.microedition.shell.MicroActivity.isTreoBackgroundTransition()) {
 \t\t\t\ttreoBackgroundSurfaceLoss = true;
 \t\t\t\tLog.i(TAG, "Treo mode: suppressing background HIDE_NOTIFY");
 \t\t\t} else {
