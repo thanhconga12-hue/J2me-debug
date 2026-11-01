@@ -91,11 +91,6 @@ import ru.playsoftware.j2meloader.util.Constants;
 import ru.playsoftware.j2meloader.util.LogUtils;
 
 public class MicroActivity extends AppCompatActivity {
-	private static volatile boolean treoBackgroundTransition;
-
-	public static boolean isTreoBackgroundTransition() {
-		return treoBackgroundTransition;
-	}
 	private static final int ORIENTATION_DEFAULT = 0;
 	private static final int ORIENTATION_AUTO = 1;
 	private static final int ORIENTATION_PORTRAIT = 2;
@@ -199,12 +194,6 @@ public class MicroActivity extends AppCompatActivity {
 	}
 
 	@Override
-	public void onUserLeaveHint() {
-		if (TreoOnlineService.isEnabled()) treoBackgroundTransition = true;
-		super.onUserLeaveHint();
-	}
-
-	@Override
 	public void onPause() {
 		hideSoftInput();
 		super.onPause();
@@ -219,7 +208,6 @@ public class MicroActivity extends AppCompatActivity {
 
 	@Override
 	public void onWindowFocusChanged(boolean hasFocus) {
-		if (hasFocus) treoBackgroundTransition = false;
 		super.onWindowFocusChanged(hasFocus);
 		if (hasFocus && Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT &&
 				current instanceof Canvas) {
@@ -423,8 +411,6 @@ public class MicroActivity extends AppCompatActivity {
 
 	@Override
 	public boolean onPrepareOptionsMenu(Menu menu) {
-		MenuItem treo = menu.findItem(R.id.action_treo_online);
-		if (treo != null) treo.setChecked(TreoOnlineService.isEnabled());
 		if (current instanceof Canvas) {
 			menu.setGroupVisible(R.id.action_group_canvas, true);
 			VirtualKeyboard vk = ContextHolder.getVk();
@@ -438,40 +424,10 @@ public class MicroActivity extends AppCompatActivity {
 		return true;
 	}
 
-	private void waitForTreoAndHide(int attempt) {
-		if (isFinishing()) return;
-		if (TreoOnlineService.isActive()) {
-			treoBackgroundTransition = true;
-			moveTaskToBack(true);
-		}
-		else if (TreoOnlineService.isEnabled() && attempt < 20)
-			binding.getRoot().postDelayed(() -> waitForTreoAndHide(attempt + 1), 100);
-		else {
-			String reason = TreoOnlineService.getFailureReason();
-			if (reason == null || reason.isEmpty()) reason = "Service không xác nhận trạng thái chạy sau 2 giây";
-			Toast.makeText(this, getString(R.string.treo_start_failed) + ": " + reason, Toast.LENGTH_LONG).show();
-			invalidateOptionsMenu();
-		}
-	}
-
 	@Override
 	public boolean onOptionsItemSelected(@NonNull MenuItem item) {
 		int id = item.getItemId();
-		if (id == R.id.action_treo_online) {
-			if (TreoOnlineService.isEnabled()) {
-				TreoOnlineService.disable(this);
-				item.setChecked(false);
-				Toast.makeText(this, R.string.treo_disabled, Toast.LENGTH_SHORT).show();
-			} else if (TreoOnlineService.enable(this)) {
-				item.setChecked(true);
-				Toast.makeText(this, R.string.treo_starting, Toast.LENGTH_SHORT).show();
-				waitForTreoAndHide(0);
-			} else {
-				String reason = TreoOnlineService.getFailureReason();
-				if (reason == null || reason.isEmpty()) reason = "startService() bị Android từ chối";
-				Toast.makeText(this, getString(R.string.treo_start_failed) + ": " + reason, Toast.LENGTH_LONG).show();
-			}
-		} else if (id == R.id.action_exit_midlet) {
+		if (id == R.id.action_exit_midlet) {
 			showExitConfirmation();
 		} else if (id == R.id.action_save_log) {
 			saveLog();
