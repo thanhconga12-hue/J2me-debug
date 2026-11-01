@@ -114,7 +114,22 @@ public final class TreoController {
             pending = callback;
             callback = null;
         }
+        try {
+            javax.microedition.util.ContextHolder.getAppContext();
+            ru.playsoftware.j2meloader.bubble.BubbleController.show(
+                    javax.microedition.util.ContextHolder.getAppContext());
+            ru.playsoftware.j2meloader.bubble.BubbleController.updateMode(
+                    javax.microedition.util.ContextHolder.getAppContext(), modeLabel(mode));
+        } catch (Exception e) {
+            Log.w(TAG, "Unable to start/update NST bubble", e);
+        }
         if (pending != null) pending.onResult(true);
+    }
+
+    private static String modeLabel(int mode) {
+        if (mode == TreoOnlineService.MODE_WIFI) return "W";
+        if (mode == TreoOnlineService.MODE_STRONG) return "S";
+        return "L";
     }
 
     static void onServiceFailed() {
@@ -137,6 +152,7 @@ public final class TreoController {
     public static void stop(Context context) {
         Context app = context.getApplicationContext();
         HideStrategy.reset(app);
+        ru.playsoftware.j2meloader.bubble.BubbleController.hide(app);
         synchronized (TreoController.class) {
             MAIN.removeCallbacks(START_TIMEOUT);
             callback = null;

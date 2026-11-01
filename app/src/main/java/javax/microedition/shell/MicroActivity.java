@@ -92,6 +92,7 @@ import ru.playsoftware.j2meloader.util.Constants;
 import ru.playsoftware.j2meloader.util.LogUtils;
 import ru.playsoftware.j2meloader.keepalive.TreoController;
 import ru.playsoftware.j2meloader.keepalive.HideStrategy;
+import ru.playsoftware.j2meloader.bubble.BubbleController;
 import ru.playsoftware.j2meloader.keepalive.TreoPermissionGate;
 
 public class MicroActivity extends AppCompatActivity {
@@ -602,6 +603,19 @@ public class MicroActivity extends AppCompatActivity {
 		}
 	}
 
+	private void awaitBubbleThenHide(HideStrategy strategy, int attempt) {
+		if (BubbleController.isRunning()) {
+			strategy.apply(this, true);
+			return;
+		}
+		if (attempt >= 10) {
+			Toast.makeText(this, R.string.treo_ninja_no_bubble, Toast.LENGTH_LONG).show();
+			HideStrategy.STEALTH.apply(this, false);
+			return;
+		}
+		binding.displayableContainer.postDelayed(() -> awaitBubbleThenHide(strategy, attempt + 1), 200L);
+	}
+
 	private void startTreoForHide(HideStrategy strategy) {
 		if (TreoPermissionGate.needsNotificationPermission(this)) {
 			pendingHideAfterNotification = strategy;
@@ -618,10 +632,7 @@ public class MicroActivity extends AppCompatActivity {
 						return;
 					}
 					if (strategy == HideStrategy.NINJA) {
-						// Until the original bubble service is ported, preserve the
-						// original safety fallback instead of hiding the launcher icon.
-						Toast.makeText(this, R.string.treo_ninja_no_bubble, Toast.LENGTH_LONG).show();
-						HideStrategy.STEALTH.apply(this, false);
+						awaitBubbleThenHide(strategy, 0);
 					} else {
 						strategy.apply(this, false);
 					}

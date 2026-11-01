@@ -18,6 +18,21 @@ public final class BubbleSettingsFragment extends PreferenceFragmentCompat {
     private final ActivityResultLauncher<String[]> imagePicker = registerForActivityResult(
             new ActivityResultContracts.OpenDocument(), this::onImagePicked);
 
+    private final android.content.SharedPreferences.OnSharedPreferenceChangeListener preferenceListener =
+            (preferences, key) -> {
+                if (!isAdded() || key == null) return;
+                if ("pref_bubble_enable".equals(key)) {
+                    if (preferences.getBoolean("pref_bubble_enable", false)) {
+                        ru.playsoftware.j2meloader.bubble.BubbleController.show(requireContext());
+                    } else {
+                        ru.playsoftware.j2meloader.bubble.BubbleController.hide(requireContext());
+                    }
+                } else if (key.startsWith("pref_bubble_")
+                        && !"pref_bubble_screen".equals(key)) {
+                    ru.playsoftware.j2meloader.bubble.BubbleController.refreshStyle(requireContext());
+                }
+            };
+
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
         setPreferencesFromResource(R.xml.bubble_preferences, rootKey);
@@ -31,6 +46,20 @@ public final class BubbleSettingsFragment extends PreferenceFragmentCompat {
                     .getString("pref_bubble_custom_icon_uri", null);
             if (stored != null) customIcon.setSummary(stored);
         }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Objects.requireNonNull(getPreferenceManager().getSharedPreferences())
+                .registerOnSharedPreferenceChangeListener(preferenceListener);
+    }
+
+    @Override
+    public void onPause() {
+        Objects.requireNonNull(getPreferenceManager().getSharedPreferences())
+                .unregisterOnSharedPreferenceChangeListener(preferenceListener);
+        super.onPause();
     }
 
     private void onImagePicked(Uri uri) {

@@ -90,6 +90,7 @@ public final class TreoOnlineService extends Service {
         releaseLocks();
         acquireLocks();
         TreoController.onServiceStarted(mode);
+        ru.playsoftware.j2meloader.bubble.BubbleController.updateMode(this, getModeLabel());
         updateForegroundNotification();
         return START_STICKY;
     }
@@ -299,6 +300,8 @@ public final class TreoOnlineService extends Service {
     }
 
     private void stopTreo(boolean userRequested) {
+        ru.playsoftware.j2meloader.bubble.BubbleController.hide(this);
+        if (userRequested) HideStrategy.reset(this);
         releaseLocks();
         TreoController.onServiceStopped();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {

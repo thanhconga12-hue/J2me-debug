@@ -189,6 +189,11 @@
             </intent-filter>
         </service>
         <service
+            android:name="ru.playsoftware.j2meloader.bubble.BubbleService"
+            android:process=":midlet"
+            android:exported="false"
+            android:stopWithTask="false" />
+        <service
             android:name="ru.playsoftware.j2meloader.keepalive.TreoOnlineService"
             android:process=":midlet"
             android:exported="false"
