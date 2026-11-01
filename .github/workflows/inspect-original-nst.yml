@@ -1,0 +1,48 @@
+name: Inspect original NST APK
+
+on:
+  push:
+    branches: [upload-original-nst-apk]
+    paths:
+      - 'J2ME_NST (1).apk'
+      - '.github/workflows/inspect-original-nst.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  inspect:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install APK analysis tools
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y apktool aapt unzip
+      - name: Verify and decode original APK
+        run: |
+          set -euo pipefail
+          APK='J2ME_NST (1).apk'
+          test -s "$APK"
+          mkdir -p inspection
+          sha256sum "$APK" | tee inspection/SHA256.txt
+          stat -c 'APK size: %s bytes' "$APK" | tee inspection/FILE_INFO.txt
+          unzip -l "$APK" > inspection/ZIP_CONTENTS.txt
+          aapt dump badging "$APK" > inspection/BADGING.txt
+          aapt dump permissions "$APK" > inspection/PERMISSIONS.txt
+          aapt dump xmltree "$APK" AndroidManifest.xml > inspection/MANIFEST_TREE.txt
+          apktool d -f "$APK" -o inspection/decoded
+          find inspection/decoded -maxdepth 4 -type f | sort > inspection/DECODED_FILES.txt
+          grep -RhoE 'L[^;]+;' inspection/decoded/smali* 2>/dev/null | sort -u > inspection/DEX_CLASS_DESCRIPTORS.txt || true
+          grep -RniE 'backgroundFps|effectiveFpsLimit|allowFrame|acceptedFrames|droppedFrames|Treo|Bubble|DocumentProvider|LauncherRouter' inspection/decoded/smali* 2>/dev/null > inspection/NST_FEATURE_HITS.txt || true
+          cd inspection
+          zip -qr ../NST_ORIGINAL_INSPECTION.zip .
+      - uses: actions/upload-artifact@v4
+        with:
+          name: NST-Original-APK-Inspection
+          path: |
+            inspection/*.txt
+            NST_ORIGINAL_INSPECTION.zip
+          if-no-files-found: error
+          retention-days: 14
