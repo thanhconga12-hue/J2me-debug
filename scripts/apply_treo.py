@@ -106,6 +106,8 @@ public final class TreoOnlineService extends Service {
     private static final String STOP = "javax.microedition.shell.action.TREO_STOP";
     private static volatile boolean requested;
     private static volatile boolean active;
+    private static volatile String failureReason = "";
+    public static String getFailureReason() { return failureReason; }
     private PowerManager.WakeLock cpu;
     private WifiManager.WifiLock wifi;
     private WifiManager.MulticastLock multicast;
@@ -116,6 +118,7 @@ public final class TreoOnlineService extends Service {
     public static boolean enable(Context context) {
         requested = true; // Publish before ON_STOP can be delivered.
         active = false;
+        failureReason = "";
         Intent i = new Intent(context, TreoOnlineService.class).setAction(START);
         try {
             if (Build.VERSION.SDK_INT >= 26) context.startForegroundService(i);
@@ -124,7 +127,8 @@ public final class TreoOnlineService extends Service {
         } catch (RuntimeException e) {
             requested = false;
             active = false;
-            Log.e(TAG, "Unable to start Treo service", e);
+            failureReason = e.getClass().getSimpleName() + ": " + String.valueOf(e.getMessage());
+            Log.e(TAG, "Unable to start Treo service: " + failureReason, e);
             return false;
         }
     }
@@ -189,7 +193,8 @@ public final class TreoOnlineService extends Service {
             active = false;
             requested = false;
             releaseLocks();
-            Log.e(TAG, "Unable to enter foreground Treo mode", e);
+            failureReason = e.getClass().getSimpleName() + ": " + String.valueOf(e.getMessage());
+            Log.e(TAG, "Unable to enter foreground Treo mode: " + failureReason, e);
             stopForeground(true);
             stopSelf(id);
             MidletThread.pauseIfActivityStopped();
