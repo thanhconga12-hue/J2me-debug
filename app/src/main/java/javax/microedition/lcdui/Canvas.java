@@ -1189,6 +1189,7 @@ public abstract class Canvas extends Displayable {
 	}
 
 	private void requestFlushToScreen() {
+		if (HeadlessMode.isEnabled() && !HeadlessMode.isForceFlush()) return;
 		if (settings.graphicsMode == 1) {
 			if (innerView != null) {
 				renderer.requestRender();
@@ -1203,6 +1204,17 @@ public abstract class Canvas extends Displayable {
 			uiHandler.sendEmptyMessage(0);
 		}
 	}
+
+	public void forceFlushToScreen() {
+		boolean previous = HeadlessMode.isForceFlush();
+		HeadlessMode.setForceFlush(true);
+		try {
+			requestFlushToScreen();
+		} finally {
+			HeadlessMode.setForceFlush(previous);
+		}
+	}
+
 
 	private class SoftBar extends AbstractSoftKeysBar implements Layer {
 		private final OverlayView overlayView;
