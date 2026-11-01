@@ -56,7 +56,12 @@ jobs:
           set -euo pipefail
           test -s J2ME_NST.apk
           mkdir -p /tmp/nst-decompiled
+          set +e
           /tmp/jadx/bin/jadx --threads-count 2 --show-bad-code --deobf --output-dir /tmp/nst-decompiled J2ME_NST.apk
+          JADX_STATUS=$?
+          set -e
+          echo "JADX exit code: $JADX_STATUS (partial decompilation is retained)"
+          test -d /tmp/nst-decompiled/sources
           mkdir -p original-nst-decompiled
           cp /tmp/nst-decompiled/resources/AndroidManifest.xml original-nst-decompiled/ 2>/dev/null || true
           python3 - <<'PY'
@@ -75,9 +80,17 @@ jobs:
                   shutil.copy2(p, q)
                   chosen.append((str(rel), len(s.splitlines())))
           Path('original-nst-decompiled/INDEX.txt').write_text('\n'.join(f'{p} ({n} lines)' for p,n in chosen), encoding='utf-8')
-          if not chosen:
-              raise SystemExit('No Treo/background sources were extracted')
           print('Extracted', len(chosen), 'relevant source files')
+          if not chosen:
+              print('WARNING: no Java source matched; retaining complete decompilation metadata')
+          manifest = Path('/tmp/nst-decompiled/resources/AndroidManifest.xml')
+          if manifest.exists():
+              shutil.copy2(manifest, Path('original-nst-decompiled/AndroidManifest.xml'))
+          # Include text resources and decompiler diagnostics useful for class-name mapping.
+          for name in ('resources', 'summary.txt'):
+              p = Path('/tmp/nst-decompiled') / name
+              if p.is_file() and name == 'summary.txt':
+                  shutil.copy2(p, Path('original-nst-decompiled') / name)
           PY
           zip -qr NST-original-decompiled-source.zip original-nst-decompiled
       - name: Upload original NST decompiled source
