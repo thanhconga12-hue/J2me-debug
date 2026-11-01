@@ -6,7 +6,8 @@ on:
     branches:
       - main
     paths:
-      - NST_TREO_KEEPALIVE.patch.gz.b64
+      - scripts/apply_treo.py
+      - .github/workflows/nst-fps-debug.yml
 
 permissions:
   contents: read
@@ -45,16 +46,28 @@ jobs:
           test -f extracted/J2ME_NST_FPS_Rebuild/gradlew
           test -d extracted/J2ME_NST_FPS_Rebuild/app
 
-      - name: Apply and validate NST keep-alive patch
+      - name: Apply and validate NST Treo lifecycle integration
         run: |
           set -euo pipefail
-          base64 -d NST_TREO_KEEPALIVE.patch.gz.b64 | gzip -t
-          base64 -d NST_TREO_KEEPALIVE.patch.gz.b64 | gzip -dc > NST_TREO_KEEPALIVE.patch
           cd extracted/J2ME_NST_FPS_Rebuild
-          git init -q
-          git apply --check "$GITHUB_WORKSPACE/NST_TREO_KEEPALIVE.patch"
-          git apply "$GITHUB_WORKSPACE/NST_TREO_KEEPALIVE.patch"
-          python3 scripts/validate-treo-keepalive.py
+          python3 "$GITHUB_WORKSPACE/scripts/apply_treo.py" "$PWD"
+          python3 - <<'PY'
+          import pathlib, xml.etree.ElementTree as ET
+          root = pathlib.Path("app/src/main")
+          ET.parse(root / "AndroidManifest.xml")
+          for path in (root / "res").rglob("*.xml"):
+              ET.parse(path)
+          service = pathlib.Path("app/src/main/java/javax/microedition/shell/TreoOnlineService.java").read_text()
+          lifecycle = pathlib.Path("app/src/main/java/javax/microedition/shell/MidletThread.java").read_text()
+          activity = pathlib.Path("app/src/main/java/javax/microedition/shell/MicroActivity.java").read_text()
+          assert 'android:process=":midlet"' in (root / "AndroidManifest.xml").read_text()
+          assert "FOREGROUND_SERVICE_SPECIAL_USE" in (root / "AndroidManifest.xml").read_text()
+          assert "active = true" in service and "WakeLock" in service
+          assert "if (!TreoOnlineService.isEnabled())" in lifecycle
+          assert "moveTaskToBack(true)" in activity
+          assert "WeakReference" not in service
+          print("Manifest/resource XML and Treo lifecycle checks passed")
+          PY
 
       - name: Fetch TinySoundFont dependency
         working-directory: extracted/J2ME_NST_FPS_Rebuild
