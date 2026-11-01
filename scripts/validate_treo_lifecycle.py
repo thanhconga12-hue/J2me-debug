@@ -38,7 +38,10 @@ if service_node is None:
     raise SystemExit("TreoOnlineService declaration missing from AndroidManifest.xml")
 
 # Compare effective process names. An omitted process means the application process.
-app_process = manifest.get(android + "process")
+application_node = manifest.find("application")
+if application_node is None:
+    raise SystemExit("application element missing from AndroidManifest.xml")
+app_process = application_node.get(android + "process")
 activity_process = activity_node.get(android + "process", app_process)
 service_process = service_node.get(android + "process", app_process)
 if activity_process != service_process:
