@@ -1168,15 +1168,17 @@ public abstract class Canvas extends Displayable {
 
 		@Override
 		public void surfaceDestroyed(@NonNull SurfaceHolder holder) {
+			// The GL surface must be paused, but losing the Android window must not
+			// pause the MIDlet while the user has explicitly enabled Treo mode.
 			if (renderer != null) {
 				renderer.stop();
 			}
 			synchronized (surfaceLock) {
 				surface = null;
 			}
-			if (javax.microedition.shell.TreoOnlineService.isEnabled() && javax.microedition.shell.MicroActivity.isTreoBackgroundTransition()) {
+			if (javax.microedition.shell.TreoOnlineService.isEnabled()) {
 				treoBackgroundSurfaceLoss = true;
-				Log.i(TAG, "Treo mode: suppressing background HIDE_NOTIFY");
+				Log.i(TAG, "Treo mode: keeping MIDlet active after Surface loss");
 			} else {
 				Display.postEvent(CanvasEvent.getInstance(Canvas.this, CanvasEvent.HIDE_NOTIFY));
 			}
