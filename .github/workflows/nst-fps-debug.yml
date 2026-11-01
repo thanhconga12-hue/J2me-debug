@@ -84,6 +84,22 @@ jobs:
           chmod +x ./gradlew
           ./gradlew :app:assembleEmulatorDebug --no-daemon --stacktrace
 
+      - name: Package patched source archive
+        run: |
+          set -euo pipefail
+          cd extracted
+          zip -qr ../J2ME_NST_FPS_Rebuild_v3_TREO_Source_GitHub.zip J2ME_NST_FPS_Rebuild
+          cd ..
+          test -s J2ME_NST_FPS_Rebuild_v3_TREO_Source_GitHub.zip
+
+      - name: Upload patched source archive
+        uses: actions/upload-artifact@v4
+        with:
+          name: J2ME-NST-FPS-TREO-v3-source
+          path: J2ME_NST_FPS_Rebuild_v3_TREO_Source_GitHub.zip
+          if-no-files-found: error
+          retention-days: 14
+
       - name: Upload debug APK
         uses: actions/upload-artifact@v4
         with:
