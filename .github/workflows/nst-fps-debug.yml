@@ -7,6 +7,11 @@ on:
       - main
     paths:
       - scripts/apply_treo.py
+      - scripts/apply_treo_original_compat.py
+      - scripts/apply_treo_lifecycle.py
+      - scripts/validate_treo_lifecycle.py
+      - scripts/inspect_treo_dependencies.py
+      - J2ME_NST_FPS_Rebuild_v3_Source.zip
       - .github/workflows/nst-fps-debug.yml
 
 permissions:
@@ -155,7 +160,32 @@ jobs:
         working-directory: extracted/J2ME_NST_FPS_Rebuild
         run: |
           chmod +x ./gradlew
-          ./gradlew :app:assembleEmulatorDebug --no-daemon --stacktrace
+          # Remove stale outputs and disable Gradle's build cache for this verification build.
+          ./gradlew --stop || true
+          rm -rf app/build
+          ./gradlew clean :app:assembleEmulatorDebug --no-daemon --stacktrace --no-build-cache --rerun-tasks
+
+      - name: Verify APK output and record source/build fingerprints
+        working-directory: extracted/J2ME_NST_FPS_Rebuild
+        run: |
+          set -euo pipefail
+          APK="$(find app/build/outputs/apk/emulator/debug -maxdepth 1 -type f -name '*.apk' -print -quit)"
+          test -n "$APK" && test -s "$APK"
+          echo "APK=$APK"
+          sha256sum "$APK" | tee "$GITHUB_WORKSPACE/apk-sha256.txt"
+          find app/build/outputs/apk/emulator/debug -maxdepth 1 -type f -name '*.apk' -exec unzip -l {} \;
+          unzip -l "$APK" | grep -E 'classes([0-9]+)?\.dex'
+          mkdir -p "$GITHUB_WORKSPACE/build-verification"
+          sha256sum "$APK" > "$GITHUB_WORKSPACE/build-verification/APK_SHA256SUMS"
+          find app/src -type f \( -name '*.java' -o -name '*.kt' \) -print0 | sort -z | xargs -0 sha256sum > "$GITHUB_WORKSPACE/build-verification/PATCHED_SOURCE_SHA256SUMS"
+          sha256sum "$GITHUB_WORKSPACE/J2ME_NST_FPS_Rebuild_v3_Source.zip" > "$GITHUB_WORKSPACE/build-verification/INPUT_SOURCE_ARCHIVE_SHA256SUMS"
+      - name: Upload build fingerprints
+        uses: actions/upload-artifact@v4
+        with:
+          name: NST-FPS-build-verification
+          path: build-verification/
+          if-no-files-found: error
+          retention-days: 14
 
       - name: Package patched source archive
         run: |
