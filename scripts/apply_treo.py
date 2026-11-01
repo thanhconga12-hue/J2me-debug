@@ -462,6 +462,20 @@ new_life = """\tprivate void onActivityStateChanged(LifecycleOwner lifecycleOwne
 if old_life in ms: ms = ms.replace(old_life, new_life, 1)
 if "private static volatile MidletThread instance;" not in ms or "current.state != STARTED" not in ms:
     raise SystemExit("MidletThread lifecycle patch anchor failed")
+
+# Binary-compatibility shim for an older TreoOnlineService that still invokes
+# MidletThread.pauseIfBackground(). Keep this method public and delegate to the
+# lifecycle-only guard; it must never dereference ContextHolder.getActivity().
+if "public static void pauseIfBackground()" not in ms:
+    marker = "\\tstatic void pauseIfActivityStopped() {"
+    shim = """\\tpublic static void pauseIfBackground() {
+\\t\\tpauseIfActivityStopped();
+\\t}
+
+"""
+    if ms.count(marker) != 1:
+        raise SystemExit("Could not locate pauseIfActivityStopped() for legacy shim")
+    ms = ms.replace(marker, shim + marker, 1)
 mt.write_text(ms, encoding="utf-8")
 
 # Static validation before Gradle.
