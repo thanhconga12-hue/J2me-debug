@@ -493,3 +493,5 @@ assert "moveTaskToBack(true)" in act_text and "TreoOnlineService.isActive()" in 
 assert "WeakReference" not in svc_text
 assert all(x in svc_text for x in ("if (c != null)", "if (w != null)", "if (m != null)"))
 print("Treo patch applied; Manifest and all resource XML files validated")
+
+# Lifecycle hardening is applied by scripts/apply_treo_lifecycle.py in the build workflow.
