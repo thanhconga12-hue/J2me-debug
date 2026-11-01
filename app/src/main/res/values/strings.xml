@@ -319,4 +319,7 @@
     <string name="bubble_perm_open">Mở cài đặt</string>
     <string name="bubble_perm_overlay_toast">Cần quyền Hiển thị trên app khác để dùng bong bóng. Cấp quyền xong quay lại game — bubble sẽ tự hiện.</string>
     <string name="treo_ninja_no_bubble">Bóng nổi chưa hiện được nên không ẩn icon (tránh mất đường quay lại). Đã chuyển sang mức ẩn STEALTH.</string>
+    <string name="headless_enabled">Tiết kiệm pin: BẬT (hãy kết hợp ẩn ứng dụng)</string>
+    <string name="headless_disabled">Tiết kiệm pin: TẮT</string>
+    <string name="bubble_attach_failed">Không hiển thị được bubble: %1$s</string>
 </resources>
