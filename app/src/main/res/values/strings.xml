@@ -81,9 +81,6 @@
     <string name="midlet_vendor"><b>Vendor: </b></string>
     <string name="midlet_version"><b>Version: </b></string>
     <string name="more">More</string>
-    <string name="menu_headless">Treo tắt màn (Headless)</string>
-    <string name="headless_enabled">Headless bật: game vẫn xử lý logic, tạm ngừng vẽ hình</string>
-    <string name="headless_disabled">Headless tắt: khôi phục vẽ hình</string>
     <string name="msg_error_loading_shader">Unsupported shader, default shader is used!</string>
     <string name="msg_immediate_mode_disabled">Immediate mode disabled due to stack overflow</string>
     <string name="msg_mascot_capsule" translatable="false">Mascot Capsule 3D!</string>
