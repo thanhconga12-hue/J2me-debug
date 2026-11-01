@@ -1,68 +1,48 @@
-name: Replace repository with extracted Treo source
+name: Build J2ME NST FPS (debug)
 
 on:
-  push:
-    branches: [main]
-    paths:
-      - .github/workflows/nst-fps-debug.yml
+  workflow_dispatch:
 
 permissions:
-  actions: read
-  contents: write
+  contents: read
 
 jobs:
-  replace-repository:
+  build:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout repository
+      - name: Checkout source and submodules
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0
+          submodules: recursive
 
-      - name: Download and extract edited source artifact
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: |
-          set -euo pipefail
-          gh run download 41307038487 \
-            --repo thanhconga12-hue/J2me-debug \
-            --name J2ME-NST-FPS-TREO-v3-source \
-            --dir /tmp/nst-artifact
-          INNER="$(find /tmp/nst-artifact -maxdepth 1 -type f -name '*.zip' -print -quit)"
-          test -n "$INNER"
-          unzip -tq "$INNER"
-          mkdir -p /tmp/nst-source
-          unzip -q "$INNER" -d /tmp/nst-source
-          PROJECT=/tmp/nst-source/J2ME_NST_FPS_Rebuild
-          test -d "$PROJECT/app/src/main"
-          test -f "$PROJECT/gradlew"
-          echo "Source project located: $PROJECT"
-          echo "Source files before excluding generated build output:"
-          find "$PROJECT" -type f | wc -l
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+          cache: gradle
 
-      - name: Replace all repository files with source project
+      - name: Set up Android SDK
+        uses: android-actions/setup-android@v3
+
+      - name: Install Android platform and NDK
         run: |
-          set -euo pipefail
-          PROJECT=/tmp/nst-source/J2ME_NST_FPS_Rebuild
-          # Keep source, resources, Gradle configuration and project metadata.
-          # Exclude only generated Gradle/build outputs from the extracted artifact.
-          rsync -a --delete \
-            --exclude='.git/' \
-            --exclude='.github/workflows/' \
-            --exclude='.gradle/' \
-            --exclude='build/' \
-            --exclude='*/build/' \
-            "$PROJECT/" "$GITHUB_WORKSPACE/"
-          test -d app/src/main
-          test -f gradlew
-          echo "Final tracked candidate files:"
-          find . -type f -not -path './.git/*' | wc -l
-          git add -A
-          if git diff --cached --quiet; then
-            echo "Repository already matches extracted source; no commit needed."
-          else
-            git config user.name "github-actions[bot]"
-            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-            git commit -m "Replace repository with extracted edited NST source"
-            git push origin HEAD:main
-          fi
+          sdkmanager --install \
+            "platforms;android-34" \
+            "build-tools;34.0.0" \
+            "ndk;22.1.7171670"
+
+      - name: Ensure TinySoundFont is present
+        run: ./scripts/fetch-tinysoundfont.sh
+
+      - name: Build debug APK
+        run: |
+          chmod +x ./gradlew
+          ./gradlew :app:assembleEmulatorDebug --no-daemon
+
+      - name: Upload APK artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: J2ME-NST-FPS-debug
+          path: app/build/outputs/apk/emulator/debug/*.apk
+          if-no-files-found: error
