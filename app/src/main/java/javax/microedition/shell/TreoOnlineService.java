@@ -35,7 +35,7 @@ public final class TreoOnlineService extends Service {
     private static final String ACTION_CYCLE_MODE = "ru.playsoftware.j2meloader.treo.CYCLE_MODE";
 
     private static final String PREF_STICKY = "pref_treo_sticky_on";
-    private static final String PREF_MODE = "pref_treo_mode";
+    private static final String PREF_MODE = "pref_treo_mode_v2"; // Migrate old installs away from persisted LIGHT-only mode.
 
     // Same three power/network modes as NST original: LIGHT, WIFI, STRONG.
     private static final int MODE_LIGHT = 1;
@@ -231,22 +231,41 @@ public final class TreoOnlineService extends Service {
         releaseLocks();
 
         PowerManager power = (PowerManager) getSystemService(Context.POWER_SERVICE);
-        if (power != null) {
-            cpu = power.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK,
-                    getPackageName() + ":TreoCPU");
-            cpu.setReferenceCounted(false);
-            cpu.acquire();
+        if (power == null) {
+            throw new IllegalStateException("PowerManager unavailable; cannot keep MIDlet CPU awake");
+        }
+        cpu = power.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK,
+                getPackageName() + ":TreoCPU");
+        cpu.setReferenceCounted(false);
+        cpu.acquire();
+        if (!cpu.isHeld()) {
+            throw new IllegalStateException("CPU wake lock was not acquired");
         }
 
-        // The original NST only keeps Wi-Fi awake in WIFI/STRONG modes and only
-        // when the active network is actually Wi-Fi. LIGHT mode is CPU-only.
+        // LIGHT remains available as an explicit user-selected CPU-only mode.
+        // The v2 preference key prevents an old saved LIGHT value from silently
+        // disabling Wi-Fi keepalive after updating the application.
         if (selectedMode == MODE_LIGHT) return;
 
         ConnectivityManager connectivity = (ConnectivityManager)
                 getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo network = connectivity == null ? null : connectivity.getActiveNetworkInfo();
-        if (network == null || !network.isConnected()
-                || network.getType() != ConnectivityManager.TYPE_WIFI) {
+        boolean wifiConnected = false;
+        if (connectivity != null) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                android.net.Network activeNetwork = connectivity.getActiveNetwork();
+                android.net.NetworkCapabilities capabilities = activeNetwork == null
+                        ? null : connectivity.getNetworkCapabilities(activeNetwork);
+                wifiConnected = capabilities != null
+                        && capabilities.hasCapability(android.net.NetworkCapabilities.NET_CAPABILITY_INTERNET)
+                        && capabilities.hasTransport(android.net.NetworkCapabilities.TRANSPORT_WIFI);
+            } else {
+                NetworkInfo network = connectivity.getActiveNetworkInfo();
+                wifiConnected = network != null && network.isConnected()
+                        && network.getType() == ConnectivityManager.TYPE_WIFI;
+            }
+        }
+        if (!wifiConnected) {
+            Log.i(TAG, "Treo: no active Wi-Fi transport; CPU lock remains held for mobile data");
             return;
         }
 
