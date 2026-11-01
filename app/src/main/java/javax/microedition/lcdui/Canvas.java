@@ -970,7 +970,6 @@ public abstract class Canvas extends Displayable {
 
 	private class ViewCallbacks implements View.OnTouchListener, SurfaceHolder.Callback, View.OnKeyListener {
 		private final View mView;
-		private boolean treoBackgroundSurfaceLoss;
 		OverlayView overlayView;
 
 		public ViewCallbacks(View view) {
@@ -1149,10 +1148,7 @@ public abstract class Canvas extends Displayable {
 				renderer.start();
 			}
 			surface = holder.getSurface();
-			boolean resumedFromTreoBackground = treoBackgroundSurfaceLoss;
-			treoBackgroundSurfaceLoss = false;
-			if (!resumedFromTreoBackground)
-				Display.postEvent(CanvasEvent.getInstance(Canvas.this, CanvasEvent.SHOW_NOTIFY));
+			Display.postEvent(CanvasEvent.getInstance(Canvas.this, CanvasEvent.SHOW_NOTIFY));
 			repaintInternal();
 			if (settings.showFps) {
 				fpsCounter = new FpsCounter(overlayView);
@@ -1168,20 +1164,13 @@ public abstract class Canvas extends Displayable {
 
 		@Override
 		public void surfaceDestroyed(@NonNull SurfaceHolder holder) {
-			// The GL surface must be paused, but losing the Android window must not
-			// pause the MIDlet while the user has explicitly enabled Treo mode.
 			if (renderer != null) {
 				renderer.stop();
 			}
 			synchronized (surfaceLock) {
 				surface = null;
 			}
-			if (javax.microedition.shell.TreoOnlineService.isEnabled()) {
-				treoBackgroundSurfaceLoss = true;
-				Log.i(TAG, "Treo mode: keeping MIDlet active after Surface loss");
-			} else {
-				Display.postEvent(CanvasEvent.getInstance(Canvas.this, CanvasEvent.HIDE_NOTIFY));
-			}
+			Display.postEvent(CanvasEvent.getInstance(Canvas.this, CanvasEvent.HIDE_NOTIFY));
 			if (fpsCounter != null) {
 				fpsCounter.stop();
 				overlayView.removeLayer(fpsCounter);
