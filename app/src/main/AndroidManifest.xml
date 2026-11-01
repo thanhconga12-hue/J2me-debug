@@ -154,6 +154,17 @@
             android:launchMode="singleInstance"
             android:process=":acra" />
         <service
+            android:name="ru.playsoftware.j2meloader.keepalive.TreoTileService"
+            android:process=":midlet"
+            android:label="@string/treo_tile_label"
+            android:icon="@drawable/ic_treo_dot"
+            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.service.quicksettings.action.QS_TILE" />
+            </intent-filter>
+        </service>
+        <service
             android:name="ru.playsoftware.j2meloader.keepalive.TreoOnlineService"
             android:process=":midlet"
             android:exported="false"

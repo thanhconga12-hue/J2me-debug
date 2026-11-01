@@ -280,4 +280,5 @@
     <string name="treo_mode_light">Nhẹ (CPU)</string>
     <string name="treo_mode_wifi">Wi-Fi (CPU + Wi-Fi)</string>
     <string name="treo_mode_strong">Mạnh (CPU + Wi-Fi HiPerf)</string>
+    <string name="treo_tile_label">Treo</string>
 </resources>
