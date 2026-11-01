@@ -13,7 +13,6 @@ on:
       - scripts/inspect_treo_dependencies.py
       - J2ME_NST_FPS_Rebuild_v3_Source.zip
       - J2ME_NST.apk
-      - scripts/fetch-tinysoundfont.sh
       - .github/workflows/nst-fps-debug.yml
 
 permissions:
@@ -139,7 +138,7 @@ jobs:
           zip -T J2ME_NST_FPS_Rebuild_v3_Source.zip
           mkdir -p build-verification
           sha256sum J2ME_NST_FPS_Rebuild_v3_Source.zip > build-verification/INPUT_SOURCE_ARCHIVE_SHA256SUMS
-          sha256sum scripts/apply_treo.py scripts/apply_treo_original_compat.py scripts/apply_treo_lifecycle.py scripts/validate_treo_lifecycle.py scripts/inspect_treo_dependencies.py > build-verification/PATCH_SCRIPT_SHA256SUMS
+          cp "$GITHUB_WORKSPACE/build-verification/PATCH_SCRIPT_SHA256SUMS" "$GITHUB_WORKSPACE/build-verification/"
           mkdir -p extracted
           unzip -q J2ME_NST_FPS_Rebuild_v3_Source.zip -d extracted
           test -f extracted/J2ME_NST_FPS_Rebuild/gradlew
@@ -181,7 +180,19 @@ jobs:
           sha256sum "$APK" | tee "$GITHUB_WORKSPACE/apk-sha256.txt"
           find app/build/outputs/apk/emulator/debug -maxdepth 1 -type f -name '*.apk' -exec unzip -l {} \;
           unzip -l "$APK" | grep -E 'classes([0-9]+)?\.dex'
-          mkdir -p "$GITHUB_WORKSPACE/build-verification"
+          python3 - "$APK" <<'PY'
+          import sys, zipfile
+          with zipfile.ZipFile(sys.argv[1]) as apk:
+              dex_files = [name for name in apk.namelist() if name.startswith("classes") and name.endswith(".dex")]
+              if not dex_files:
+                  raise SystemExit("APK contains no DEX files")
+              dex_data = b"".join(apk.read(name) for name in dex_files)
+              required = (b"TreoOnlineService", b"MidletThread", b"MicroActivity")
+              missing = [item.decode() for item in required if item not in dex_data]
+              if missing:
+                  raise SystemExit("Treo lifecycle code missing from DEX: " + ", ".join(missing))
+              print("DEX verification passed:", ", ".join(item.decode() for item in required))
+          PY
           sha256sum "$APK" > "$GITHUB_WORKSPACE/build-verification/APK_SHA256SUMS"
           find app/src -type f \( -name '*.java' -o -name '*.kt' \) -print0 | sort -z | xargs -0 sha256sum > "$GITHUB_WORKSPACE/build-verification/PATCHED_SOURCE_SHA256SUMS"
           sha256sum "$GITHUB_WORKSPACE/J2ME_NST_FPS_Rebuild_v3_Source.zip" > "$GITHUB_WORKSPACE/build-verification/INPUT_SOURCE_ARCHIVE_SHA256SUMS"\n          cp "$GITHUB_WORKSPACE/build-verification/PATCH_SCRIPT_SHA256SUMS" "$GITHUB_WORKSPACE/build-verification/"
