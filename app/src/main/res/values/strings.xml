@@ -322,4 +322,5 @@
     <string name="headless_enabled">Tiết kiệm pin: BẬT (hãy kết hợp ẩn ứng dụng)</string>
     <string name="headless_disabled">Tiết kiệm pin: TẮT</string>
     <string name="bubble_attach_failed">Không hiển thị được bubble: %1$s</string>
+    <string name="bubble_open_failed">Không mở lại được game đang treo.</string>
 </resources>
