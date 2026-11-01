@@ -63,15 +63,15 @@ else:
     service_node.attrib.pop(android_ns + "process", None)
 # Preserve the original manifest formatting while correcting only the service
 # process attribute.
-service_start = s.index('<service\\n            android:name="javax.microedition.shell.TreoOnlineService"')
-service_end = s.index('</service>', service_start) + len('</service>')
-service_xml = s[service_start:service_end]
-import re
-service_xml = re.sub(r'\\s+android:process="[^"]+"', "", service_xml)
+match = re.search(r'<service\\s+android:name="javax\\.microedition\\.shell\\.TreoOnlineService".*?</service>', s, re.S)
+if not match:
+    raise SystemExit("Could not locate TreoOnlineService XML declaration")
+service_xml = re.sub(r'\\s+android:process="[^"]+"', "", match.group(0))
 if activity_process:
-    service_xml = service_xml.replace('android:name="javax.microedition.shell.TreoOnlineService"',
-                                      'android:name="javax.microedition.shell.TreoOnlineService"\\n            android:process="' + activity_process + '"', 1)
-s = s[:service_start] + service_xml + s[service_end:]
+    service_xml = service_xml.replace(
+        'android:name="javax.microedition.shell.TreoOnlineService"',
+        'android:name="javax.microedition.shell.TreoOnlineService"\\n            android:process="' + activity_process + '"', 1)
+s = s[:match.start()] + service_xml + s[match.end():]
 p.write_text(s, encoding="utf-8")
 print("Treo service process aligned with MicroActivity:", activity_process or "default")
 
