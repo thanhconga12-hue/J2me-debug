@@ -366,6 +366,104 @@ for rel in ("app/src/main/res/values/strings.xml", "app/src/main/res/values-vi/s
     if 'name="treo_online"' not in s:
         p.write_text(s.replace("</resources>", strings + "</resources>", 1), encoding="utf-8")
 
+
+# Null-safe Activity reference: a WeakReference itself may be null during teardown.
+ctx = r / "app/src/main/java/javax/microedition/util/ContextHolder.java"
+cs = ctx.read_text(encoding="utf-8")
+cs = cs.replace("private static WeakReference<MicroActivity> currentActivity;",
+                "private static volatile WeakReference<MicroActivity> currentActivity;")
+cs = cs.replace("""\tpublic static void setCurrentActivity(MicroActivity activity) {
+\t\tcurrentActivity = new WeakReference<>(activity);
+\t}""", """\tpublic static void setCurrentActivity(MicroActivity activity) {
+\t\tcurrentActivity = activity == null ? null : new WeakReference<>(activity);
+\t}
+
+\tprivate static MicroActivity getCurrentActivity() {
+\t\tWeakReference<MicroActivity> reference = currentActivity;
+\t\treturn reference == null ? null : reference.get();
+\t}""")
+cs = cs.replace("MicroActivity context = currentActivity.get();", "MicroActivity context = getCurrentActivity();")
+cs = cs.replace("return currentActivity.get();", "return getCurrentActivity();")
+if "private static MicroActivity getCurrentActivity()" not in cs:
+    raise SystemExit("ContextHolder null-safe patch anchor failed")
+if "currentActivity.get()" in cs:
+    raise SystemExit("Unsafe direct WeakReference dereference remains in ContextHolder")
+ctx.write_text(cs, encoding="utf-8")
+
+# Guard HandlerThread lifecycle races and avoid touching Activity from Service teardown.
+mt = r / "app/src/main/java/javax/microedition/shell/MidletThread.java"
+ms = mt.read_text(encoding="utf-8")
+ms = ms.replace("private static MidletThread instance;", "private static volatile MidletThread instance;")
+ms = ms.replace("private Handler handler;", "private volatile Handler handler;")
+ms = ms.replace("private int state;", "private volatile int state;")
+ms = ms.replace("""\tpublic static void notifyPaused() {
+\t\tinstance.state = PAUSED;
+\t}""", """\tpublic static void notifyPaused() {
+\t\tMidletThread current = instance;
+\t\tif (current != null) current.state = PAUSED;
+\t}""")
+ms = ms.replace("""\t\tif (instance != null && activity != null && activity.isVisible())
+\t\t\tinstance.handler.obtainMessage(START).sendToTarget();""", """\t\tMidletThread current = instance;
+\t\tHandler target = current == null ? null : current.handler;
+\t\tif (activity != null && activity.isVisible() && target != null)
+\t\t\ttarget.obtainMessage(START).sendToTarget();""")
+ms = ms.replace("""\t\tif (instance != null) {
+\t\t\tinstance.handler.obtainMessage(DESTROY).sendToTarget();
+\t\t}""", """\t\tMidletThread current = instance;
+\t\tHandler target = current == null ? null : current.handler;
+\t\tif (target != null) target.obtainMessage(DESTROY).sendToTarget();""")
+ms = ms.replace("""\t\thandler = new Handler(getLooper(), this);
+\t\tContextHolder.getActivity().getLifecycle().addObserver(activityLifecycleObserver);""", """\t\thandler = new Handler(getLooper(), this);
+\t\tMicroActivity activity = ContextHolder.getActivity();
+\t\tif (activity != null) activity.getLifecycle().addObserver(activityLifecycleObserver);
+\t\telse Log.w(TAG, "MicroActivity unavailable while starting MIDlet thread");""")
+ms = ms.replace("""\tstatic void pauseIfActivityStopped() {
+\t\tMidletThread current = instance;
+\t\tif (current != null && current.handler != null && !current.activityStarted) {
+\t\t\tcurrent.handler.obtainMessage(PAUSE).sendToTarget();
+\t\t}
+\t}""", """\tstatic void pauseIfActivityStopped() {
+\t\tMidletThread current = instance;
+\t\tif (current == null || current.activityStarted || current.state != STARTED) return;
+\t\tHandler target = current.handler;
+\t\tif (target != null && target.getLooper().getThread().isAlive())
+\t\t\ttarget.obtainMessage(PAUSE).sendToTarget();
+\t}""")
+old_life = """\tprivate void onActivityStateChanged(LifecycleOwner lifecycleOwner, Lifecycle.Event event) {
+\t\tswitch (event) {
+\t\t\tcase ON_CREATE -> handler.obtainMessage(INIT).sendToTarget();
+\t\t\tcase ON_START -> {
+\t\t\t\tactivityStarted = true;
+\t\t\t\thandler.obtainMessage(START).sendToTarget();
+\t\t\t}
+\t\t\tcase ON_STOP -> {
+\t\t\t\tactivityStarted = false;
+\t\t\t\tif (!TreoOnlineService.isEnabled()) handler.obtainMessage(PAUSE).sendToTarget();
+\t\t\t}
+\t\t\tcase ON_DESTROY -> handler.obtainMessage(DESTROY).sendToTarget();
+\t\t}
+\t}"""
+new_life = """\tprivate void onActivityStateChanged(LifecycleOwner lifecycleOwner, Lifecycle.Event event) {
+\t\tHandler target = handler;
+\t\tif (target == null || !target.getLooper().getThread().isAlive()) return;
+\t\tswitch (event) {
+\t\t\tcase ON_CREATE -> target.obtainMessage(INIT).sendToTarget();
+\t\t\tcase ON_START -> {
+\t\t\t\tactivityStarted = true;
+\t\t\t\ttarget.obtainMessage(START).sendToTarget();
+\t\t\t}
+\t\t\tcase ON_STOP -> {
+\t\t\t\tactivityStarted = false;
+\t\t\t\tif (!TreoOnlineService.isEnabled()) target.obtainMessage(PAUSE).sendToTarget();
+\t\t\t}
+\t\t\tcase ON_DESTROY -> target.obtainMessage(DESTROY).sendToTarget();
+\t\t}
+\t}"""
+if old_life in ms: ms = ms.replace(old_life, new_life, 1)
+if "private static volatile MidletThread instance;" not in ms or "current.state != STARTED" not in ms:
+    raise SystemExit("MidletThread lifecycle patch anchor failed")
+mt.write_text(ms, encoding="utf-8")
+
 # Static validation before Gradle.
 ET.parse(a / "AndroidManifest.xml")
 for p in (a / "res").rglob("*.xml"):
