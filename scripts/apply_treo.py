@@ -43,7 +43,37 @@ if "javax.microedition.shell.TreoOnlineService" not in s:
         </service>
         <service
             android:name="androidx.appcompat.app.AppLocalesMetadataHolderService"''', 1)
+# The service MUST share MicroActivity's process because readiness and lifecycle
+# flags are ordinary static fields. A hard-coded :midlet process can split them.
+root = ET.fromstring(s)
+android_ns = "{http://schemas.android.com/apk/res/android}"
+activity = next((node for node in root.iter()
+                 if node.tag in ("activity", "activity-alias")
+                 and node.get(android_ns + "name", "").endswith(".MicroActivity")), None)
+if activity is None:
+    raise SystemExit("Could not find MicroActivity in AndroidManifest.xml")
+activity_process = activity.get(android_ns + "process")
+service_node = next((node for node in root.iter("service")
+                     if node.get(android_ns + "name") == "javax.microedition.shell.TreoOnlineService"), None)
+if service_node is None:
+    raise SystemExit("TreoOnlineService declaration missing from manifest")
+if activity_process:
+    service_node.set(android_ns + "process", activity_process)
+else:
+    service_node.attrib.pop(android_ns + "process", None)
+# Preserve the original manifest formatting while correcting only the service
+# process attribute.
+service_start = s.index('<service\\n            android:name="javax.microedition.shell.TreoOnlineService"')
+service_end = s.index('</service>', service_start) + len('</service>')
+service_xml = s[service_start:service_end]
+import re
+service_xml = re.sub(r'\\s+android:process="[^"]+"', "", service_xml)
+if activity_process:
+    service_xml = service_xml.replace('android:name="javax.microedition.shell.TreoOnlineService"',
+                                      'android:name="javax.microedition.shell.TreoOnlineService"\\n            android:process="' + activity_process + '"', 1)
+s = s[:service_start] + service_xml + s[service_end:]
 p.write_text(s, encoding="utf-8")
+print("Treo service process aligned with MicroActivity:", activity_process or "default")
 
 # Foreground Treo service with CPU/Wi-Fi/multicast locks and guarded releases.
 svc = r / "app/src/main/java/javax/microedition/shell/TreoOnlineService.java"
@@ -317,7 +347,8 @@ for p in (a / "res").rglob("*.xml"):
 svc_text = svc.read_text(encoding="utf-8")
 mt_text = mt.read_text(encoding="utf-8")
 act_text = act.read_text(encoding="utf-8")
-assert 'android:process=":midlet"' in (a / "AndroidManifest.xml").read_text(encoding="utf-8")
+manifest_text = (a / "AndroidManifest.xml").read_text(encoding="utf-8")
+assert 'android:name="javax.microedition.shell.TreoOnlineService"' in manifest_text
 assert "active = true" in svc_text and "requested = true" in svc_text
 assert "if (!TreoOnlineService.isEnabled())" in mt_text and "pauseIfActivityStopped" in mt_text
 assert "moveTaskToBack(true)" in act_text and "TreoOnlineService.isActive()" in act_text
