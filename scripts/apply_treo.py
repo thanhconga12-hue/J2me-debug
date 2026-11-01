@@ -468,9 +468,9 @@ if "private static volatile MidletThread instance;" not in ms or "current.state 
 # lifecycle-only guard; it must never dereference ContextHolder.getActivity().
 if "public static void pauseIfBackground()" not in ms:
     marker = "\tstatic void pauseIfActivityStopped() {"
-    shim = """\\tpublic static void pauseIfBackground() {
-\\t\\tpauseIfActivityStopped();
-\\t}
+    shim = """	public static void pauseIfBackground() {
+		pauseIfActivityStopped();
+	}
 
 """
     if ms.count(marker) != 1:
