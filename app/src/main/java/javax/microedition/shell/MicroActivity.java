@@ -403,6 +403,8 @@ public class MicroActivity extends AppCompatActivity {
 		if (inputMethodManager == null) {
 			menu.findItem(R.id.action_ime_keyboard).setVisible(false);
 		}
+		MenuItem headlessItem = menu.findItem(R.id.action_headless);
+		if (headlessItem != null) headlessItem.setChecked(Canvas.isHeadlessMode());
 		if (ContextHolder.getVk() == null) {
 			menu.findItem(R.id.action_submenu_vk).setVisible(false);
 		}
@@ -448,6 +450,12 @@ public class MicroActivity extends AppCompatActivity {
 			takeScreenshot();
 		} else if (id == R.id.action_limit_fps) {
 			showLimitFpsDialog();
+		} else if (id == R.id.action_headless) {
+			boolean enabled = !Canvas.isHeadlessMode();
+			Canvas.setHeadlessMode(enabled);
+			item.setChecked(enabled);
+			Toast.makeText(this, enabled ? R.string.headless_enabled : R.string.headless_disabled,
+					Toast.LENGTH_SHORT).show();
 		} else if (ContextHolder.getVk() != null) {
 			// Handled only when virtual keyboard is enabled
 			handleVkOptions(id);
