@@ -186,17 +186,6 @@ public class MidletThread extends HandlerThread implements Handler.Callback {
 		return true;
 	}
 
-	public static void pauseIfBackground() {
-		pauseIfActivityStopped();
-	}
-
-	static void pauseIfActivityStopped() {
-		MidletThread current = instance;
-		if (current == null || current.activityStarted || current.state != STARTED) return;
-		Handler target = current.handler;
-		if (target != null && target.getLooper().getThread().isAlive())
-			target.obtainMessage(PAUSE).sendToTarget();
-	}
 
 	private void onActivityStateChanged(LifecycleOwner lifecycleOwner, Lifecycle.Event event) {
 		Handler target = handler;
@@ -209,11 +198,11 @@ public class MidletThread extends HandlerThread implements Handler.Callback {
 			}
 			case ON_STOP -> {
 				activityStarted = false;
-				if (!TreoOnlineService.isEnabled()) target.obtainMessage(PAUSE).sendToTarget();
+				target.obtainMessage(PAUSE).sendToTarget();
 			}
 			case ON_DESTROY -> {
 				activityStarted = false;
-				if (!TreoOnlineService.isEnabled()) target.obtainMessage(DESTROY).sendToTarget();
+				target.obtainMessage(DESTROY).sendToTarget();
 			}
 		}
 	}
