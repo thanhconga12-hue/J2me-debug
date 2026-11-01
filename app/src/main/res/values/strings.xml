@@ -281,4 +281,6 @@
     <string name="treo_mode_wifi">Wi-Fi (CPU + Wi-Fi)</string>
     <string name="treo_mode_strong">Mạnh (CPU + Wi-Fi HiPerf)</string>
     <string name="treo_tile_label">Treo</string>
+    <string name="treo_battopt_title">Tắt tối ưu pin</string>
+    <string name="treo_battopt_msg">Để treo game ổn định, bạn cần tắt tối ưu hóa pin trên máy, tránh bị out game nhé.</string>
 </resources>

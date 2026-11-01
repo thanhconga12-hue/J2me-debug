@@ -64,6 +64,10 @@ public final class TreoOnlineService extends Service {
     @Override
     public int onStartCommand(@Nullable Intent intent, int flags, int startId) {
         ensureForegroundStarted();
+        if (!foregroundStarted) {
+            stopSelf();
+            return START_NOT_STICKY;
+        }
         String action = intent == null ? null : intent.getAction();
 
         if (ACTION_STOP.equals(action)) {

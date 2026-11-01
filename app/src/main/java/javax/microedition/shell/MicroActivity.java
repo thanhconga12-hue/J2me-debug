@@ -91,6 +91,7 @@ import ru.playsoftware.j2meloader.databinding.DialogInputBinding;
 import ru.playsoftware.j2meloader.util.Constants;
 import ru.playsoftware.j2meloader.util.LogUtils;
 import ru.playsoftware.j2meloader.keepalive.TreoController;
+import ru.playsoftware.j2meloader.keepalive.TreoPermissionGate;
 
 public class MicroActivity extends AppCompatActivity {
 	private static final int ORIENTATION_DEFAULT = 0;
@@ -107,6 +108,7 @@ public class MicroActivity extends AppCompatActivity {
 	private int menuKey;
 	private String appPath;
 	private ActivityMicroBinding binding;
+	private boolean pendingToggleStartAfterNotification;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -489,12 +491,35 @@ public class MicroActivity extends AppCompatActivity {
 			Toast.makeText(this, R.string.treo_stopped, Toast.LENGTH_SHORT).show();
 			return;
 		}
+		if (TreoPermissionGate.needsNotificationPermission(this)) {
+			pendingToggleStartAfterNotification = true;
+			TreoPermissionGate.requestNotificationPermission(this, TreoPermissionGate.REQUEST_NOTIFICATIONS);
+			return;
+		}
+		startToggleAfterRuntimePerms();
+	}
+
+	private void startToggleAfterRuntimePerms() {
 		TreoController.setStickyEnabled(this, true);
-		TreoController.start(this, success -> {
-			invalidateOptionsMenu();
-			Toast.makeText(this, success ? R.string.treo_auto_started : R.string.treo_start_failed,
-					Toast.LENGTH_SHORT).show();
-		});
+		invalidateOptionsMenu();
+		TreoPermissionGate.runWithBatteryOptimizationPrompt(this, () ->
+				TreoController.start(this, success -> {
+					invalidateOptionsMenu();
+					Toast.makeText(this, success ? R.string.treo_auto_started : R.string.treo_start_failed,
+							Toast.LENGTH_SHORT).show();
+				})
+		);
+	}
+
+	@Override
+	public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
+			@NonNull int[] grantResults) {
+		super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+		if (requestCode == TreoPermissionGate.REQUEST_NOTIFICATIONS
+				&& pendingToggleStartAfterNotification) {
+			pendingToggleStartAfterNotification = false;
+			startToggleAfterRuntimePerms();
+		}
 	}
 
 	private void lockOrientation() {
