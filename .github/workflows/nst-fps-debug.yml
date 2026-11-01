@@ -49,8 +49,6 @@ jobs:
       - name: Locate legacy Treo service in source and packaged dependencies
         run: |
           set -euo pipefail
-          mkdir -p extracted
-          unzip -q J2ME_NST_FPS_Rebuild_v3_Source.zip -d extracted
           python3 scripts/inspect_treo_dependencies.py
 
       - name: Apply and validate NST Treo lifecycle integration
