@@ -13,6 +13,26 @@ permissions:
   contents: read
 
 jobs:
+  export-original-nst:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Export original NST APK unchanged
+        run: |
+          set -euo pipefail
+          test -s J2ME_NST.apk
+          mkdir -p original-nst
+          cp J2ME_NST.apk original-nst/J2ME_NST.apk
+          sha256sum original-nst/J2ME_NST.apk > original-nst/SHA256SUMS
+      - name: Upload original NST APK for inspection
+        uses: actions/upload-artifact@v4
+        with:
+          name: NST-original-APK-reference
+          path: original-nst/
+          if-no-files-found: error
+          retention-days: 14
+
   build:
     runs-on: ubuntu-latest
     steps:
