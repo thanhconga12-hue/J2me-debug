@@ -5,6 +5,7 @@ on:
   push:
     branches:
       - main
+      - nst-original-feature-port
 
 permissions:
   contents: read
