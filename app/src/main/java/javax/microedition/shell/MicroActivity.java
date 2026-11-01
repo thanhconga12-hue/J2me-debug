@@ -570,20 +570,6 @@ public class MicroActivity extends AppCompatActivity {
 		}
 	}
 
-	@Override
-	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		super.onActivityResult(requestCode, resultCode, data);
-		if (requestCode == REQUEST_OVERLAY_PERMISSION) {
-			HideStrategy pending = pendingHideAfterOverlay;
-			pendingHideAfterOverlay = null;
-			if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M || android.provider.Settings.canDrawOverlays(this)) {
-				if (pending != null) startTreoForHide(pending);
-			} else {
-				Toast.makeText(this, R.string.bubble_perm_overlay_toast, Toast.LENGTH_LONG).show();
-			}
-		}
-		ContextHolder.notifyOnActivityResult(requestCode, resultCode, data);
-	}
 
 	private void hideAndTreo() {
 		HideStrategy strategy = HideStrategy.from(this);
@@ -824,8 +810,18 @@ public class MicroActivity extends AppCompatActivity {
 		return super.onContextItemSelected(item);
 	}
 
+	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
+		if (requestCode == REQUEST_OVERLAY_PERMISSION) {
+			HideStrategy pending = pendingHideAfterOverlay;
+			pendingHideAfterOverlay = null;
+			if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M || android.provider.Settings.canDrawOverlays(this)) {
+				if (pending != null) startTreoForHide(pending);
+			} else {
+				Toast.makeText(this, R.string.bubble_perm_overlay_toast, Toast.LENGTH_LONG).show();
+			}
+		}
 		ContextHolder.notifyOnActivityResult(requestCode, resultCode, data);
 	}
 
