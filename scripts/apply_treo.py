@@ -495,3 +495,5 @@ assert all(x in svc_text for x in ("if (c != null)", "if (w != null)", "if (m !=
 print("Treo patch applied; Manifest and all resource XML files validated")
 
 # Lifecycle hardening is applied by scripts/apply_treo_lifecycle.py in the build workflow.
+
+# Rebuild trigger: compile fix for fully qualified Treo lifecycle references.
