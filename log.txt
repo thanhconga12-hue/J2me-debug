@@ -1,0 +1,502 @@
+--------- beginning of main
+11-01 14:03:39.281 26069 28041 D javax.microedition.rms.impl.RecordStoreImpl: RecordStore ninja_school_offline_v3 closed
+11-01 14:03:39.306 26069 28041 D RecordStore: RecordStore nso_offline_bots_v1 opened
+11-01 14:03:39.307 26069 28041 D javax.microedition.rms.impl.RecordStoreImpl: Record nso_offline_bots_v1.1 set
+11-01 14:03:39.307 26069 28041 D javax.microedition.rms.impl.RecordStoreImpl: RecordStore nso_offline_bots_v1 closed
+11-01 14:03:39.330 26069 26069 W WindowOnBackDispatcher: sendCancelIfRunning: isInProgress=false callback=android.view.ViewRootImpl$$ExternalSyntheticLambda16@2d98582
+11-01 14:03:39.331 26069 27599 D BufferQueueProducer: [VRI[PopupWindow:36c1eb8]#7(BLAST Consumer)7](id:65d500000007,api:1,p:26069,c:26069) disconnect: api 1 (caller=26069)
+11-01 14:03:39.331 26069 27599 D HWUI    : endAllActiveAnimators on 0xb400007829cd7170 (RippleDrawable) with handle 0xb4000078e9cb0680
+11-01 14:03:39.331 26069 27599 D HWUI    : endAllActiveAnimators on 0xb400007829c42a00 (MenuPopupWindow$MenuDropDownListView) with handle 0xb4000078e9c302e0
+11-01 14:03:39.332 26069 26069 W .j2me1.fpsboost: Binder 0xb4000078b9c369c0 destroyed after setInheritRt before being parceled.
+--------- beginning of system
+11-01 14:03:39.333 26069 26069 W InsetsSource: Has no intersection or mTmpFrame.height(), return Insets.NONE mTmpFrame.height() =0 hasIntersection =false
+11-01 14:03:39.333 26069 26069 W InsetsSource: Has no intersection or mTmpFrame.height(), return Insets.NONE mTmpFrame.height() =0 hasIntersection =false
+11-01 14:03:39.333 26069 26069 W InsetsSource: Has no intersection or mTmpFrame.height(), return Insets.NONE mTmpFrame.height() =0 hasIntersection =false
+11-01 14:03:39.333 26069 26069 W InsetsSource: Has no intersection or mTmpFrame.height(), return Insets.NONE mTmpFrame.height() =0 hasIntersection =false
+11-01 14:03:39.333 26069 26069 W InsetsSource: Has no intersection or mTmpFrame.height(), return Insets.NONE mTmpFrame.height() =0 hasIntersection =false
+11-01 14:03:39.333 26069 26069 W InsetsSource: Has no intersection or mTmpFrame.height(), return Insets.NONE mTmpFrame.height() =0 hasIntersection =false
+11-01 14:03:39.333 26069 26069 W InsetsSource: Has no intersection or mTmpFrame.height(), return Insets.NONE mTmpFrame.height() =0 hasIntersection =false
+11-01 14:03:39.333 26069 26069 W InsetsSource: Has no intersection or mTmpFrame.height(), return Insets.NONE mTmpFrame.height() =0 hasIntersection =false
+11-01 14:03:39.338 26069 27678 D BufferQueueConsumer: [VRI[PopupWindow:36c1eb8]#7(BLAST Consumer)7](id:65d500000007,api:0,p:-1,c:26069) disconnect: caller 0
+11-01 14:03:39.377 26069 28041 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /offline/packs/d02.pak
+11-01 14:03:39.382 26069 28041 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /offline/packs/d02.pak
+11-01 14:03:39.385 26069 28041 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /offline/packs/d02.pak
+11-01 14:03:39.389 26069 28041 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /offline/packs/d02.pak
+11-01 14:03:39.390 28068 28068 D ResMonitorStub: The current process type is: third_party_app, process name is: com.nst.j2me1.fpsboost:midlet
+11-01 14:03:39.393 26069 28041 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /offline/packs/d02.pak
+11-01 14:03:39.398 26069 28041 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /offline/packs/d02.pak
+11-01 14:03:39.406 26069 28041 D RecordStore: RecordStore ninja_school_offline_v3 opened
+11-01 14:03:39.407 26069 28041 D javax.microedition.rms.impl.RecordStoreImpl: Record ninja_school_offline_v3.1 set
+11-01 14:03:39.407 26069 28041 D javax.microedition.rms.impl.RecordStoreImpl: RecordStore ninja_school_offline_v3 closed
+11-01 14:03:39.503 26069 28041 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /offline/packs/d02.pak
+11-01 14:03:39.508 26069 28041 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /offline/packs/d02.pak
+11-01 14:03:39.514 26069 28041 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /offline/packs/d02.pak
+11-01 14:03:39.518 26069 28041 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /offline/packs/d02.pak
+11-01 14:03:39.521 26069 28041 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /offline/packs/d02.pak
+11-01 14:03:39.525 26069 28041 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /offline/packs/d02.pak
+11-01 14:03:39.532 26069 28041 D RecordStore: RecordStore ninja_school_offline_v3 opened
+11-01 14:03:39.533 26069 28041 D javax.microedition.rms.impl.RecordStoreImpl: Record ninja_school_offline_v3.1 set
+11-01 14:03:39.533 26069 28041 D javax.microedition.rms.impl.RecordStoreImpl: RecordStore ninja_school_offline_v3 closed
+11-01 14:03:39.550 26069 27678 D ActivityThread: invoke error.
+11-01 14:03:39.554 26069 27471 I .j2me1.fpsboost: Method exceeds compiler instruction limit: 17928 in void m.f(et)
+11-01 14:03:39.629 26069 28041 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /offline/packs/d02.pak
+11-01 14:03:39.638 26069 28041 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /offline/packs/d02.pak
+11-01 14:03:39.643 26069 28041 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /offline/packs/d02.pak
+11-01 14:03:39.648 26069 28041 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /offline/packs/d02.pak
+11-01 14:03:39.652 26069 28041 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /offline/packs/d02.pak
+11-01 14:03:39.655 26069 28041 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /offline/packs/d02.pak
+11-01 14:03:39.662 26069 28041 D RecordStore: RecordStore ninja_school_offline_v3 opened
+11-01 14:03:39.663 26069 28041 D javax.microedition.rms.impl.RecordStoreImpl: Record ninja_school_offline_v3.1 set
+11-01 14:03:39.663 26069 28041 D javax.microedition.rms.impl.RecordStoreImpl: RecordStore ninja_school_offline_v3 closed
+11-01 14:03:39.754 26069 28041 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /offline/packs/d02.pak
+11-01 14:03:39.762 26069 28041 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /offline/packs/d02.pak
+11-01 14:03:39.766 26069 28041 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /offline/packs/d02.pak
+11-01 14:03:39.771 26069 28041 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /offline/packs/d02.pak
+11-01 14:03:39.774 26069 28041 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /offline/packs/d02.pak
+11-01 14:03:39.778 26069 28041 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /offline/packs/d02.pak
+11-01 14:03:39.784 26069 28041 D RecordStore: RecordStore ninja_school_offline_v3 opened
+11-01 14:03:39.785 26069 28041 D javax.microedition.rms.impl.RecordStoreImpl: Record ninja_school_offline_v3.1 set
+11-01 14:03:39.785 26069 28041 D javax.microedition.rms.impl.RecordStoreImpl: RecordStore ninja_school_offline_v3 closed
+11-01 14:03:39.880 26069 28041 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /offline/packs/d02.pak
+11-01 14:03:39.888 26069 28041 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /offline/packs/d02.pak
+11-01 14:03:39.894 26069 28041 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /offline/packs/d02.pak
+11-01 14:03:39.898 26069 28041 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /offline/packs/d02.pak
+11-01 14:03:39.902 26069 28041 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /offline/packs/d02.pak
+11-01 14:03:39.906 26069 28041 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /offline/packs/d02.pak
+11-01 14:03:39.913 26069 28041 D RecordStore: RecordStore ninja_school_offline_v3 opened
+11-01 14:03:39.914 26069 28041 D javax.microedition.rms.impl.RecordStoreImpl: Record ninja_school_offline_v3.1 set
+11-01 14:03:39.914 26069 28041 D javax.microedition.rms.impl.RecordStoreImpl: RecordStore ninja_school_offline_v3 closed
+11-01 14:03:40.005 26069 28041 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /offline/packs/d02.pak
+11-01 14:03:40.013 26069 28041 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /offline/packs/d02.pak
+11-01 14:03:40.019 26069 28041 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /offline/packs/d02.pak
+11-01 14:03:40.024 26069 28041 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /offline/packs/d02.pak
+11-01 14:03:40.028 26069 28041 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /offline/packs/d02.pak
+11-01 14:03:40.032 26069 28041 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /offline/packs/d02.pak
+11-01 14:03:40.039 26069 28041 D RecordStore: RecordStore ninja_school_offline_v3 opened
+11-01 14:03:40.040 26069 28041 D javax.microedition.rms.impl.RecordStoreImpl: Record ninja_school_offline_v3.1 set
+11-01 14:03:40.040 26069 28041 D javax.microedition.rms.impl.RecordStoreImpl: RecordStore ninja_school_offline_v3 closed
+11-01 14:03:40.132 26069 28041 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /offline/packs/d02.pak
+11-01 14:03:40.142 26069 28041 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /offline/packs/d02.pak
+11-01 14:03:40.148 26069 28041 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /offline/packs/d02.pak
+11-01 14:03:40.152 26069 28041 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /offline/packs/d02.pak
+11-01 14:03:40.156 26069 28041 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /offline/packs/d02.pak
+11-01 14:03:40.159 26069 28041 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /offline/packs/d02.pak
+11-01 14:03:40.167 26069 28041 D RecordStore: RecordStore ninja_school_offline_v3 opened
+11-01 14:03:40.168 26069 28041 D javax.microedition.rms.impl.RecordStoreImpl: Record ninja_school_offline_v3.1 set
+11-01 14:03:40.168 26069 28041 D javax.microedition.rms.impl.RecordStoreImpl: RecordStore ninja_school_offline_v3 closed
+11-01 14:03:40.257 26069 28041 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /offline/packs/d02.pak
+11-01 14:03:40.266 26069 28041 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /offline/packs/d02.pak
+11-01 14:03:40.272 26069 28041 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /offline/packs/d02.pak
+11-01 14:03:40.276 26069 28041 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /offline/packs/d02.pak
+11-01 14:03:40.279 26069 28041 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /offline/packs/d02.pak
+11-01 14:03:40.283 26069 28041 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /offline/packs/d02.pak
+11-01 14:03:40.383 26069 28041 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /offline/packs/d02.pak
+11-01 14:03:40.391 26069 28041 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /offline/packs/d02.pak
+11-01 14:03:40.396 26069 28041 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /offline/packs/d02.pak
+11-01 14:03:40.401 26069 28041 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /offline/packs/d02.pak
+11-01 14:03:40.405 26069 28041 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /offline/packs/d02.pak
+11-01 14:03:40.409 26069 28041 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /offline/packs/d02.pak
+11-01 14:03:40.416 26069 28041 D RecordStore: RecordStore ninja_school_offline_v3 opened
+11-01 14:03:40.417 26069 28041 D javax.microedition.rms.impl.RecordStoreImpl: Record ninja_school_offline_v3.1 set
+11-01 14:03:40.417 26069 28041 D javax.microedition.rms.impl.RecordStoreImpl: RecordStore ninja_school_offline_v3 closed
+11-01 14:03:40.426 26069 28032 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /x1/x1/Small3225
+11-01 14:03:40.426 26069 28032 W javax.microedition.shell.AppClassLoader: Can't load res: /x1/x1/Small3225
+11-01 14:03:40.427 26069 28043 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /offline/packs/s20.pak
+11-01 14:03:40.441 26069 28032 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /x1/x1/Small2238
+11-01 14:03:40.441 26069 28032 W javax.microedition.shell.AppClassLoader: Can't load res: /x1/x1/Small2238
+11-01 14:03:40.442 26069 28043 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /offline/packs/s17.pak
+11-01 14:03:40.448 26069 27471 I .j2me1.fpsboost: Method exceeds compiler instruction limit: 17928 in void m.f(et)
+11-01 14:03:40.867 26069 27471 I .j2me1.fpsboost: Method exceeds compiler instruction limit: 17928 in void m.f(et)
+11-01 14:03:41.263 26069 27471 I .j2me1.fpsboost: Method exceeds compiler instruction limit: 17928 in void m.f(et)
+11-01 14:03:41.666 26069 27471 I .j2me1.fpsboost: Method exceeds compiler instruction limit: 17928 in void m.f(et)
+11-01 14:03:41.710 26069 28041 D RecordStore: RecordStore ninja_school_offline_v3 opened
+11-01 14:03:41.712 26069 28041 D javax.microedition.rms.impl.RecordStoreImpl: Record ninja_school_offline_v3.1 set
+11-01 14:03:41.712 26069 28041 D javax.microedition.rms.impl.RecordStoreImpl: RecordStore ninja_school_offline_v3 closed
+11-01 14:03:41.740 26069 28041 D RecordStore: RecordStore ninja_school_offline_v3 opened
+11-01 14:03:41.742 26069 28041 D javax.microedition.rms.impl.RecordStoreImpl: Record ninja_school_offline_v3.1 set
+11-01 14:03:41.742 26069 28041 D javax.microedition.rms.impl.RecordStoreImpl: RecordStore ninja_school_offline_v3 closed
+11-01 14:03:41.742 26069 28041 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /offline/packs/d00.pak
+11-01 14:03:41.746 26069 28041 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /offline/packs/d07.pak
+11-01 14:03:41.757 26069 28032 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /x1/bg/bg00.png
+11-01 14:03:41.759 26069 28032 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /x1/bg/bg10.png
+11-01 14:03:41.760 26069 28032 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /x1/bg/bg20.png
+11-01 14:03:41.761 26069 28032 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /x1/bg/bg30.png
+11-01 14:03:41.763 26069 28032 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /x1/bg/cl0.png
+11-01 14:03:41.764 26069 28032 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /x1/bg/sun0.png
+11-01 14:03:41.766 26069 28041 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /offline/packs/d02.pak
+11-01 14:03:41.770 26069 28041 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /offline/packs/d02.pak
+11-01 14:03:41.773 26069 28041 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /offline/packs/d02.pak
+11-01 14:03:41.777 26069 28041 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /offline/packs/d02.pak
+11-01 14:03:41.782 26069 28041 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /offline/packs/d02.pak
+11-01 14:03:41.786 26069 28041 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /offline/packs/d02.pak
+11-01 14:03:41.892 26069 28041 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /offline/packs/d02.pak
+11-01 14:03:41.899 26069 28041 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /offline/packs/d02.pak
+11-01 14:03:41.905 26069 28041 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /offline/packs/d02.pak
+11-01 14:03:41.909 26069 28041 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /offline/packs/d02.pak
+11-01 14:03:41.913 26069 28041 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /offline/packs/d02.pak
+11-01 14:03:41.917 26069 28041 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /offline/packs/d02.pak
+11-01 14:03:41.922 26069 28032 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /x1/x1/Small2241
+11-01 14:03:41.922 26069 28032 W javax.microedition.shell.AppClassLoader: Can't load res: /x1/x1/Small2241
+11-01 14:03:41.925 26069 28041 D RecordStore: RecordStore ninja_school_offline_v3 opened
+11-01 14:03:41.926 26069 28041 D javax.microedition.rms.impl.RecordStoreImpl: Record ninja_school_offline_v3.1 set
+11-01 14:03:41.926 26069 28041 D javax.microedition.rms.impl.RecordStoreImpl: RecordStore ninja_school_offline_v3 closed
+11-01 14:03:41.945 26069 28032 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /x1/x1/Small2240
+11-01 14:03:41.946 26069 28032 W javax.microedition.shell.AppClassLoader: Can't load res: /x1/x1/Small2240
+11-01 14:03:41.991 26069 28043 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /offline/packs/s19.pak
+11-01 14:03:41.992 26069 28042 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /offline/packs/s16.pak
+11-01 14:03:42.311 26069 27471 I .j2me1.fpsboost: Method exceeds compiler instruction limit: 17928 in void m.f(et)
+11-01 14:03:42.472 26069 28041 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /offline/packs/d02.pak
+11-01 14:03:42.479 26069 28041 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /offline/packs/d02.pak
+11-01 14:03:42.484 26069 28041 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /offline/packs/d02.pak
+11-01 14:03:42.489 26069 28041 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /offline/packs/d02.pak
+11-01 14:03:42.493 26069 28041 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /offline/packs/d02.pak
+11-01 14:03:42.497 26069 28041 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /offline/packs/d02.pak
+11-01 14:03:42.503 26069 28041 D RecordStore: RecordStore ninja_school_offline_v3 opened
+11-01 14:03:42.505 26069 28041 D javax.microedition.rms.impl.RecordStoreImpl: Record ninja_school_offline_v3.1 set
+11-01 14:03:42.505 26069 28041 D javax.microedition.rms.impl.RecordStoreImpl: RecordStore ninja_school_offline_v3 closed
+11-01 14:03:42.934 26069 27471 I .j2me1.fpsboost: Method exceeds compiler instruction limit: 17928 in void m.f(et)
+11-01 14:03:43.168 26069 28041 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /offline/packs/d02.pak
+11-01 14:03:43.176 26069 28041 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /offline/packs/d02.pak
+11-01 14:03:43.180 26069 28041 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /offline/packs/d02.pak
+11-01 14:03:43.184 26069 28041 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /offline/packs/d02.pak
+11-01 14:03:43.188 26069 28041 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /offline/packs/d02.pak
+11-01 14:03:43.192 26069 28041 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /offline/packs/d02.pak
+11-01 14:03:43.198 26069 28041 D RecordStore: RecordStore ninja_school_offline_v3 opened
+11-01 14:03:43.199 26069 28041 D javax.microedition.rms.impl.RecordStoreImpl: Record ninja_school_offline_v3.1 set
+11-01 14:03:43.199 26069 28041 D javax.microedition.rms.impl.RecordStoreImpl: RecordStore ninja_school_offline_v3 closed
+11-01 14:03:43.292 26069 28041 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /offline/packs/d02.pak
+11-01 14:03:43.301 26069 28041 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /offline/packs/d02.pak
+11-01 14:03:43.306 26069 28041 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /offline/packs/d02.pak
+11-01 14:03:43.311 26069 28041 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /offline/packs/d02.pak
+11-01 14:03:43.315 26069 28041 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /offline/packs/d02.pak
+11-01 14:03:43.318 26069 28041 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /offline/packs/d02.pak
+11-01 14:03:43.325 26069 28041 D RecordStore: RecordStore ninja_school_offline_v3 opened
+11-01 14:03:43.327 26069 28041 D javax.microedition.rms.impl.RecordStoreImpl: Record ninja_school_offline_v3.1 set
+11-01 14:03:43.327 26069 28041 D javax.microedition.rms.impl.RecordStoreImpl: RecordStore ninja_school_offline_v3 closed
+11-01 14:03:43.417 26069 28041 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /offline/packs/d02.pak
+11-01 14:03:43.422 26069 28041 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /offline/packs/d02.pak
+11-01 14:03:43.426 26069 28041 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /offline/packs/d02.pak
+11-01 14:03:43.430 26069 28041 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /offline/packs/d02.pak
+11-01 14:03:43.434 26069 28041 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /offline/packs/d02.pak
+11-01 14:03:43.437 26069 28041 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /offline/packs/d02.pak
+11-01 14:03:43.444 26069 28041 D RecordStore: RecordStore ninja_school_offline_v3 opened
+11-01 14:03:43.445 26069 28041 D javax.microedition.rms.impl.RecordStoreImpl: Record ninja_school_offline_v3.1 set
+11-01 14:03:43.445 26069 28041 D javax.microedition.rms.impl.RecordStoreImpl: RecordStore ninja_school_offline_v3 closed
+11-01 14:03:43.529 26069 27471 I .j2me1.fpsboost: Method exceeds compiler instruction limit: 17928 in void m.f(et)
+11-01 14:03:43.543 26069 28041 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /offline/packs/d02.pak
+11-01 14:03:43.552 26069 28041 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /offline/packs/d02.pak
+11-01 14:03:43.557 26069 28041 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /offline/packs/d02.pak
+11-01 14:03:43.562 26069 28041 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /offline/packs/d02.pak
+11-01 14:03:43.565 26069 28041 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /offline/packs/d02.pak
+11-01 14:03:43.569 26069 28041 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /offline/packs/d02.pak
+11-01 14:03:43.576 26069 28041 D RecordStore: RecordStore ninja_school_offline_v3 opened
+11-01 14:03:43.577 26069 28041 D javax.microedition.rms.impl.RecordStoreImpl: Record ninja_school_offline_v3.1 set
+11-01 14:03:43.577 26069 28041 D javax.microedition.rms.impl.RecordStoreImpl: RecordStore ninja_school_offline_v3 closed
+11-01 14:03:43.669 26069 28041 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /offline/packs/d02.pak
+11-01 14:03:43.675 26069 28041 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /offline/packs/d02.pak
+11-01 14:03:43.680 26069 28041 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /offline/packs/d02.pak
+11-01 14:03:43.684 26069 28041 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /offline/packs/d02.pak
+11-01 14:03:43.688 26069 28041 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /offline/packs/d02.pak
+11-01 14:03:43.692 26069 28041 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /offline/packs/d02.pak
+11-01 14:03:43.701 26069 28041 D RecordStore: RecordStore ninja_school_offline_v3 opened
+11-01 14:03:43.702 26069 28041 D javax.microedition.rms.impl.RecordStoreImpl: Record ninja_school_offline_v3.1 set
+11-01 14:03:43.702 26069 28041 D javax.microedition.rms.impl.RecordStoreImpl: RecordStore ninja_school_offline_v3 closed
+11-01 14:03:43.794 26069 28041 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /offline/packs/d02.pak
+11-01 14:03:43.803 26069 28041 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /offline/packs/d02.pak
+11-01 14:03:43.808 26069 28041 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /offline/packs/d02.pak
+11-01 14:03:43.812 26069 28041 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /offline/packs/d02.pak
+11-01 14:03:43.816 26069 28041 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /offline/packs/d02.pak
+11-01 14:03:43.820 26069 28041 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /offline/packs/d02.pak
+11-01 14:03:43.828 26069 28041 D RecordStore: RecordStore ninja_school_offline_v3 opened
+11-01 14:03:43.830 26069 28041 D javax.microedition.rms.impl.RecordStoreImpl: Record ninja_school_offline_v3.1 set
+11-01 14:03:43.830 26069 28041 D javax.microedition.rms.impl.RecordStoreImpl: RecordStore ninja_school_offline_v3 closed
+11-01 14:03:43.920 26069 28041 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /offline/packs/d02.pak
+11-01 14:03:43.927 26069 28041 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /offline/packs/d02.pak
+11-01 14:03:43.933 26069 28041 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /offline/packs/d02.pak
+11-01 14:03:43.937 26069 28041 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /offline/packs/d02.pak
+11-01 14:03:43.941 26069 28041 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /offline/packs/d02.pak
+11-01 14:03:43.945 26069 28041 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /offline/packs/d02.pak
+11-01 14:03:43.952 26069 28041 D RecordStore: RecordStore ninja_school_offline_v3 opened
+11-01 14:03:43.953 26069 28041 D javax.microedition.rms.impl.RecordStoreImpl: Record ninja_school_offline_v3.1 set
+11-01 14:03:43.953 26069 28041 D javax.microedition.rms.impl.RecordStoreImpl: RecordStore ninja_school_offline_v3 closed
+11-01 14:03:44.045 26069 28041 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /offline/packs/d02.pak
+11-01 14:03:44.050 26069 28041 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /offline/packs/d02.pak
+11-01 14:03:44.055 26069 28041 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /offline/packs/d02.pak
+11-01 14:03:44.059 26069 28041 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /offline/packs/d02.pak
+11-01 14:03:44.062 26069 28041 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /offline/packs/d02.pak
+11-01 14:03:44.067 26069 28041 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /offline/packs/d02.pak
+11-01 14:03:44.074 26069 28041 D RecordStore: RecordStore ninja_school_offline_v3 opened
+11-01 14:03:44.076 26069 28041 D javax.microedition.rms.impl.RecordStoreImpl: Record ninja_school_offline_v3.1 set
+11-01 14:03:44.076 26069 28041 D javax.microedition.rms.impl.RecordStoreImpl: RecordStore ninja_school_offline_v3 closed
+11-01 14:03:44.171 26069 28041 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /offline/packs/d02.pak
+11-01 14:03:44.179 26069 28041 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /offline/packs/d02.pak
+11-01 14:03:44.184 26069 28041 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /offline/packs/d02.pak
+11-01 14:03:44.187 26069 28041 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /offline/packs/d02.pak
+11-01 14:03:44.191 26069 28041 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /offline/packs/d02.pak
+11-01 14:03:44.195 26069 28041 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /offline/packs/d02.pak
+11-01 14:03:44.201 26069 28041 D RecordStore: RecordStore ninja_school_offline_v3 opened
+11-01 14:03:44.203 26069 28041 D javax.microedition.rms.impl.RecordStoreImpl: Record ninja_school_offline_v3.1 set
+11-01 14:03:44.203 26069 28041 D javax.microedition.rms.impl.RecordStoreImpl: RecordStore ninja_school_offline_v3 closed
+11-01 14:03:44.297 26069 28041 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /offline/packs/d02.pak
+11-01 14:03:44.301 26069 28041 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /offline/packs/d02.pak
+11-01 14:03:44.305 26069 28041 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /offline/packs/d02.pak
+11-01 14:03:44.309 26069 28041 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /offline/packs/d02.pak
+11-01 14:03:44.312 26069 28041 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /offline/packs/d02.pak
+11-01 14:03:44.315 26069 28041 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /offline/packs/d02.pak
+11-01 14:03:44.323 26069 28041 D RecordStore: RecordStore ninja_school_offline_v3 opened
+11-01 14:03:44.324 26069 28041 D javax.microedition.rms.impl.RecordStoreImpl: Record ninja_school_offline_v3.1 set
+11-01 14:03:44.324 26069 28041 D javax.microedition.rms.impl.RecordStoreImpl: RecordStore ninja_school_offline_v3 closed
+11-01 14:03:44.423 26069 26069 I MIUIInput: [MotionEvent] ViewRootImpl windowName 'com.nst.j2me1.fpsboost/javax.microedition.shell.MicroActivity', { action=ACTION_DOWN, id[0]=0, pointerCount=1, eventTime=254523595, downTime=254523595, phoneEventTime=1793516624422 } moveCount:0
+11-01 14:03:44.424 26069 26069 D VRI[MicroActivity]: getMiuiFreeformStackInfo mTmpFrames.miuiFreeFormStackInfo: null
+11-01 14:03:44.425 26069 28041 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /offline/packs/d02.pak
+11-01 14:03:44.427 26069 27471 I .j2me1.fpsboost: Method exceeds compiler instruction limit: 17928 in void m.f(et)
+11-01 14:03:44.430 26069 28041 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /offline/packs/d02.pak
+11-01 14:03:44.434 26069 28041 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /offline/packs/d02.pak
+11-01 14:03:44.438 26069 28041 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /offline/packs/d02.pak
+11-01 14:03:44.442 26069 28041 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /offline/packs/d02.pak
+11-01 14:03:44.445 26069 28041 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /offline/packs/d02.pak
+11-01 14:03:44.453 26069 28041 D RecordStore: RecordStore ninja_school_offline_v3 opened
+11-01 14:03:44.455 26069 28041 D javax.microedition.rms.impl.RecordStoreImpl: Record ninja_school_offline_v3.1 set
+11-01 14:03:44.455 26069 28041 D javax.microedition.rms.impl.RecordStoreImpl: RecordStore ninja_school_offline_v3 closed
+11-01 14:03:44.495 26069 26069 I MIUIInput: [MotionEvent] ViewRootImpl windowName 'com.nst.j2me1.fpsboost/javax.microedition.shell.MicroActivity', { action=ACTION_UP, id[0]=0, pointerCount=1, eventTime=254523666, downTime=254523595, phoneEventTime=1793516624493 } moveCount:0
+11-01 14:03:44.521 26069 26069 I AbsListViewStubImpl: com.nst.j2me1.fpsboost, version: 3.0-nst-fps, Enable Prefetch: false
+11-01 14:03:44.523 26069 27599 D HWUI    : TAG_DDRE, CanvasContext::setDdreActivities: 
+11-01 14:03:44.523 26069 26069 I ForceDarkHelperStubImpl: setViewRootImplForceDark: false for javax.microedition.shell.MicroActivity@3e89cb, reason: AppDarkModeEnable
+11-01 14:03:44.528 26069 26069 W InsetsSource: Has no intersection or mTmpFrame.height(), return Insets.NONE mTmpFrame.height() =0 hasIntersection =false
+11-01 14:03:44.528 26069 26069 W InsetsSource: Has no intersection or mTmpFrame.height(), return Insets.NONE mTmpFrame.height() =0 hasIntersection =false
+11-01 14:03:44.534 26069 26069 W InsetsSource: Has no intersection or mTmpFrame.height(), return Insets.NONE mTmpFrame.height() =0 hasIntersection =false
+11-01 14:03:44.534 26069 26069 W InsetsSource: Has no intersection or mTmpFrame.height(), return Insets.NONE mTmpFrame.height() =0 hasIntersection =false
+11-01 14:03:44.534 26069 26069 W InsetsSource: Has no intersection or mTmpFrame.height(), return Insets.NONE mTmpFrame.height() =0 hasIntersection =false
+11-01 14:03:44.534 26069 26069 W InsetsSource: Has no intersection or mTmpFrame.height(), return Insets.NONE mTmpFrame.height() =0 hasIntersection =false
+11-01 14:03:44.534 26069 26069 W InsetsSource: Has no intersection or mTmpFrame.height(), return Insets.NONE mTmpFrame.height() =0 hasIntersection =false
+11-01 14:03:44.534 26069 26069 W InsetsSource: Has no intersection or mTmpFrame.height(), return Insets.NONE mTmpFrame.height() =0 hasIntersection =false
+11-01 14:03:44.534 26069 26069 W InsetsSource: Has no intersection or mTmpFrame.height(), return Insets.NONE mTmpFrame.height() =0 hasIntersection =false
+11-01 14:03:44.534 26069 26069 W InsetsSource: Has no intersection or mTmpFrame.height(), return Insets.NONE mTmpFrame.height() =0 hasIntersection =false
+11-01 14:03:44.534 26069 26069 W InsetsSource: Has no intersection or mTmpFrame.height(), return Insets.NONE mTmpFrame.height() =0 hasIntersection =false
+11-01 14:03:44.537 26069 26069 W InsetsSource: Has no intersection or mTmpFrame.height(), return Insets.NONE mTmpFrame.height() =0 hasIntersection =false
+11-01 14:03:44.537 26069 26069 W InsetsSource: Has no intersection or mTmpFrame.height(), return Insets.NONE mTmpFrame.height() =0 hasIntersection =false
+11-01 14:03:44.537 26069 26069 W InsetsSource: Has no intersection or mTmpFrame.height(), return Insets.NONE mTmpFrame.height() =0 hasIntersection =false
+11-01 14:03:44.537 26069 26069 W InsetsSource: Has no intersection or mTmpFrame.height(), return Insets.NONE mTmpFrame.height() =0 hasIntersection =false
+11-01 14:03:44.537 26069 26069 W InsetsSource: Has no intersection or mTmpFrame.height(), return Insets.NONE mTmpFrame.height() =0 hasIntersection =false
+11-01 14:03:44.538 26069 26069 I ForceDarkHelperStubImpl: setViewRootImplForceDark: false for javax.microedition.shell.MicroActivity@3e89cb, reason: AppDarkModeEnable
+11-01 14:03:44.538 26069 26069 W InsetsSource: Has no intersection or mTmpFrame.height(), return Insets.NONE mTmpFrame.height() =0 hasIntersection =false
+11-01 14:03:44.538 26069 26069 W InsetsSource: Has no intersection or mTmpFrame.height(), return Insets.NONE mTmpFrame.height() =0 hasIntersection =false
+11-01 14:03:44.538 26069 26069 W InsetsSource: Has no intersection or mTmpFrame.height(), return Insets.NONE mTmpFrame.height() =0 hasIntersection =false
+11-01 14:03:44.538 26069 26069 W InsetsSource: Has no intersection or mTmpFrame.height(), return Insets.NONE mTmpFrame.height() =0 hasIntersection =false
+11-01 14:03:44.538 26069 26069 W InsetsSource: Has no intersection or mTmpFrame.height(), return Insets.NONE mTmpFrame.height() =0 hasIntersection =false
+11-01 14:03:44.538 26069 26069 W InsetsSource: Has no intersection or mTmpFrame.height(), return Insets.NONE mTmpFrame.height() =0 hasIntersection =false
+11-01 14:03:44.538 26069 26069 W InsetsSource: Has no intersection or mTmpFrame.height(), return Insets.NONE mTmpFrame.height() =0 hasIntersection =false
+11-01 14:03:44.538 26069 26069 W InsetsSource: Has no intersection or mTmpFrame.height(), return Insets.NONE mTmpFrame.height() =0 hasIntersection =false
+11-01 14:03:44.538 26069 26069 W InsetsSource: Has no intersection or mTmpFrame.height(), return Insets.NONE mTmpFrame.height() =0 hasIntersection =false
+11-01 14:03:44.538 26069 26069 W InsetsSource: Has no intersection or mTmpFrame.height(), return Insets.NONE mTmpFrame.height() =0 hasIntersection =false
+11-01 14:03:44.538 26069 26069 W InsetsSource: Has no intersection or mTmpFrame.height(), return Insets.NONE mTmpFrame.height() =0 hasIntersection =false
+11-01 14:03:44.538 26069 26069 W InsetsSource: Has no intersection or mTmpFrame.height(), return Insets.NONE mTmpFrame.height() =0 hasIntersection =false
+11-01 14:03:44.538 26069 26069 W InsetsSource: Has no intersection or mTmpFrame.height(), return Insets.NONE mTmpFrame.height() =0 hasIntersection =false
+11-01 14:03:44.538 26069 26069 W InsetsSource: Has no intersection or mTmpFrame.height(), return Insets.NONE mTmpFrame.height() =0 hasIntersection =false
+11-01 14:03:44.538 26069 26069 W InsetsSource: Has no intersection or mTmpFrame.height(), return Insets.NONE mTmpFrame.height() =0 hasIntersection =false
+11-01 14:03:44.548 26069 28041 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /offline/packs/d02.pak
+11-01 14:03:44.551 26069 26069 D VRI[PopupWindow:8ca6f59]: vri.Setup new sync=wmsSync-VRI[PopupWindow:8ca6f59]#24
+11-01 14:03:44.552 26069 28041 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /offline/packs/d02.pak
+11-01 14:03:44.553 26069 26069 D VRI[PopupWindow:8ca6f59]: vri.reportDrawFinished 0 0 Rect(138, 144 - 1144, 1050)
+11-01 14:03:44.554 26069 27599 D HWUI    : [HWUI] Flag vulkan_enhance_pipeline_cache enabled
+11-01 14:03:44.554 26069 27599 D HWUI    : [HWUI] EnhanceVkPipelineCache is enabled
+11-01 14:03:44.554 26069 27599 D HWUI    : [HWUI] Flag ddre enabled
+11-01 14:03:44.554 26069 26069 D VRI[PopupWindow:8ca6f59]: vri.Setup new sync=wmsSync-VRI[PopupWindow:8ca6f59]#26
+11-01 14:03:44.557 26069 28041 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /offline/packs/d02.pak
+11-01 14:03:44.557 26069 27599 D VRI[PopupWindow:8ca6f59]: vri.reportDrawFinished 0 0 Rect(138, 144 - 1144, 1050)
+11-01 14:03:44.561 26069 28041 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /offline/packs/d02.pak
+11-01 14:03:44.564 26069 28041 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /offline/packs/d02.pak
+11-01 14:03:44.568 26069 28041 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /offline/packs/d02.pak
+11-01 14:03:44.575 26069 28041 D RecordStore: RecordStore ninja_school_offline_v3 opened
+11-01 14:03:44.576 26069 28041 D javax.microedition.rms.impl.RecordStoreImpl: Record ninja_school_offline_v3.1 set
+11-01 14:03:44.576 26069 28041 D javax.microedition.rms.impl.RecordStoreImpl: RecordStore ninja_school_offline_v3 closed
+11-01 14:03:44.674 26069 28041 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /offline/packs/d02.pak
+11-01 14:03:44.680 26069 28041 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /offline/packs/d02.pak
+11-01 14:03:44.684 26069 28041 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /offline/packs/d02.pak
+11-01 14:03:44.688 26069 28041 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /offline/packs/d02.pak
+11-01 14:03:44.692 26069 28041 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /offline/packs/d02.pak
+11-01 14:03:44.696 26069 28041 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /offline/packs/d02.pak
+11-01 14:03:44.702 26069 28041 D RecordStore: RecordStore ninja_school_offline_v3 opened
+11-01 14:03:44.703 26069 28041 D javax.microedition.rms.impl.RecordStoreImpl: Record ninja_school_offline_v3.1 set
+11-01 14:03:44.703 26069 28041 D javax.microedition.rms.impl.RecordStoreImpl: RecordStore ninja_school_offline_v3 closed
+11-01 14:03:44.761 26069 28041 D RecordStore: RecordStore ninja_school_offline_v3 opened
+11-01 14:03:44.762 26069 28041 D javax.microedition.rms.impl.RecordStoreImpl: Record ninja_school_offline_v3.1 set
+11-01 14:03:44.762 26069 28041 D javax.microedition.rms.impl.RecordStoreImpl: RecordStore ninja_school_offline_v3 closed
+11-01 14:03:44.762 26069 28041 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /offline/packs/d00.pak
+11-01 14:03:44.764 26069 28041 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /offline/packs/d07.pak
+11-01 14:03:44.775 26069 28032 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /x1/bg/bg00.png
+11-01 14:03:44.777 26069 28032 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /x1/bg/bg10.png
+11-01 14:03:44.778 26069 28032 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /x1/bg/bg20.png
+11-01 14:03:44.779 26069 28032 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /x1/bg/bg30.png
+11-01 14:03:44.780 26069 28032 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /x1/bg/cl0.png
+11-01 14:03:44.781 26069 28032 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /x1/bg/sun0.png
+11-01 14:03:44.808 26069 28041 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /offline/packs/d02.pak
+11-01 14:03:44.815 26069 28041 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /offline/packs/d02.pak
+11-01 14:03:44.820 26069 28041 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /offline/packs/d02.pak
+11-01 14:03:44.824 26069 28041 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /offline/packs/d02.pak
+11-01 14:03:44.828 26069 28041 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /offline/packs/d02.pak
+11-01 14:03:44.832 26069 28041 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /offline/packs/d02.pak
+11-01 14:03:44.839 26069 28041 D RecordStore: RecordStore ninja_school_offline_v3 opened
+11-01 14:03:44.840 26069 28041 D javax.microedition.rms.impl.RecordStoreImpl: Record ninja_school_offline_v3.1 set
+11-01 14:03:44.840 26069 28041 D javax.microedition.rms.impl.RecordStoreImpl: RecordStore ninja_school_offline_v3 closed
+11-01 14:03:44.934 26069 28041 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /offline/packs/d02.pak
+11-01 14:03:44.939 26069 28041 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /offline/packs/d02.pak
+11-01 14:03:44.945 26069 28041 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /offline/packs/d02.pak
+11-01 14:03:44.948 26069 28041 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /offline/packs/d02.pak
+11-01 14:03:44.952 26069 28041 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /offline/packs/d02.pak
+11-01 14:03:44.956 26069 28041 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /offline/packs/d02.pak
+11-01 14:03:44.963 26069 28041 D RecordStore: RecordStore ninja_school_offline_v3 opened
+11-01 14:03:44.964 26069 28041 D javax.microedition.rms.impl.RecordStoreImpl: Record ninja_school_offline_v3.1 set
+11-01 14:03:44.964 26069 28041 D javax.microedition.rms.impl.RecordStoreImpl: RecordStore ninja_school_offline_v3 closed
+11-01 14:03:45.060 26069 28041 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /offline/packs/d02.pak
+11-01 14:03:45.066 26069 28041 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /offline/packs/d02.pak
+11-01 14:03:45.072 26069 28041 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /offline/packs/d02.pak
+11-01 14:03:45.076 26069 28041 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /offline/packs/d02.pak
+11-01 14:03:45.080 26069 28041 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /offline/packs/d02.pak
+11-01 14:03:45.084 26069 28041 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /offline/packs/d02.pak
+11-01 14:03:45.092 26069 28041 D RecordStore: RecordStore ninja_school_offline_v3 opened
+11-01 14:03:45.093 26069 28041 D javax.microedition.rms.impl.RecordStoreImpl: Record ninja_school_offline_v3.1 set
+11-01 14:03:45.093 26069 28041 D javax.microedition.rms.impl.RecordStoreImpl: RecordStore ninja_school_offline_v3 closed
+11-01 14:03:45.185 26069 28041 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /offline/packs/d02.pak
+11-01 14:03:45.191 26069 28041 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /offline/packs/d02.pak
+11-01 14:03:45.195 26069 28041 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /offline/packs/d02.pak
+11-01 14:03:45.199 26069 28041 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /offline/packs/d02.pak
+11-01 14:03:45.203 26069 28041 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /offline/packs/d02.pak
+11-01 14:03:45.206 26069 28041 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /offline/packs/d02.pak
+11-01 14:03:45.213 26069 28041 D RecordStore: RecordStore ninja_school_offline_v3 opened
+11-01 14:03:45.214 26069 28041 D javax.microedition.rms.impl.RecordStoreImpl: Record ninja_school_offline_v3.1 set
+11-01 14:03:45.214 26069 28041 D javax.microedition.rms.impl.RecordStoreImpl: RecordStore ninja_school_offline_v3 closed
+11-01 14:03:45.310 26069 28041 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /offline/packs/d02.pak
+11-01 14:03:45.317 26069 28041 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /offline/packs/d02.pak
+11-01 14:03:45.322 26069 28041 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /offline/packs/d02.pak
+11-01 14:03:45.326 26069 28041 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /offline/packs/d02.pak
+11-01 14:03:45.330 26069 28041 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /offline/packs/d02.pak
+11-01 14:03:45.334 26069 28041 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /offline/packs/d02.pak
+11-01 14:03:45.340 26069 28041 D RecordStore: RecordStore ninja_school_offline_v3 opened
+11-01 14:03:45.342 26069 28041 D javax.microedition.rms.impl.RecordStoreImpl: Record ninja_school_offline_v3.1 set
+11-01 14:03:45.342 26069 28041 D javax.microedition.rms.impl.RecordStoreImpl: RecordStore ninja_school_offline_v3 closed
+11-01 14:03:45.372 26069 27471 I .j2me1.fpsboost: Method exceeds compiler instruction limit: 17928 in void m.f(et)
+11-01 14:03:45.436 26069 28041 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /offline/packs/d02.pak
+11-01 14:03:45.446 26069 28041 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /offline/packs/d02.pak
+11-01 14:03:45.452 26069 28041 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /offline/packs/d02.pak
+11-01 14:03:45.457 26069 28041 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /offline/packs/d02.pak
+11-01 14:03:45.461 26069 28041 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /offline/packs/d02.pak
+11-01 14:03:45.464 26069 28041 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /offline/packs/d02.pak
+11-01 14:03:45.471 26069 28041 D RecordStore: RecordStore ninja_school_offline_v3 opened
+11-01 14:03:45.472 26069 28041 D javax.microedition.rms.impl.RecordStoreImpl: Record ninja_school_offline_v3.1 set
+11-01 14:03:45.472 26069 28041 D javax.microedition.rms.impl.RecordStoreImpl: RecordStore ninja_school_offline_v3 closed
+11-01 14:03:45.562 26069 28041 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /offline/packs/d02.pak
+11-01 14:03:45.568 26069 28041 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /offline/packs/d02.pak
+11-01 14:03:45.573 26069 28041 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /offline/packs/d02.pak
+11-01 14:03:45.578 26069 28041 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /offline/packs/d02.pak
+11-01 14:03:45.582 26069 28041 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /offline/packs/d02.pak
+11-01 14:03:45.585 26069 28041 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /offline/packs/d02.pak
+11-01 14:03:45.591 26069 27471 I .j2me1.fpsboost: Method exceeds compiler instruction limit: 26092 in void aa.a(cf)
+11-01 14:03:45.592 26069 28041 D RecordStore: RecordStore ninja_school_offline_v3 opened
+11-01 14:03:45.593 26069 28041 D javax.microedition.rms.impl.RecordStoreImpl: Record ninja_school_offline_v3.1 set
+11-01 14:03:45.593 26069 28041 D javax.microedition.rms.impl.RecordStoreImpl: RecordStore ninja_school_offline_v3 closed
+11-01 14:03:45.687 26069 28041 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /offline/packs/d02.pak
+11-01 14:03:45.696 26069 28041 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /offline/packs/d02.pak
+11-01 14:03:45.700 26069 28041 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /offline/packs/d02.pak
+11-01 14:03:45.705 26069 28041 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /offline/packs/d02.pak
+11-01 14:03:45.708 26069 28041 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /offline/packs/d02.pak
+11-01 14:03:45.712 26069 28041 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /offline/packs/d02.pak
+11-01 14:03:45.718 26069 28041 D RecordStore: RecordStore ninja_school_offline_v3 opened
+11-01 14:03:45.719 26069 28041 D javax.microedition.rms.impl.RecordStoreImpl: Record ninja_school_offline_v3.1 set
+11-01 14:03:45.719 26069 28041 D javax.microedition.rms.impl.RecordStoreImpl: RecordStore ninja_school_offline_v3 closed
+11-01 14:03:45.812 26069 28041 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /offline/packs/d02.pak
+11-01 14:03:45.820 26069 28041 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /offline/packs/d02.pak
+11-01 14:03:45.826 26069 28041 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /offline/packs/d02.pak
+11-01 14:03:45.830 26069 28041 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /offline/packs/d02.pak
+11-01 14:03:45.834 26069 28041 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /offline/packs/d02.pak
+11-01 14:03:45.838 26069 28041 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /offline/packs/d02.pak
+11-01 14:03:45.845 26069 28041 D RecordStore: RecordStore ninja_school_offline_v3 opened
+11-01 14:03:45.846 26069 28041 D javax.microedition.rms.impl.RecordStoreImpl: Record ninja_school_offline_v3.1 set
+11-01 14:03:45.846 26069 28041 D javax.microedition.rms.impl.RecordStoreImpl: RecordStore ninja_school_offline_v3 closed
+11-01 14:03:45.938 26069 28041 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /offline/packs/d02.pak
+11-01 14:03:45.947 26069 28041 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /offline/packs/d02.pak
+11-01 14:03:45.952 26069 28041 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /offline/packs/d02.pak
+11-01 14:03:45.956 26069 28041 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /offline/packs/d02.pak
+11-01 14:03:45.959 26069 28041 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /offline/packs/d02.pak
+11-01 14:03:45.963 26069 28041 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /offline/packs/d02.pak
+11-01 14:03:45.969 26069 28041 D RecordStore: RecordStore ninja_school_offline_v3 opened
+11-01 14:03:45.970 26069 28041 D javax.microedition.rms.impl.RecordStoreImpl: Record ninja_school_offline_v3.1 set
+11-01 14:03:45.970 26069 28041 D javax.microedition.rms.impl.RecordStoreImpl: RecordStore ninja_school_offline_v3 closed
+11-01 14:03:45.978 26069 28041 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /offline/packs/d00.pak
+11-01 14:03:46.063 26069 28041 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /offline/packs/d02.pak
+11-01 14:03:46.073 26069 28041 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /offline/packs/d02.pak
+11-01 14:03:46.078 26069 28041 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /offline/packs/d02.pak
+11-01 14:03:46.083 26069 28041 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /offline/packs/d02.pak
+11-01 14:03:46.086 26069 28041 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /offline/packs/d02.pak
+11-01 14:03:46.090 26069 28041 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /offline/packs/d02.pak
+11-01 14:03:46.097 26069 28041 D RecordStore: RecordStore ninja_school_offline_v3 opened
+11-01 14:03:46.098 26069 28041 D javax.microedition.rms.impl.RecordStoreImpl: Record ninja_school_offline_v3.1 set
+11-01 14:03:46.098 26069 28041 D javax.microedition.rms.impl.RecordStoreImpl: RecordStore ninja_school_offline_v3 closed
+11-01 14:03:46.141 26069 27471 I .j2me1.fpsboost: Method exceeds compiler instruction limit: 17928 in void m.f(et)
+11-01 14:03:46.190 26069 28041 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /offline/packs/d02.pak
+11-01 14:03:46.195 26069 28041 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /offline/packs/d02.pak
+11-01 14:03:46.200 26069 28041 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /offline/packs/d02.pak
+11-01 14:03:46.204 26069 28041 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /offline/packs/d02.pak
+11-01 14:03:46.208 26069 28041 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /offline/packs/d02.pak
+11-01 14:03:46.213 26069 28041 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /offline/packs/d02.pak
+11-01 14:03:46.220 26069 28041 D RecordStore: RecordStore ninja_school_offline_v3 opened
+11-01 14:03:46.221 26069 28041 D javax.microedition.rms.impl.RecordStoreImpl: Record ninja_school_offline_v3.1 set
+11-01 14:03:46.221 26069 28041 D javax.microedition.rms.impl.RecordStoreImpl: RecordStore ninja_school_offline_v3 closed
+11-01 14:03:46.228 26069 28041 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /offline/packs/d00.pak
+11-01 14:03:46.315 26069 28041 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /offline/packs/d02.pak
+11-01 14:03:46.321 26069 28041 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /offline/packs/d02.pak
+11-01 14:03:46.325 26069 28041 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /offline/packs/d02.pak
+11-01 14:03:46.329 26069 28041 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /offline/packs/d02.pak
+11-01 14:03:46.333 26069 28041 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /offline/packs/d02.pak
+11-01 14:03:46.337 26069 28041 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /offline/packs/d02.pak
+11-01 14:03:46.343 26069 28041 D RecordStore: RecordStore ninja_school_offline_v3 opened
+11-01 14:03:46.344 26069 28041 D javax.microedition.rms.impl.RecordStoreImpl: Record ninja_school_offline_v3.1 set
+11-01 14:03:46.344 26069 28041 D javax.microedition.rms.impl.RecordStoreImpl: RecordStore ninja_school_offline_v3 closed
+11-01 14:03:46.441 26069 28041 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /offline/packs/d02.pak
+11-01 14:03:46.450 26069 28041 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /offline/packs/d02.pak
+11-01 14:03:46.455 26069 28041 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /offline/packs/d02.pak
+11-01 14:03:46.459 26069 28041 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /offline/packs/d02.pak
+11-01 14:03:46.462 26069 28041 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /offline/packs/d02.pak
+11-01 14:03:46.466 26069 28041 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /offline/packs/d02.pak
+11-01 14:03:46.473 26069 28041 D RecordStore: RecordStore ninja_school_offline_v3 opened
+11-01 14:03:46.474 26069 28041 D javax.microedition.rms.impl.RecordStoreImpl: Record ninja_school_offline_v3.1 set
+11-01 14:03:46.474 26069 28041 D javax.microedition.rms.impl.RecordStoreImpl: RecordStore ninja_school_offline_v3 closed
+11-01 14:03:46.481 26069 28041 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /offline/packs/d00.pak
+11-01 14:03:46.486 26069 28043 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /offline/packs/s16.pak
+11-01 14:03:46.566 26069 28041 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /offline/packs/d02.pak
+11-01 14:03:46.573 26069 28041 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /offline/packs/d02.pak
+11-01 14:03:46.579 26069 28041 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /offline/packs/d02.pak
+11-01 14:03:46.583 26069 28041 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /offline/packs/d02.pak
+11-01 14:03:46.587 26069 28041 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /offline/packs/d02.pak
+11-01 14:03:46.591 26069 28041 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /offline/packs/d02.pak
+11-01 14:03:46.679 26069 28041 D RecordStore: RecordStore nso_offline_bots_v1 opened
+11-01 14:03:46.681 26069 28041 D javax.microedition.rms.impl.RecordStoreImpl: Record nso_offline_bots_v1.1 set
+11-01 14:03:46.681 26069 28041 D javax.microedition.rms.impl.RecordStoreImpl: RecordStore nso_offline_bots_v1 closed
+11-01 14:03:46.692 26069 28041 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /offline/packs/d02.pak
+11-01 14:03:46.699 26069 28041 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /offline/packs/d02.pak
+11-01 14:03:46.704 26069 28041 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /offline/packs/d02.pak
+11-01 14:03:46.708 26069 28041 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /offline/packs/d02.pak
+11-01 14:03:46.712 26069 28041 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /offline/packs/d02.pak
+11-01 14:03:46.715 26069 28041 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /offline/packs/d02.pak
+11-01 14:03:46.726 26069 28041 D RecordStore: RecordStore ninja_school_offline_v3 opened
+11-01 14:03:46.728 26069 28041 D javax.microedition.rms.impl.RecordStoreImpl: Record ninja_school_offline_v3.1 set
+11-01 14:03:46.728 26069 28041 D javax.microedition.rms.impl.RecordStoreImpl: RecordStore ninja_school_offline_v3 closed
+11-01 14:03:46.752 26069 28032 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /x1/x1/Small3223
+11-01 14:03:46.752 26069 28032 W javax.microedition.shell.AppClassLoader: Can't load res: /x1/x1/Small3223
+11-01 14:03:46.753 26069 28043 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /offline/packs/s20.pak
+11-01 14:03:46.859 26069 27471 I .j2me1.fpsboost: Method exceeds compiler instruction limit: 17928 in void m.f(et)
+11-01 14:03:46.985 26069 28041 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /offline/packs/d00.pak
+11-01 14:03:46.995 26069 28041 D RecordStore: RecordStore nso_offline_bots_v1 opened
+11-01 14:03:46.997 26069 28041 D javax.microedition.rms.impl.RecordStoreImpl: Record nso_offline_bots_v1.1 set
+11-01 14:03:46.997 26069 28041 D javax.microedition.rms.impl.RecordStoreImpl: RecordStore nso_offline_bots_v1 closed
+11-01 14:03:47.220 26069 28042 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /offline/packs/d02.pak
+11-01 14:03:47.221 26069 28043 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /offline/packs/s17.pak
+11-01 14:03:47.222 26069 28043 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /offline/packs/s15.pak
+11-01 14:03:47.235 26069 28032 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /x1/eff_auto/43.png
+11-01 14:03:47.235 26069 28032 W javax.microedition.shell.AppClassLoader: Can't load res: /x1/eff_auto/43.png
+11-01 14:03:47.235 26069 28042 D javax.microedition.shell.AppClassLoader: CUSTOM GET RES CALLED WITH PATH: /offline/packs/s00.pak
+11-01 14:03:47.365 26069 27471 I .j2me1.fpsboost: Method exceeds compiler instruction limit: 17928 in void m.f(et)
+11-01 14:03:47.784 26069 27471 I .j2me1.fpsboost: Method exceeds compiler instruction limit: 17928 in void m.f(et)
+11-01 14:03:47.804 26069 26069 I MIUIInput: [MotionEvent] ViewRootImpl windowName 'PopupWindow:8ca6f59', { action=ACTION_DOWN, id[0]=0, pointerCount=1, eventTime=254526976, downTime=254526976, phoneEventTime=1793516627803 } moveCount:0
+11-01 14:03:47.844 26069 26069 I MIUIInput: [MotionEvent] ViewRootImpl windowName 'PopupWindow:8ca6f59', { action=ACTION_UP, id[0]=0, pointerCount=1, eventTime=254527016, downTime=254526976, phoneEventTime=1793516627843 } moveCount:0
+11-01 14:03:47.859 26069 26069 D VRI[PopupWindow:8ca6f59]: getMiuiFreeformStackInfo mTmpFrames.miuiFreeFormStackInfo: null
