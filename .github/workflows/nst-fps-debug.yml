@@ -9,7 +9,6 @@ on:
 permissions:
   actions: read
   contents: write
-  workflows: write
 
 jobs:
   replace-repository:
@@ -49,6 +48,7 @@ jobs:
           # Exclude only generated Gradle/build outputs from the extracted artifact.
           rsync -a --delete \
             --exclude='.git/' \
+            --exclude='.github/workflows/' \
             --exclude='.gradle/' \
             --exclude='build/' \
             --exclude='*/build/' \
