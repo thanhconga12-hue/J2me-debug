@@ -267,4 +267,17 @@
     <string name="virtual_key_up" translatable="false">↑</string>
     <string name="warn_install_from_net">File will be downloaded from Internet</string>
     <string name="warning">Warning!</string>
+    <string name="menu_toggle_treo">Treo tắt màn</string>
+    <string name="treo_action_stop">Dừng</string>
+    <string name="treo_action_mode">Mode</string>
+    <string name="treo_channel_name">Treo Online</string>
+    <string name="treo_channel_desc">Giữ game chạy nền + ẩn app</string>
+    <string name="treo_noti_content_fmt">%1$s · %2$d phút</string>
+    <string name="treo_running">Treo 24/24: BẬT</string>
+    <string name="treo_stopped">Treo 24/24: TẮT</string>
+    <string name="treo_auto_started">Đã bật treo tắt màn</string>
+    <string name="treo_start_failed">Không bật được treo: hệ thống chặn dịch vụ nền. Hãy mở app rồi thử lại, hoặc bỏ tối ưu pin cho app.</string>
+    <string name="treo_mode_light">Nhẹ (CPU)</string>
+    <string name="treo_mode_wifi">Wi-Fi (CPU + Wi-Fi)</string>
+    <string name="treo_mode_strong">Mạnh (CPU + Wi-Fi HiPerf)</string>
 </resources>

@@ -154,6 +154,12 @@
             android:launchMode="singleInstance"
             android:process=":acra" />
         <service
+            android:name="ru.playsoftware.j2meloader.keepalive.TreoOnlineService"
+            android:process=":midlet"
+            android:exported="false"
+            android:stopWithTask="false"
+            android:foregroundServiceType="dataSync" />
+        <service
             android:name="androidx.appcompat.app.AppLocalesMetadataHolderService"
             android:enabled="false"
             android:exported="false">

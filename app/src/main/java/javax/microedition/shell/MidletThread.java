@@ -27,6 +27,7 @@ import javax.microedition.lcdui.Displayable;
 import javax.microedition.midlet.MIDlet;
 import javax.microedition.midlet.MIDletStateChangeException;
 import javax.microedition.util.ContextHolder;
+import ru.playsoftware.j2meloader.keepalive.TreoController;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.Lifecycle;
@@ -198,7 +199,9 @@ public class MidletThread extends HandlerThread implements Handler.Callback {
 			}
 			case ON_STOP -> {
 				activityStarted = false;
-				target.obtainMessage(PAUSE).sendToTarget();
+				if (!TreoController.shouldKeepMidletAlive()) {
+					target.obtainMessage(PAUSE).sendToTarget();
+				}
 			}
 			case ON_DESTROY -> {
 				activityStarted = false;

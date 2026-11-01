@@ -90,6 +90,7 @@ import ru.playsoftware.j2meloader.databinding.ActivityMicroBinding;
 import ru.playsoftware.j2meloader.databinding.DialogInputBinding;
 import ru.playsoftware.j2meloader.util.Constants;
 import ru.playsoftware.j2meloader.util.LogUtils;
+import ru.playsoftware.j2meloader.keepalive.TreoController;
 
 public class MicroActivity extends AppCompatActivity {
 	private static final int ORIENTATION_DEFAULT = 0;
@@ -184,6 +185,11 @@ public class MicroActivity extends AppCompatActivity {
 			}
 		});
 		loadMIDlet();
+		binding.displayableContainer.post(() -> {
+			if (TreoController.isStickyEnabled(this) && !TreoController.isRunning()) {
+				TreoController.start(this, success -> invalidateOptionsMenu());
+			}
+		});
 	}
 
 	public void lockNightMode() {
@@ -425,6 +431,8 @@ public class MicroActivity extends AppCompatActivity {
 
 	@Override
 	public boolean onPrepareOptionsMenu(Menu menu) {
+		MenuItem treoItem = menu.findItem(R.id.action_toggle_treo);
+		if (treoItem != null) treoItem.setChecked(TreoController.isStickyEnabled(this));
 		if (current instanceof Canvas) {
 			menu.setGroupVisible(R.id.action_group_canvas, true);
 			VirtualKeyboard vk = ContextHolder.getVk();
@@ -441,6 +449,10 @@ public class MicroActivity extends AppCompatActivity {
 	@Override
 	public boolean onOptionsItemSelected(@NonNull MenuItem item) {
 		int id = item.getItemId();
+		if (id == R.id.action_toggle_treo) {
+			toggleTreo();
+			return true;
+		}
 		if (id == R.id.action_exit_midlet) {
 			showExitConfirmation();
 		} else if (id == R.id.action_save_log) {
@@ -467,6 +479,22 @@ public class MicroActivity extends AppCompatActivity {
 			handleVkOptions(id);
 		}
 		return true;
+	}
+
+	private void toggleTreo() {
+		if (TreoController.isStickyEnabled(this)) {
+			TreoController.setStickyEnabled(this, false);
+			TreoController.stop(this);
+			invalidateOptionsMenu();
+			Toast.makeText(this, R.string.treo_stopped, Toast.LENGTH_SHORT).show();
+			return;
+		}
+		TreoController.setStickyEnabled(this, true);
+		TreoController.start(this, success -> {
+			invalidateOptionsMenu();
+			Toast.makeText(this, success ? R.string.treo_auto_started : R.string.treo_start_failed,
+					Toast.LENGTH_SHORT).show();
+		});
 	}
 
 	private void lockOrientation() {
