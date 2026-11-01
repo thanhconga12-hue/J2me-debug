@@ -3,8 +3,20 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <application tools:ignore="GoogleAppIndexingWarning,MissingApplicationIcon">
+        <!-- In the debug APK, MicroActivity runs in the default app process.
+             Keep the foreground keep-alive and bubble services in that same
+             process so Android protects the process that actually hosts the game. -->
         <activity
             android:name="javax.microedition.shell.MicroActivity"
+            tools:remove="android:process" />
+        <service
+            android:name="ru.playsoftware.j2meloader.keepalive.TreoOnlineService"
+            tools:remove="android:process" />
+        <service
+            android:name="ru.playsoftware.j2meloader.bubble.BubbleService"
+            tools:remove="android:process" />
+        <service
+            android:name="ru.playsoftware.j2meloader.keepalive.TreoTileService"
             tools:remove="android:process" />
     </application>
 
