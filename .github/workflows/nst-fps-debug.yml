@@ -2,6 +2,9 @@ name: Build J2ME NST FPS (debug)
 
 on:
   workflow_dispatch:
+  push:
+    branches:
+      - main
 
 permissions:
   contents: read
