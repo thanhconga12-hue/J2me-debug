@@ -124,6 +124,7 @@ public abstract class Canvas extends Displayable {
 	private static boolean parallelRedraw;
 	private static int fpsLimit;
 	private static boolean screenshotRawMode;
+	private static volatile boolean headlessMode;
 
 	private final Object bufferLock = new Object();
 	private final Object surfaceLock = new Object();
@@ -261,6 +262,7 @@ public abstract class Canvas extends Displayable {
 	}
 
 	public void onDraw(android.graphics.Canvas canvas) {
+		if (headlessMode) return;
 		if (settings.graphicsMode != 2) return; // Fix for Android Pie
 		CanvasWrapper g = canvasWrapper;
 		g.bind(canvas);
@@ -620,6 +622,18 @@ public abstract class Canvas extends Displayable {
 		requestFlushToScreen();
 	}
 
+	/**
+	 * Enable NST-style headless rendering: MIDlet logic and event processing continue,
+	 * but frames are not submitted to the Android surface/GPU.
+	 */
+	public static void setHeadlessMode(boolean enabled) {
+		headlessMode = enabled;
+	}
+
+	public static boolean isHeadlessMode() {
+		return headlessMode;
+	}
+
 	private void limitFps() {
 		int targetFps = fpsLimit;
 		if (targetFps <= 0) return;
@@ -641,6 +655,7 @@ public abstract class Canvas extends Displayable {
 
 	@SuppressLint("NewApi")
 	private boolean repaintScreen() {
+		if (headlessMode) return true;
 		Surface surface = this.surface;
 		if (surface == null || !surface.isValid()) {
 			return true;
@@ -782,6 +797,7 @@ public abstract class Canvas extends Displayable {
 
 		@Override
 		public void onDrawFrame(GL10 gl) {
+			if (headlessMode) return;
 			glDisable(GL_SCISSOR_TEST);
 			glClear(GL_COLOR_BUFFER_BIT);
 			glEnable(GL_SCISSOR_TEST);
@@ -1189,6 +1205,7 @@ public abstract class Canvas extends Displayable {
 	}
 
 	private void requestFlushToScreen() {
+		if (headlessMode) return;
 		if (settings.graphicsMode == 1) {
 			if (innerView != null) {
 				renderer.requestRender();
