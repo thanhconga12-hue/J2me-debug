@@ -33,7 +33,7 @@ public enum HideStrategy {
 
     /** Reset launcher visibility and recent-task visibility, matching the original reset path. */
     public static void reset(Context context) {
-        setLauncherAliasEnabled(context, false);
+        setLauncherAliasHidden(context, false);
         setExcludedFromRecents(context, false);
     }
 
@@ -54,12 +54,12 @@ public enum HideStrategy {
         }
     }
 
-    public static void setLauncherAliasEnabled(Context context, boolean enabled) {
+    public static void setLauncherAliasHidden(Context context, boolean hidden) {
         try {
             ComponentName alias = new ComponentName(context.getPackageName(),
                     "ru.playsoftware.j2meloader.LauncherAlias");
             context.getPackageManager().setComponentEnabledSetting(alias,
-                    enabled ? PackageManager.COMPONENT_ENABLED_STATE_ENABLED
+                    hidden ? PackageManager.COMPONENT_ENABLED_STATE_DISABLED
                             : PackageManager.COMPONENT_ENABLED_STATE_DEFAULT,
                     PackageManager.DONT_KILL_APP);
         } catch (Exception ignored) {
@@ -84,7 +84,7 @@ public enum HideStrategy {
                     STEALTH.apply(activity, false);
                     return;
                 }
-                setLauncherAliasEnabled(activity, true);
+                setLauncherAliasHidden(activity, true);
                 setExcludedFromRecents(activity, true);
                 activity.moveTaskToBack(true);
         }
