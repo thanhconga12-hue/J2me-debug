@@ -39,10 +39,7 @@ import ru.playsoftware.j2meloader.config.Config;
 
 public class FileUtils {
 	private static final String TAG = FileUtils.class.getName();
-	private static final String TEMP_JAR_NAME = "tmp.jar";
-	private static final String TEMP_JAD_NAME = "tmp.jad";
-	private static final String TEMP_KJX_NAME = "tmp.kjx";
-	private static final int BUFFER_SIZE = 1024;
+	private static final int BUFFER_SIZE = 8192;
 	public static final String ILLEGAL_FILENAME_CHARS = "[/\\\\:*?\"<>|]";
 
 	public static void copyFiles(File src, File dst, FilenameFilter filter) {
@@ -92,42 +89,94 @@ public class FileUtils {
 	}
 
 	public static File getFileForUri(Uri uri) throws IOException {
+		if (uri == null) {
+			throw new IOException("Missing source URI");
+		}
 		Context context = EmulatorApplication.getInstance();
+		if (context == null) {
+			throw new IOException("Application context is unavailable");
+		}
 		if ("file".equals(uri.getScheme())) {
 			String path = uri.getPath();
 			if (path != null) {
 				File file = new File(path);
-				if (file.exists()) {
+				if (file.isFile()) {
 					return file;
 				}
 			}
 		}
+
 		File tmpDir = new File(context.getCacheDir(), "installer");
-		if (!tmpDir.exists() && !tmpDir.mkdirs()) {
-			throw new IOException("Can't create directory: " + tmpDir);
+		if ((!tmpDir.isDirectory() && !tmpDir.mkdirs()) || !tmpDir.canWrite()) {
+			throw new IOException("Can't create writable directory: " + tmpDir);
 		}
-		File file;
+
+		File cachedFile = null;
 		try (InputStream in = context.getContentResolver().openInputStream(uri)) {
-			byte[] buf = new byte[BUFFER_SIZE];
-			int len;
-			if (in == null || (len = in.read(buf)) == -1)
-				throw new IOException("Can't read data from uri: " + uri);
-			if (buf[0] == 0x50 && buf[1] == 0x4B) {
-				file = new File(tmpDir, TEMP_JAR_NAME);
-			} else if (buf[0] == 'K' && buf[1] == 'J' && buf[2] == 'X') {
-				file = new File(tmpDir, TEMP_KJX_NAME);
-			} else {
-				file = new File(tmpDir, TEMP_JAD_NAME);
+			if (in == null) {
+				throw new IOException("Content provider returned no input stream");
 			}
-			//noinspection IOStreamConstructor
-			try (OutputStream out = new FileOutputStream(file)) {
-				out.write(buf, 0, len);
-				while ((len = in.read(buf)) > 0) {
-					out.write(buf, 0, len);
+
+			// Read the file signature safely: providers may return fewer than three bytes
+			// in the first read, or even return a zero-length read.
+			byte[] signature = new byte[3];
+			int signatureLength = 0;
+			while (signatureLength < signature.length) {
+				int count = in.read(signature, signatureLength, signature.length - signatureLength);
+				if (count < 0) {
+					break;
+				}
+				if (count == 0) {
+					int value = in.read();
+					if (value < 0) {
+						break;
+					}
+					signature[signatureLength++] = (byte) value;
+				} else {
+					signatureLength += count;
 				}
 			}
+			if (signatureLength == 0) {
+				throw new IOException("The selected source is empty");
+			}
+
+			String suffix;
+			if (signatureLength >= 2 && signature[0] == 0x50 && signature[1] == 0x4B) {
+				suffix = ".jar";
+			} else if (signatureLength == 3
+					&& signature[0] == 'K' && signature[1] == 'J' && signature[2] == 'X') {
+				suffix = ".kjx";
+			} else {
+				suffix = ".jad";
+			}
+
+			// Unique cache files prevent two ContentProvider imports from overwriting
+			// each other's source while an installer is reading it.
+			cachedFile = File.createTempFile("uri_source_", suffix, tmpDir);
+			try (OutputStream out = new FileOutputStream(cachedFile)) {
+				out.write(signature, 0, signatureLength);
+				byte[] buffer = new byte[BUFFER_SIZE];
+				int count;
+				while ((count = in.read(buffer)) != -1) {
+					if (count == 0) {
+						int value = in.read();
+						if (value < 0) {
+							break;
+						}
+						out.write(value);
+					} else {
+						out.write(buffer, 0, count);
+					}
+				}
+				out.flush();
+			}
+			return cachedFile;
+		} catch (IOException | RuntimeException e) {
+			if (cachedFile != null && cachedFile.exists() && !cachedFile.delete()) {
+				Log.w(TAG, "Unable to remove incomplete imported source");
+			}
+			throw e;
 		}
-		return file;
 	}
 
 	public static byte[] getBytes(File file) throws IOException {

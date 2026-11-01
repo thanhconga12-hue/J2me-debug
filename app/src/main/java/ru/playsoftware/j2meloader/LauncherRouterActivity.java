@@ -25,20 +25,29 @@ public final class LauncherRouterActivity extends Activity {
     private static final String TAG = "NSTROUTER";
     private static final String ACTION_PROBE = "ru.playsoftware.j2meloader.PROBE_SESSION";
     private static final int RESULT_ALIVE = 1;
+    private static final long PROBE_TIMEOUT_MS = 2_000L;
     private final Handler handler = new Handler(Looper.getMainLooper());
     private boolean finished;
 
-    private final Runnable fallback = this::openMain;
+    private final Runnable fallback = () -> {
+        Log.w(TAG, "MIDlet session probe timed out; opening the app list");
+        openMain();
+    };
     private final BroadcastReceiver probeResult = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
             handler.removeCallbacksAndMessages(null);
             if (isFinishing()) return;
             if (getResultCode() == RESULT_ALIVE) {
-                Intent reopen = new Intent(LauncherRouterActivity.this, MicroActivity.class)
-                        .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-                startActivity(reopen);
-                closeRouter();
+                try {
+                    Intent reopen = new Intent(LauncherRouterActivity.this, MicroActivity.class)
+                            .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+                    startActivity(reopen);
+                    closeRouter();
+                } catch (Exception e) {
+                    Log.w(TAG, "Unable to bring the active MIDlet session to the foreground", e);
+                    openMain();
+                }
             } else {
                 openMain();
             }
@@ -52,9 +61,15 @@ public final class LauncherRouterActivity extends Activity {
             openMain();
             return;
         }
-        handler.postDelayed(fallback, 800L);
+        handler.postDelayed(fallback, PROBE_TIMEOUT_MS);
         Intent probe = new Intent(ACTION_PROBE).setPackage(getPackageName());
-        sendOrderedBroadcast(probe, null, probeResult, handler, 0, null, null);
+        try {
+            sendOrderedBroadcast(probe, null, probeResult, handler, 0, null, null);
+        } catch (Exception e) {
+            Log.w(TAG, "Unable to probe the active MIDlet session", e);
+            handler.removeCallbacks(fallback);
+            openMain();
+        }
     }
 
     private boolean isMidletProcessRunning() {

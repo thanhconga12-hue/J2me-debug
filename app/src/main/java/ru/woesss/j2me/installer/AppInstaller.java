@@ -114,13 +114,21 @@ public class AppInstaller {
 			emitter.onSuccess(STATUS_EQUAL);
 			return;
 		}
-		boolean isLocal;
-		if ("http".equals(uri.getScheme()) || "https".equals(uri.getScheme())) {
-			downloadJad();
-			isLocal = false;
-		} else {
-			srcFile = FileUtils.getFileForUri(uri);
-			isLocal = true;
+		boolean isLocal = true;
+		if (srcFile == null) {
+			if (uri == null) {
+				throw new IOException("Missing source file and source URI");
+			}
+			String scheme = uri.getScheme();
+			if ("http".equals(scheme) || "https".equals(scheme)) {
+				downloadJad();
+				isLocal = false;
+			} else {
+				srcFile = FileUtils.getFileForUri(uri);
+			}
+		}
+		if (srcFile == null || !srcFile.isFile()) {
+			throw new IOException("The selected source file is unavailable");
 		}
 
 		String name = srcFile.getName();

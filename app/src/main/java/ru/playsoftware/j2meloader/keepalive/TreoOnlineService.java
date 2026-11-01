@@ -22,8 +22,7 @@ import androidx.core.app.NotificationCompat;
 import androidx.core.app.ServiceCompat;
 import androidx.preference.PreferenceManager;
 
-import javax.microedition.shell.MicroActivity;
-
+import ru.playsoftware.j2meloader.LauncherRouterActivity;
 import ru.playsoftware.j2meloader.R;
 
 public final class TreoOnlineService extends Service {
@@ -230,7 +229,7 @@ public final class TreoOnlineService extends Service {
 
     private Notification buildNotification() {
         long minutes = Math.max(0L, (SystemClock.elapsedRealtime() - startedAtElapsed) / 60_000L);
-        Intent openIntent = new Intent(this, MicroActivity.class)
+        Intent openIntent = new Intent(this, LauncherRouterActivity.class)
                 .setAction(ACTION_OPEN_GAME)
                 .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK
                         | Intent.FLAG_ACTIVITY_CLEAR_TOP
