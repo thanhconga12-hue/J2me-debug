@@ -136,6 +136,7 @@ public final class TreoController {
 
     public static void stop(Context context) {
         Context app = context.getApplicationContext();
+        HideStrategy.reset(app);
         synchronized (TreoController.class) {
             MAIN.removeCallbacks(START_TIMEOUT);
             callback = null;

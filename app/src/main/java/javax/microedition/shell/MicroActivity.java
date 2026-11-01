@@ -108,6 +108,20 @@ public class MicroActivity extends AppCompatActivity {
 	private int menuKey;
 	private String appPath;
 	private ActivityMicroBinding binding;
+	private final android.content.BroadcastReceiver sessionProbeReceiver =
+			new android.content.BroadcastReceiver() {
+				@Override
+				public void onReceive(android.content.Context context, Intent intent) {
+					if (getCurrent() == null) {
+						setResultCode(2);
+						return;
+					}
+					android.os.Bundle extras = getResultExtras(true);
+					extras.putString("probe_session_path", appPath);
+					extras.putString("probe_session_name", appName);
+					setResult(1, null, extras);
+				}
+			};
 	private boolean pendingToggleStartAfterNotification;
 
 	@Override
@@ -144,6 +158,12 @@ public class MicroActivity extends AppCompatActivity {
 			if (!dir.exists() && !dir.mkdirs()) {
 				throw new RuntimeException("Can't access file system");
 			}
+		}
+		android.content.IntentFilter probeFilter = new android.content.IntentFilter("ru.playsoftware.j2meloader.PROBE_SESSION");
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+			registerReceiver(sessionProbeReceiver, probeFilter, android.content.Context.RECEIVER_NOT_EXPORTED);
+		} else {
+			registerReceiver(sessionProbeReceiver, probeFilter);
 		}
 		microLoader = new MicroLoader(appPath);
 		if (!microLoader.init()) {
@@ -213,6 +233,15 @@ public class MicroActivity extends AppCompatActivity {
 		} catch (Throwable ignored) {
 			// Match the original NST behavior: a failed forced redraw must not block resume.
 		}
+	}
+
+	@Override
+	protected void onDestroy() {
+		try {
+			unregisterReceiver(sessionProbeReceiver);
+		} catch (IllegalArgumentException ignored) {
+		}
+		super.onDestroy();
 	}
 
 	@Override
@@ -338,6 +367,10 @@ public class MicroActivity extends AppCompatActivity {
 	public Displayable getCurrent() {
 		return current;
 	}
+
+	public String getAppPathForSessionProbe() { return appPath; }
+
+	public String getAppNameForSessionProbe() { return appName; }
 
 	public boolean isVisible() {
 		return getLifecycle().getCurrentState().isAtLeast(Lifecycle.State.STARTED);
