@@ -641,7 +641,6 @@ public abstract class Canvas extends Displayable {
 
 	@SuppressLint("NewApi")
 	private boolean repaintScreen() {
-		if (headlessMode) return true;
 		Surface surface = this.surface;
 		if (surface == null || !surface.isValid()) {
 			return true;
@@ -783,7 +782,6 @@ public abstract class Canvas extends Displayable {
 
 		@Override
 		public void onDrawFrame(GL10 gl) {
-			if (headlessMode) return;
 			glDisable(GL_SCISSOR_TEST);
 			glClear(GL_COLOR_BUFFER_BIT);
 			glEnable(GL_SCISSOR_TEST);
@@ -1191,7 +1189,6 @@ public abstract class Canvas extends Displayable {
 	}
 
 	private void requestFlushToScreen() {
-		if (headlessMode) return;
 		if (settings.graphicsMode == 1) {
 			if (innerView != null) {
 				renderer.requestRender();
