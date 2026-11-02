@@ -13,6 +13,8 @@ import android.net.NetworkInfo;
 import android.net.wifi.WifiManager;
 import android.os.Build;
 import android.os.IBinder;
+import android.os.Handler;
+import android.os.Looper;
 import android.os.PowerManager;
 import android.os.SystemClock;
 import android.util.Log;
@@ -47,11 +49,37 @@ public final class TreoOnlineService extends Service {
     private long startedAtElapsed;
     private boolean foregroundStarted;
 
+    // Conservative memory maintenance: only ask the runtime to reclaim unused
+    // Java objects while the display is off. Never kill the MIDlet or clear RMS/cache.
+    private static final long MEMORY_CLEAN_INTERVAL_MS = 30L * 60L * 1000L;
+    private final Handler memoryHandler = new Handler(Looper.getMainLooper());
+    private final Runnable memoryMaintenance = new Runnable() {
+        @Override
+        public void run() {
+            if (isDisplayOff()) {
+                try {
+                    Runtime.getRuntime().gc();
+                    Log.d(TAG, "Background memory maintenance completed");
+                } catch (Throwable e) {
+                    Log.w(TAG, "Background memory maintenance failed", e);
+                }
+            }
+            memoryHandler.postDelayed(this, MEMORY_CLEAN_INTERVAL_MS);
+        }
+    };
+
+    private boolean isDisplayOff() {
+        PowerManager power = (PowerManager) getSystemService(POWER_SERVICE);
+        return power != null && !power.isInteractive();
+    }
+
     @Override
     public void onCreate() {
         super.onCreate();
         createNotificationChannels();
         if (startedAtElapsed == 0L) startedAtElapsed = SystemClock.elapsedRealtime();
+        memoryHandler.removeCallbacks(memoryMaintenance);
+        memoryHandler.postDelayed(memoryMaintenance, MEMORY_CLEAN_INTERVAL_MS);
     }
 
     @Nullable
@@ -315,6 +343,7 @@ public final class TreoOnlineService extends Service {
 
     @Override
     public void onDestroy() {
+        memoryHandler.removeCallbacks(memoryMaintenance);
         releaseLocks();
         TreoController.onServiceStopped();
         super.onDestroy();
